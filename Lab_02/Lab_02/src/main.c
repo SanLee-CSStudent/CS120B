@@ -9,7 +9,7 @@
 */
 #include <stdio.h>
 // #include "asf.h"
-#include "../header/io.h"
+#include <header/io.h>
 
 int main (void)
 {
