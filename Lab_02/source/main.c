@@ -7,7 +7,7 @@
 #ifdef _SIMULATE_
 #include <avr/io.h>
 #include <stdio.h>
-#include “simAVRHeader.h”
+#include "header/simAVRHeader.h"
 #endif
 
 int main(void) {
