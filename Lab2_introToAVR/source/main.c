@@ -20,7 +20,7 @@ int main(void) {
 	/* Insert your solution below */
     while (1) {
 
-	tempA = PINA & 0x03;
+	tempA = 0xFF & 0x03;
 	
 		if((tempA) == 0x01){
 			PORTB = 0x01;
