@@ -28,7 +28,7 @@ echo Running all tests..."\n\n
 
 # Add tests below
 echo The first Test\n
-test "PORTA: 0x00 => PORTB: 0x00\n"
+test "PORTA: 0x00 => PORTB: 0x00\n"#<-- stop at here
 echo Set A --> 0x00\n
 setPINA 0x00
 echo Wait\n
