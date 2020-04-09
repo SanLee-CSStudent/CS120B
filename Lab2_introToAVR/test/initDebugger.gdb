@@ -1,5 +1,5 @@
 
-file build/objects/main.elf
+file build/objects/main.o
 target remote :1234
 set logging file build/results/tests_out.txt 
 set logging overwrite on
