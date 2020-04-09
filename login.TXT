@@ -1,0 +1,3 @@
+ssh slee488@bolt.cs.ucr.edu
+
+ssh wch136-27

@@ -4,9 +4,9 @@
  * Created: 2020-04-07 오전 10:24:15
  * Author : San Lee
  */ 
-#ifdef _SIMULATE_
 #include <avr/io.h>
 #include <stdio.h>
+#ifdef _SIMULATE_
 #include "../header/simAVRHeader.h"
 #endif
 
