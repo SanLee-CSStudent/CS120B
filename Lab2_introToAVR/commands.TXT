@@ -1,0 +1,1 @@
+avr-gcc -mmcu=atmega1284 -Wall -o build/objects/main.elf source/main.c
