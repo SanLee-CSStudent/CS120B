@@ -28,7 +28,7 @@ echo Running all tests..."\n\n
 
 # Add tests below
 echo The first Test\n
-test "PORTA: 0x00 => PORTB: 0x00\n"#<-- stop at here
+test "PINA: 0x00 => PORTB: 0x00\n"#<-- stop at here
 echo Set A --> 0x00\n
 setPINA 0x00
 echo Wait\n
@@ -38,14 +38,14 @@ expectPORTB 0x00
 checkResult
 
 echo The Second Test"\n"
-test "PORTA: 0x01 => PORTB: 0x01"
+test "PINA: 0x01 => PORTB: 0x01"
 setPINA 0x01
 continue 5
 expectPORTB 0x01
 checkResult
 
 echo The Third Test"\n"
-test "PORTA: 0x03 => PORTB: 0x00"
+test "PINA: 0x03 => PORTB: 0x00"
 setPINA 0x03
 continue 5
 expectPORTB 0x00
