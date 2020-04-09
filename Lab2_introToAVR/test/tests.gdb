@@ -40,6 +40,24 @@ checkResult
 
 # Add tests below
 
+test "PORTA: 0x00 => PORTB: 0x00"
+setPORTA 0x00
+continue 5
+expectPORTB 0x00
+checkResult
+
+test "PORTA: 0x01 => PORTB: 0x01"
+setPORTA 0x01
+continue 5
+expectPORTB 0x01
+checkResult
+
+test "PORTA: 0x03 => PORTB: 0x00"
+setPORTA 0x03
+continue 5
+expectPORTB 0x00
+checkResult
+
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
