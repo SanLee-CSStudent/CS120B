@@ -24,17 +24,14 @@ int main(void) {
     while (1) {
 
 		one = PINB & 0x01;
-		if(weight != 0xFE){
+		if(weight != 0xFF){
 			weight = PIND + one;
 		}
-		else{
-			weight = PIND;
-		}
 		
-		if(weight >= 0x46){
+		if(PIND >= 0x46){
 			PORTB = 0x02;
 		}
-		else if(weight >= 0x05){
+		else if(PIND >= 0x05){
 			
 			PORTB = 0x04;
 		}
