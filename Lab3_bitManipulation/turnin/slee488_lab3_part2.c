@@ -22,7 +22,11 @@ int main(void) {
 	
     while (1) {
 		level = PINA & 0x0F;
-		if(level <= 0x02){
+		if(level == 0x00){
+			PORTC = 0x40;
+		}
+		
+		if(level != 0x00 && level <= 0x02){
 			PORTC = 0x60;
 		}
 		if(level > 0x02 && level <= 0x04){

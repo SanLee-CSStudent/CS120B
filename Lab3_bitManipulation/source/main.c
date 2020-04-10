@@ -16,18 +16,26 @@ int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRA = 0x00;PORTA = 0xFF;
 	DDRB = 0xFF;PORTB = 0x00;
-	DDRC = 0xFF;PORTC = 0x00;
     /* Insert your solution below */
-	unsigned char upper;
-	unsigned char lower;
+	unsigned char weight;
+	unsihned char overflow;
 	
     while (1) {
-		upper = (PINA & 0xf0) >> 4;
-		lower = PINA & 0x0F;
-		
-		PORTB = upper;
-		PORTC = lower;
-		PORTC = PORTC << 4;
+		weight = PINA;
+		overflow = PORTB & 0x01;
+		PORTB = PORTB & 0x07;
+		if((weight > 0x46) || (overflow == 0x01)){
+			PORTB = PORTB | 0x02;
+		}
+		else if(weight > 0x05){
+			
+			PORTB = PORTB | 0x04;
+			PORTB = PORTB & 0x05;
+		}
+		else{
+			PORTB = PORTB & 0x01;
+		}
+
     }
     return 1;
 }
