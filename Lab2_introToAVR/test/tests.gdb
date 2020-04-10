@@ -31,8 +31,7 @@ echo The first Test\n
 test "PINA: 0x00 => PORTB: 0x00\n"#<-- stop at here
 echo Set A --> 0x00\n
 setPINA 0x00
-echo Wait\n
-continue 5
+#continue 5
 echo Expect PORTB <-- 0x00\n
 expectPORTB 0x00
 checkResult
@@ -40,14 +39,14 @@ checkResult
 echo The Second Test"\n"
 test "PINA: 0x01 => PORTB: 0x01"
 setPINA 0x01
-continue 5
+#continue 5
 expectPORTB 0x01
 checkResult
 
 echo The Third Test"\n"
 test "PINA: 0x03 => PORTB: 0x00"
 setPINA 0x03
-continue 5
+#continue 5
 expectPORTB 0x00
 checkResult
 
