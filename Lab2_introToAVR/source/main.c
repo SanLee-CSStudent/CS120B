@@ -20,9 +20,9 @@ int main(void) {
 	/* Insert your solution below */
     while (1) {
 
-	tempA = PINA | 0x00;
+	// tempA = PINA | 0x00;
 	
-		if(tempA == 0x01){
+		if((PINA | 0x00) == 0x01){
 			PORTB = 1;
 		}
 		else{
