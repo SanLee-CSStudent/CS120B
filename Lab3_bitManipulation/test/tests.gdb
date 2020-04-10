@@ -34,11 +34,11 @@ continue 5
 expectPORTB 0x02
 checkResult
 
-test "PINA: 0x00 => PORTB: 0x02"
+test "PINA: 0x00 => PORTB: 0x03"
 setPINA 0x00
 setPINB 0x1
 continue 5
-expectPORTB 0x02
+expectPORTB 0x03
 checkResult
 
 test "PINA: 0x00 => PORTB: 0x00"
