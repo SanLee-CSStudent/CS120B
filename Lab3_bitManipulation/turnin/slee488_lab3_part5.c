@@ -15,27 +15,28 @@
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRD = 0x00;PORTD = 0xFF;
-	DDRB = 0xFE;PORTB = 0x00;
+	DDRB = 0xFE;PORTB = 0x01;
     /* Insert your solution below */
 	unsigned char weight;
-	unsigned char overflow;
-	unsigned char output;
+	// unsigned char output;
+	unsigned char one;
 	
     while (1) {
-		weight = PIND;
-		overflow = PINB & 0x01;
-		output = PINB & 0x07;
+
+		one = PINB & 0x01;
+		if(weight != 0xFF){
+			weight = PIND + one;
+		}
 		
-		if((weight > 0x46) || (overflow == 0x01)){
-			PORTB = output | 0x02;
+		if(PIND >= 0x46){
+			PORTB = 0x02;
 		}
-		else if(weight > 0x05){
+		else if(PIND >= 0x05){
 			
-			PORTB = output | 0x04;
+			PORTB = 0x04;
 		}
-		else{
-			PORTB = output & 0x01;
-		}
+
+		PORTB = PORTB & 0x06;
 
     }
     return 1;
