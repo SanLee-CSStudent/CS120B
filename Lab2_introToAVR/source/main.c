@@ -24,10 +24,15 @@ int main(void) {
 	/* Insert your solution below */
     while (1) {
 		total = PINA + PINB + PINC;
-		diff = PINA - PINC;
-		PORTD = total;
+		if(PINA > PINC){
+			diff = PINA - PINC;
+		}
+		else{
+			diff = PINC - PINA;
+		}
+
 		if(total > 140){
-			PORTD = PORTD | 0x01;
+			PORTD = 0x01;
 		}
 		
 		if(diff > 80){
@@ -36,6 +41,9 @@ int main(void) {
 		
 		if((total & 0xC0) == 0x00){
 			PORTD = PORTD | (total << 2);
+		}
+		else{
+			PORTD = PORTD | total;
 		}
 		
 		
