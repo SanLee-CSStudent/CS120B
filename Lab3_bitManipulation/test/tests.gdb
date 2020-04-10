@@ -29,7 +29,7 @@ echo Running all tests..."\n\n
 # Add tests below
 test "PINA: 0xFF => PORTB: 0x02"
 setPIND 0xFF
-setPINB 0x0
+setPINB 0x1
 continue 5
 expectPORTB 0x02
 checkResult

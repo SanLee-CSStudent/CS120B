@@ -18,15 +18,21 @@ int main(void) {
 	DDRB = 0xFE;PORTB = 0x00;
     /* Insert your solution below */
 	unsigned char weight;
-	unsigned char overflow;
 	unsigned char output;
+	unsigned char one;
 	
     while (1) {
 		weight = PIND;
-		overflow = PINB & 0x01;
 		output = PINB & 0x07;
+		one = PINB & 0x01;
+		if(weight != 0xFE){
+			weight = weight + one;
+		}
+		else{
+			weight = weight;
+		}
 		
-		if((weight > 0x46) || (overflow == 0x01)){
+		if(weight > 0x46){
 			PORTB = output | 0x02;
 		}
 		else if(weight > 0x05){
