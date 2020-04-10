@@ -31,7 +31,7 @@ int main(void) {
 		if(PIND >= 0x46){
 			PORTB = 0x02;
 		}
-		else if(PIND >= 0x05){
+		else if(PIND >= 0x05 || (PIND == 4 && one == 1)){
 			
 			PORTB = 0x04;
 		}

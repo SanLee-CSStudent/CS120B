@@ -45,7 +45,14 @@ test "PINA: 0x05 => PORTB: 0x04"
 setPIND 0x05
 setPINB 0x01
 continue 5
-expectPORTB 0x04
+expectPORTB 0x02
+checkResult
+
+test "PINA: 0x05 => PORTB: 0x04"
+setPIND 0x03
+setPINB 0x01
+continue 5
+expectPORTB 0x00
 checkResult
 
 # Report on how many tests passed/tests ran
