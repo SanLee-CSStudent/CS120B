@@ -20,20 +20,23 @@ int main(void) {
 	DDRD = 0xFF; PORTD = 0x00;
 	unsigned char total;
 	unsigned char diff;
-
+	unsigned char tempD;
 	/* Insert your solution below */
     while (1) {
 		total = PINA + PINB + PINC;
 		diff = PINA - PINC;
+		PORTD = total;
 		if(total > 140){
-			PORTD = 1;
+			PORTD = PORTD | 0x01;
 		}
 		
 		if(diff > 80){
 			PORTD = PORTD | 0x02;
 		}
 		
-		PORTD = PORTD | (total << 2);
+		if((total & 0xC0) == 0x00){
+			PORTD = PORTD | (total << 2);
+		}
 		
 		
     }

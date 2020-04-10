@@ -6,4 +6,8 @@ avr-gcc -mmcu=atmega1284 -I/usr/csshare/pkgs/simavr/ -Iheader/ -D_SIMULATE_ -Wal
 
 cp source/main.c turnin/slee488_lab2_part4.c && cp test/tests.gdb turnin/slee488_lab2_part4_tests.gdb
 
-tar -czvf slee488_lab2.tgz turnin/
+tar -czvf slee488_lab2.tgz\\ turnin/
+
+Submitting through gradescope can be done through sending 
+actual source codes(.c and .gdb) to zip with specified name.
+"slee488_lab#"(without quotation)
