@@ -18,17 +18,17 @@ int main(void) {
 	DDRB = 0xFE;PORTB = 0x00;
     /* Insert your solution below */
 	unsigned char weight;
-	unsigned char output;
+	// unsigned char output;
 	unsigned char one;
 	
     while (1) {
-		weight = PIND;
+
 		one = PINB & 0x01;
 		if(weight != 0xFE){
-			weight = weight + one;
+			weight = PIND + one;
 		}
 		else{
-			weight = weight;
+			weight = PIND;
 		}
 		
 		if(weight > 0x46){
