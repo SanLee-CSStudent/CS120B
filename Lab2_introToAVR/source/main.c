@@ -30,14 +30,6 @@ int main(void) {
 		else{
 			diff = PINC - PINA;
 		}
-
-		if(total > 140){
-			PORTD = 0x01;
-		}
-		
-		if(diff > 80){
-			PORTD = PORTD | 0x02;
-		}
 		
 		if((total & 0xC0) == 0x00){
 			PORTD = PORTD | (total << 2);
@@ -45,7 +37,15 @@ int main(void) {
 		else{
 			PORTD = PORTD | total;
 		}
+		PORTD = PORTD & 0xFC;
 		
+		if(total > 140){
+			PORTD = 0x01;
+		}
+		
+		if(diff > 80){
+			PORTD = PORTD | 0x02;
+		}
 		
     }
     return 1;
