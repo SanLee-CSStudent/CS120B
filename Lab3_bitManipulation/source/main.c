@@ -19,21 +19,22 @@ int main(void) {
     /* Insert your solution below */
 	unsigned char weight;
 	unsigned char overflow;
+	unsigned char output;
 	
     while (1) {
 		weight = PINA;
 		overflow = PINB & 0x01;
-		PORTB = PORTB & 0x07;
+		output = PINB & 0x07;
+		
 		if((weight > 0x46) || (overflow == 0x01)){
-			PORTB = PORTB | 0x02;
+			PORTB = output | 0x02;
 		}
 		else if(weight > 0x05){
 			
-			PORTB = PORTB | 0x04;
-			PORTB = PORTB & 0x05;
+			PORTB = output | 0x04;
 		}
 		else{
-			PORTB = PORTB & 0x01;
+			PORTB = output & 0x01;
 		}
 
     }
