@@ -14,10 +14,31 @@
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-
+	DDRA = 0x00;PORTA = 0xFF;
+	DDRB = 0x00;PORTB = 0xFF;
+	DDRC = 0xFF;PORTC = 0x00;
     /* Insert your solution below */
+	unsigned char cnt = 0;
+	unsigned tempA;
+	char i;
+	char j;
+	
     while (1) {
-
+		cnt = 0x00;
+		for(j = 0; j < 8; j++){
+			tempA = (PINA >> i) & 0x01;
+			if(tempA == 1){
+				cnt = cnt + 1;
+			}
+			
+			tempA = (PINB >> i) & 0x01;
+			if(tempA == 1){
+				cnt = cnt + 1;
+			}
+		}
+		
+		PORTC = cnt;
+		
     }
     return 1;
 }
