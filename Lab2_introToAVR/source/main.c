@@ -32,7 +32,7 @@ int main(void) {
 		}
 		
 		if((total & 0xC0) == 0x00){
-			PORTD = (total << 2);
+			// PORTD = (total << 2);
 		}
 		else{
 			PORTD = total;
