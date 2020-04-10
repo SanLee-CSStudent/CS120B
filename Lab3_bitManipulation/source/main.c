@@ -32,15 +32,14 @@ int main(void) {
 		}
 		
 		if(weight > 0x46){
-			PORTB = output | 0x02;
+			PORTB = 0x02;
 		}
 		else if(weight >= 0x05){
 			
-			PORTB = output | 0x04;
+			PORTB = 0x04;
 		}
-		else{
-			PORTB = output & 0x06;
-		}
+
+		PORTB = PORTB & 0x06;
 
     }
     return 1;
