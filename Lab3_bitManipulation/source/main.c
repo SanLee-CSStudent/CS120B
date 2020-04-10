@@ -20,18 +20,18 @@ int main(void) {
     /* Insert your solution below */
 	unsigned char cnt = 0;
 	unsigned tempA;
-	char i;
 	char j;
 	
     while (1) {
 		cnt = 0x00;
+		
 		for(j = 0; j < 8; j++){
-			tempA = (PINA >> i) & 0x01;
+			tempA = (PINA >> j) & 0x01;
 			if(tempA == 1){
 				cnt = cnt + 1;
 			}
 			
-			tempA = (PINB >> i) & 0x01;
+			tempA = (PINB >> j) & 0x01;
 			if(tempA == 1){
 				cnt = cnt + 1;
 			}
