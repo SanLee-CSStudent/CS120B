@@ -21,7 +21,7 @@ int main(void) {
 	unsigned char level;
 	
     while (1) {
-		level = PORTA & 0x0F
+		level = PORTA & 0x0F;
 		if(level <= 2){
 			PORTC = PORTC | 0x60;
 		}
