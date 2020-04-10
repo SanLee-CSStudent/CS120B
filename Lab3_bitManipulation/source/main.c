@@ -23,7 +23,6 @@ int main(void) {
 	
     while (1) {
 		weight = PIND;
-		output = PINB & 0x07;
 		one = PINB & 0x01;
 		if(weight != 0xFE){
 			weight = weight + one;
@@ -35,12 +34,12 @@ int main(void) {
 		if(weight > 0x46){
 			PORTB = output | 0x02;
 		}
-		else if(weight > 0x05){
+		else if(weight >= 0x05){
 			
 			PORTB = output | 0x04;
 		}
 		else{
-			PORTB = output & 0x01;
+			PORTB = output & 0x06;
 		}
 
     }
