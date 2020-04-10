@@ -1,12 +1,12 @@
-/*	Author: slee488
- *  Partner(s) Name: NA
- *	Lab Section:
- *	Assignment: Lab #  Exercise #
+/*	Partner(s) Name & E-mail:
+ *	Lab Section: 024
+ *	Assignment: Lab 2  Exercise 1 
  *	Exercise Description: [optional - include for your own benefit]
- *
- *	I acknowledge all content contained herein, excluding template or example
- *	code, is my own original work.
+ *	
+ *	I acknowledge all content contained herein, excluding template 
+ * 	or example code, is my own original work.
  */
+
 #include <avr/io.h>
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
