@@ -1,4 +1,3 @@
-
 # commands.gdb provides the following functions for ease:
 #   test "<message>"
 #       Where <message> is the message to print. Must call this at the beginning of every test
@@ -37,6 +36,12 @@ expectPORTC 0
 checkResult
 
 # Add tests below
+test "PINA: 0x00 => PORTB: 0"
+setPINA 0x00
+continue 5
+expectPORTB 0x00
+checkResult
+
 
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
