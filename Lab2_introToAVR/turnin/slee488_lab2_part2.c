@@ -1,4 +1,3 @@
-
 /*	Author: slee488
  *  Partner(s) Name: NA
  *	Lab Section: 024
@@ -26,11 +25,11 @@ int main(void) {
 		temp = PINA & 0x0F;
 		
 		for(i=3; i >= 0; i--){
-			if(((temp >> i) & 0x00) == 0){
-				cntavail = cntavail + 1;
+			if(((temp >> i) & 0x01) == 1){
+				cntavail = cntavail;
 			}
 			else{
-				cntavail = cntavail;
+				cntavail = cntavail + 1;
 			}
 		}
 		

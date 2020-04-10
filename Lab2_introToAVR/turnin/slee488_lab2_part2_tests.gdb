@@ -50,7 +50,7 @@ checkResult
 test "PINA: 0x0F => PORTC: 4"
 setPINA 0x0F
 continue 5
-expectPORTB 0x04
+expectPORTC 0x04
 checkResult
 
 
