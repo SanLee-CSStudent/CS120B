@@ -25,7 +25,7 @@ int main(void) {
 		cntavail = 0x00;
 		temp = PINA & 0x0F;
 		
-		for(i=3; i >= 0; i++){
+		for(i=3; i >= 0; i--){
 			if(((temp >> i) & 0x00) == 0){
 				cntavail = cntavail + 1;
 			}
