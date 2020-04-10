@@ -14,5 +14,5 @@ silent
 # Add all variables you want to inspect (printPORTx f, printPINx f)
 # f can be: [d] decimal, [x] hexadecmial (default), [t] binary
 # Example: printPORTC d 
+continue
 end
- 
