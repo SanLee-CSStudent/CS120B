@@ -26,10 +26,6 @@ int main(void) {
 		cntavail = 0x00;
 		tempA = PINA & 0x0F;
 		
-		if(tempA == 0x0F){
-			PORTC = 0x80;
-		}
-		
 		for(i = 0; i < 4; i++){
 			tempC = (tempA >> i) & 0x01;
 			if(tempC == 0x00){
@@ -37,7 +33,13 @@ int main(void) {
 			}
 		}
 		
-		PORTC = PORTC | cntavail;
+		if(cntavail == 0){
+			PORTC = 0x80 | cntavail;
+		}
+		else{
+			PORTC = cntavail;
+		}
+		
 		
     }
     return 1;
