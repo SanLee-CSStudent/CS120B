@@ -20,21 +20,18 @@ int main(void) {
 	unsigned char tempA;
 	unsigned char tempC;
     unsigned char cntavail;
-	unsigned char i;
+	unsigned char i = 0x03;
 	/* Insert your solution below */
     while (1) {
 		cntavail = 0x00;
 		tempA = PINA & 0x0F;
 		
-		for(i = 3; i >= 0; i--){
+		//for(i = 3; i >= 0; i--){
 			tempC = (tempA >> i) & 0x01;
-			/*if(tempC == 0x01){
-				cntavail = cntavail;
-			}
-			else{
+			if(tempC == 0x00){
 				cntavail = cntavail + 1;
-			}*/
-		}
+			}
+		//}
 		
 		PORTC = cntavail;
 		
