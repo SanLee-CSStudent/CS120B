@@ -36,22 +36,22 @@ expectPORTC 0
 checkResult
 
 # Add tests below
-test "PINA: 0x00 => PORTB: 0"
+test "PINA: 0x00 => PORTC: 0"
 setPINA 0x00
 continue 5
-expectPORTB 0x00
+expectPORTC 0x00
 checkResult
 
-test "PINA: 0x01 => PORTB: 1"
-setPINA 0x01
-continue 5
-expectPORTB 0x01
-checkResult
-
-test "PINA: 0x11 => PORTB: 0"
+test "PINA: 0x02 => PORTC: 2"
 setPINA 0x03
 continue 5
-expectPORTB 0x00
+expectPORTC 0x02
+checkResult
+
+test "PINA: 0x0F => PORTC: 4"
+setPINA 0x0F
+continue 5
+expectPORTB 0x04
 checkResult
 
 
