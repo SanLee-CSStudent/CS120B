@@ -17,28 +17,23 @@ int main(void) {
 	DDRA = 0x00; PORTA = 0x00; // Configure port A's 8 pins as inputs --> PINA
 	DDRB = 0xFF; PORTB = 0x00;
 	DDRC = 0xFF; PORTC = 0x00; // Configure port C's 8 pins as outputs, initialize to 0s
-	unsigned char tempA;
-	unsigned char tempC;
-    unsigned char cntavail;
-	unsigned char i;
+	DDRD = 0xFF; PORTD = 0x00;
+	unsigned char total;
+	unsigned char diff;
+
 	/* Insert your solution below */
     while (1) {
-		cntavail = 0x00;
-		tempA = PINA & 0x0F;
-		
-		for(i = 0; i < 4; i++){
-			tempC = (tempA >> i) & 0x01;
-			if(tempC == 0x00){
-				cntavail = cntavail + 1;
-			}
+		total = PINA + PINB + PINC;
+		diff = PINA - PINC;
+		if(total > 140){
+			PORTD = 1;
 		}
 		
-		if(cntavail == 0){
-			PORTC = 0x80 | cntavail;
+		if(diff > 80){
+			PORTD = PORTD | 0x02;
 		}
-		else{
-			PORTC = cntavail;
-		}
+		
+		PORTD = PORTD | (total << 2);
 		
 		
     }
