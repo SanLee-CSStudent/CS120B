@@ -19,11 +19,11 @@ int main(void) {
     unsigned char tempA;
 	/* Insert your solution below */
     while (1) {
-		PORTB = 0xFF;
-	// tempA = PINA | 0x00;
+
+		tempA = PINA & 0x03;
 	
-		if((PINA & 0x03) == 0x01){
-			PORTB = 0x00;
+		if((tempA) == 1){
+			PORTB = 0x01;
 		}
 		else{
 			PORTB = 0x01;
