@@ -22,22 +22,22 @@ int main(void) {
 	
     while (1) {
 		level = PORTA & 0x0F;
-		if(level <= 2){
+		if(level <= 0x02){
 			PORTC = PORTC | 0x60;
 		}
-		if(level > 2 && level <= 4){
+		if(level > 0x02 && level <= 0x04){
 			PORTC = PORTC | 0x70;
 		}
-		if(level > 4 && level <= 6){
+		if(level > 0x04 && level <= 0x06){
 			PORTC = PORTC | 0x38;	
 		}
-		if(level > 6 && level <= 9){
+		if(level > 0x06 && level <= 0x09){
 			PORTC = PORTC | 0x3C;	
 		}
-		if(level > 9 && level <= 12){
+		if(level > 0x09 && level <= 0x0C){
 			PORTC = PORTC | 0x3E;
 		}
-		if(level > 12 && level <= 15){
+		if(level > 0x0C && level <= 0x0F){
 			PORTC = PORTC | 0x3F;
 		}
 
