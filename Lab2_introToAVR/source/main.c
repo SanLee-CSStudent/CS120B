@@ -28,12 +28,12 @@ int main(void) {
 		
 		for(i = 3; i >= 0; i--){
 			tempC = (tempA >> i) & 0x01;
-			if(tempC == 0x01){
+			/*if(tempC == 0x01){
 				cntavail = cntavail;
 			}
 			else{
 				cntavail = cntavail + 1;
-			}
+			}*/
 		}
 		
 		PORTC = cntavail;
