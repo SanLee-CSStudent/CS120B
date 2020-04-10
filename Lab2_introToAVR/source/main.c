@@ -27,7 +27,7 @@ int main(void) {
 		tempA = PINA & 0x0F;
 		
 		for(i = 3; i >= 0; i--){
-			cntavail += 1;
+			cntavail = cntavail + 1;
 		}
 		
 		PORTC = cntavail;
