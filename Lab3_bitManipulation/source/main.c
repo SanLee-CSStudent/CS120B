@@ -19,9 +19,12 @@ int main(void) {
 	DDRC = 0xFF;PORTC = 0x00;
     /* Insert your solution below */
 	unsigned char level;
+	unsigned char seatbelt;
 	
     while (1) {
 		level = PINA & 0x0F;
+		seatbelt = PINA & 0x70;
+		
 		if(level <= 0x02){
 			PORTC = 0x60;
 		}
@@ -39,6 +42,10 @@ int main(void) {
 		}
 		if(level > 0x0C && level <= 0x0F){
 			PORTC = 0x3F;
+		}
+		
+		if(seatbelt == 0x30){
+			PORTC = PORTC | 0x80;
 		}
 
     }

@@ -33,13 +33,13 @@ continue 5
 expectPORTC 0x60
 checkResult
 
-test "PINA: 0x0F => PORTC: 0x3F"
-setPINA 0x0F
+test "PINA: 0x3F => PORTC: 0x3F"
+setPINA 0x3F
 continue 5
-expectPORTC 0x3F
+expectPORTC 0xBF
 checkResult
 
-test "PINA: 0x08 => PORTC: 0x3C"
+test "PINA: 0x78 => PORTC: 0x3C"
 setPINA 0x08
 continue 5
 expectPORTC 0x3C
