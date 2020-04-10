@@ -16,18 +16,28 @@ int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRA = 0x00; PORTA = 0x00; // Configure port A's 8 pins as inputs --> PINA
 	DDRB = 0xFF; PORTB = 0x00; // Configure port B's 8 pins as outputs, initialize to 0s
-    unsigned char tempA;
+	unsigned char temp;
+    unsigned char cntavail = 0x00;
+	unsigned char i;
 	/* Insert your solution below */
     while (1) {
-
-		tempA = PINA & 0x03;
-	
-		if((tempA) == 0x01){
-			PORTB = 0x01;
+		temp = PINA & 0x0F;
+		
+		if(PINA == 0x0F){
+			PORTC = 0x80;
 		}
-		else{
-			PORTB = 0x00;
+		
+		for(i=3; i >= 0; i++){
+			if(((temp) >> i) & 0x01) == 1){
+				cntavail = cntavail;
+			}
+			else{
+				cntavail = cntavail + 1;
+			}
 		}
+		
+		PORTC = PORTC | cntavail;
+		
     }
     return 1;
 }
