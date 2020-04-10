@@ -37,7 +37,7 @@ setPINA 50
 setPINB 50
 setPINC 50
 continue 5
-expectPORTD x97
+expectPORTD 0x97
 checkResult
 
 test "PINA: 80, PINB: 70, PINC: 0=> PORTD: 0x96"
@@ -45,7 +45,7 @@ setPINA 80
 setPINB 70
 setPINC 0
 continue 5
-expectPORTD x03
+expectPORTD 0x03
 checkResult
 
 test "PINA: 80, PINB: 70, PINC: 0=> PORTD: 0x96"
@@ -53,7 +53,7 @@ setPINA 80
 setPINB 20
 setPINC 0
 continue 5
-expectPORTD x02
+expectPORTD 0x02
 checkResult
 
 # Report on how many tests passed/tests ran
