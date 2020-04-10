@@ -31,12 +31,13 @@ int main(void) {
 		if(PIND >= 0x46){
 			PORTB = 0x02;
 		}
-		else if(PIND >= 0x05){
+		else if(PIND > 0x05 || (PIND == 5 && one == 1)){
 			
 			PORTB = 0x04;
 		}
-
-		PORTB = PORTB & 0x06;
+		else{
+			PORTB = 0x00;
+		}
 
     }
     return 1;
