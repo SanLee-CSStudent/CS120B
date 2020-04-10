@@ -14,9 +14,9 @@
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-	DDRA = 0x00; PORTA = 0x00; // Configure port A's 8 pins as inputs --> PINA
-	DDRB = 0xFF; PORTB = 0x00;
-	DDRC = 0xFF; PORTC = 0x00; // Configure port C's 8 pins as outputs, initialize to 0s
+	DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs --> PINA
+	DDRB = 0x00; PORTB = 0xFF;
+	DDRC = 0x00; PORTC = 0xFF; // Configure port C's 8 pins as outputs, initialize to 0s
 	DDRD = 0xFF; PORTD = 0x00;
 	unsigned char total;
 	unsigned char diff;
@@ -32,10 +32,10 @@ int main(void) {
 		}
 		
 		if((total & 0xC0) == 0x00){
-			PORTD = PORTD | (total << 2);
+			PORTD = (total << 2);
 		}
 		else{
-			PORTD = PORTD | total;
+			PORTD = total;
 		}
 		PORTD = PORTD & 0xFC;
 		
