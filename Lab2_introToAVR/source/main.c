@@ -22,7 +22,7 @@ int main(void) {
 
 	// tempA = PINA | 0x00;
 	
-		if((PINA | 0x00) == 0x01){
+		if((PINA & 0x03) == 0x01){
 			PORTB = 1;
 		}
 		else{
