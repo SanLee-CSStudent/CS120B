@@ -15,14 +15,14 @@
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRA = 0x00;PORTA = 0xFF;
-	DDRB = 0xFF;PORTB = 0x00;
+	DDRB = 0xFE;PORTB = 0x00;
     /* Insert your solution below */
 	unsigned char weight;
 	unsigned char overflow;
 	
     while (1) {
 		weight = PINA;
-		overflow = PORTB & 0x01;
+		overflow = PINB & 0x01;
 		PORTB = PORTB & 0x07;
 		if((weight > 0x46) || (overflow == 0x01)){
 			PORTB = PORTB | 0x02;
