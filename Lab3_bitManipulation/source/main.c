@@ -18,7 +18,7 @@ int main(void) {
 	DDRB = 0xFF;PORTB = 0x00;
     /* Insert your solution below */
 	unsigned char weight;
-	unsihned char overflow;
+	unsigned char overflow;
 	
     while (1) {
 		weight = PINA;
