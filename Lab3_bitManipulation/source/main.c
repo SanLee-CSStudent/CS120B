@@ -15,7 +15,7 @@
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRD = 0x00;PORTD = 0xFF;
-	DDRB = 0xFE;PORTB = 0x00;
+	DDRB = 0xFE;PORTB = 0x01;
     /* Insert your solution below */
 	unsigned char weight;
 	// unsigned char output;
@@ -31,7 +31,7 @@ int main(void) {
 			weight = PIND;
 		}
 		
-		if(weight > 0x46){
+		if(weight >= 0x46){
 			PORTB = 0x02;
 		}
 		else if(weight >= 0x05){

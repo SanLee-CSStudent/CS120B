@@ -48,13 +48,6 @@ continue 5
 expectPORTB 0x04
 checkResult
 
-test "PINA: 0x0F => PORTB: 0x04"
-setPIND 0x0F
-setPINB 0x00
-continue 5
-expectPORTB 0x04
-checkResult
-
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
