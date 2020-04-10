@@ -27,9 +27,9 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 # Add tests below
-test "PINA: 0x00 => PORTB: 0x00\n"#<-- stop at here
+test "PINA: 0x00 => PORTB: 0x00\n"
 setPINA 0x00
-#continue 5
+continue 5
 expectPORTB 0x00
 checkResult
 
