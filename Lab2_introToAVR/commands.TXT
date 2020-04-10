@@ -11,3 +11,5 @@ tar -czvf slee488_lab2.tgz\\ turnin/
 Submitting through gradescope can be done through sending 
 actual source codes(.c and .gdb) to zip with specified name.
 "slee488_lab#"(without quotation)
+
+/usr/csshare/pkgs/cs120b-avrtools/createProject.sh
