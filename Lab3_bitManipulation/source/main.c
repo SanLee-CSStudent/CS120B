@@ -15,39 +15,19 @@
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRA = 0x00;PORTA = 0xFF;
-	// DDRB = 0x00;PORTB = 0xFF;
+	DDRB = 0xFF;PORTB = 0x00;
 	DDRC = 0xFF;PORTC = 0x00;
     /* Insert your solution below */
-	unsigned char level;
-	unsigned char seatbelt;
+	unsigned char upper;
+	unsigned char lower;
 	
     while (1) {
-		level = PINA & 0x0F;
-		seatbelt = PINA & 0x70;
+		upper = (PINA & 0xf0) >> 4;
+		lower = PINA & 0x0F;
 		
-		if(level <= 0x02){
-			PORTC = 0x60;
-		}
-		if(level > 0x02 && level <= 0x04){
-			PORTC = 0x70;
-		}
-		if(level > 0x04 && level <= 0x06){
-			PORTC = 0x38;	
-		}
-		if(level > 0x06 && level <= 0x09){
-			PORTC = 0x3C;	
-		}
-		if(level > 0x09 && level <= 0x0C){
-			PORTC = 0x3E;
-		}
-		if(level > 0x0C && level <= 0x0F){
-			PORTC = 0x3F;
-		}
-		
-		if(seatbelt == 0x30){
-			PORTC = PORTC | 0x80;
-		}
-
+		PORTB = upper;
+		PORTC = lower;
+		PORTC = PORTC << 4;
     }
     return 1;
 }
