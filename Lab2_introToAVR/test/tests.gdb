@@ -42,6 +42,18 @@ continue 5
 expectPORTB 0x00
 checkResult
 
+test "PINA: 0x01 => PORTB: 1"
+setPINA 0x01
+continue 5
+expectPORTB 0x01
+checkResult
+
+test "PINA: 0x11 => PORTB: 0"
+setPINA 0x03
+continue 5
+expectPORTB 0x00
+checkResult
+
 
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
