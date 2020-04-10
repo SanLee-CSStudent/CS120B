@@ -25,20 +25,23 @@ int main(void) {
 		if(level <= 2){
 			PORTC = PORTC | 0x60;
 		}
-		if(level <= 4){
+		else if(level <= 4){
 			PORTC = PORTC | 0x70;
 		}
-		if(level <= 6){
+		else if(level <= 6){
 			PORTC = PORTC | 0x38;	
 		}
-		if(level <= 9){
+		else if(level <= 9){
 			PORTC = PORTC | 0x3C;	
 		}
-		if(level <= 12){
+		else if(level <= 12){
 			PORTC = PORTC | 0x3E;
 		}
-		if(level <= 15){
+		else if(level <= 15){
 			PORTC = PORTC | 0x3F;
+		}
+		else{
+			PORTC = PORTC | 0x60;
 		}
 
     }
