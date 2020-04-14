@@ -38,6 +38,7 @@ void Tick(){
 		case Inc:
 			state = Init;
 			break;
+			
 		case Dec:
 			state = Init;
 			break;
@@ -45,6 +46,7 @@ void Tick(){
 		case Reset:
 			state = Init;
 			break;
+			
 		default:
 			break;
 	}
@@ -67,16 +69,17 @@ void Tick(){
 			}
 		break;
 		case Reset:
-			PORTC = 0x00;
+			//PORTC = 0x00;
 		break;
 		default:
+			PORTC = 0x07;
 		break;
 	}
 }
 
 int main(void) {
 	DDRA = 0x00;PORTA = 0xFF;
-	DDRC = 0xFF;PORTC = 0x00;
+	DDRC = 0xFF;PORTC = 0x07;
     /* Insert DDR and PORT initializations */
 	state = Start;
     /* Insert your solution below */
