@@ -26,16 +26,19 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "PINA: 0x00 --> PINB: 0x00"
+test "first half cycle"
 setPINA 0x00
 continue 2
-expectPORTB 0x01
+#expectPORTB 0x01
 setPINA 0x01
 continue 2
 expectPORTB 0x02
+checkResult
+
+test "second half cycle"
+set state = LOnePress;
 setPINA 0x00
 continue 2
-expectPORTB 0x02
 setPINA 0x01
 continue 2
 expectPORTB 0x01
