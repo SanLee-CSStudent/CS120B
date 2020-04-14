@@ -36,7 +36,7 @@ expectPORTB 0x02
 checkResult
 
 test "second half cycle"
-set state = LOnePress;
+set state = LOnePress
 setPINA 0x00
 continue 2
 setPINA 0x01
