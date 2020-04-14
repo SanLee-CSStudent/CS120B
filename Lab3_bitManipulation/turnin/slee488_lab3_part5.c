@@ -28,7 +28,7 @@ int main(void) {
 			weight = PIND + one;
 		}
 		
-		if(PIND >= 0x46){
+		if((PIND >= 0x46) || (PIND == 0x45 && one == 1)){
 			PORTB = 0x02;
 		}
 		else if(PIND > 0x05 || (PIND == 5 && one == 1)){
