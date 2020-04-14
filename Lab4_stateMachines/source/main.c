@@ -15,7 +15,6 @@
 enum STATE{Start, Init, Inc, Dec, Reset} state;
 
 void Tick(){
-	char c = PORTC;
 	
 	switch(state){
 		case Start:
@@ -55,16 +54,16 @@ void Tick(){
 			PORTC = 0x07;
 		break;
 		case Init:
-			PORTC = PORTC;
+
 		break;
 		case Inc:
 			if(PORTC < 0x09){
-				PORTC = PORTC + 1;
+				PORTC++;
 			}
 		break;
 		case Dec:
 			if(PORTC > 0){
-				PORTC = PORTC - 1;
+				PORTC--;
 			}
 		break;
 		case Reset:
