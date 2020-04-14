@@ -65,7 +65,7 @@ void Tick(){
 			PORTC = 0x07;
 		break;
 		case Init:
-
+			PORTC = PORTC;
 		break;
 		case Inc:
 			if(PORTC < 0x09){

@@ -35,7 +35,7 @@ checkResult
 test "Increment"
 setPINA 0x01
 continue 1
-setPINA 0x00
+setPINA 0x01
 continue 2
 setPINA 0x01
 continue 1
