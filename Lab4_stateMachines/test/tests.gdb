@@ -27,6 +27,7 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 test "Wait"
+set state = Init
 setPINA 0x00
 continue 2
 expectPORTC 0x07
