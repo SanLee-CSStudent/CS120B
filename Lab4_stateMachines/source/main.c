@@ -36,11 +36,24 @@ void Tick(){
 
 			break;
 		case Inc:
-			state = Init;
+			unsigned char tempA = (PINA & 0x01);
+			if(tempA == 0x01){
+				state = Inc;
+			}
+			else{
+				state = Init;
+			}
+			
 			break;
 			
 		case Dec:
-			state = Init;
+			unsigned char tempB = (PINA & 0x02);
+			if(tempB == 0x02){
+				state = Dec;
+			}
+			else{
+				state = Init;
+			}
 			break;
 	
 		case Reset:
