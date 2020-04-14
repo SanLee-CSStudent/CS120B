@@ -30,7 +30,6 @@ test "first half cycle"
 set state = LZeroRelease
 setPINA 0x00
 continue 2
-#expectPORTB 0x01
 setPINA 0x01
 continue 2
 expectPORTB 0x02

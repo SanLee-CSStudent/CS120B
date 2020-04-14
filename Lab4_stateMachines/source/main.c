@@ -17,7 +17,7 @@ enum STATE{Start, LZeroPress, LZeroRelease, LOnePress, LOneRelease} state;
 void Tick(){
 	switch(state){
 		case Start:
-			PORTB = 0x01;
+			state = LZeroRelease;
 			break;
 		case LZeroPress:
 			if(PINA == 0x01){
