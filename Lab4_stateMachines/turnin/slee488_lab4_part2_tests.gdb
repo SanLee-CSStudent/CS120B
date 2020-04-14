@@ -44,6 +44,8 @@ test "Decrement"
 set state = Init
 setPINA 0x02
 continue 2
+setPINA 0x02
+continue 2
 expectPORTC 0x06
 checkResult
 

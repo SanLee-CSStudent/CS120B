@@ -36,11 +36,24 @@ void Tick(){
 
 			break;
 		case Inc:
-			state = Init;
+			// unsigned char tempA = (PINA & 0x01);
+			if(PINA == 0x01){
+				state = Inc;
+			}
+			else{
+				state = Init;
+			}
+			
 			break;
 			
 		case Dec:
-			state = Init;
+			// unsigned char tempB = (PINA & 0x02);
+			if(PINA == 0x02){
+				state = Dec;
+			}
+			else{
+				state = Init;
+			}
 			break;
 	
 		case Reset:
@@ -65,14 +78,14 @@ void Tick(){
 		break;
 		case Dec:
 			if(PORTC > 0){
-				PORTC--;
+				PORTC = PORTC - 1;
 			}
 		break;
 		case Reset:
 			PORTC = 0x00;
 		break;
 		default:
-			PORTC = 0x07;
+			
 		break;
 	}
 }
