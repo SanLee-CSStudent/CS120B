@@ -12,12 +12,78 @@
 #include "simAVRHeader.h"
 #endif
 
-int main(void) {
-    /* Insert DDR and PORT initializations */
+enum STATE{Start, LZeroPress, LZeroRelease, LOnePress, LOneRelease} state;
 
+void Tick(){
+	switch(state){
+		Start:
+			PORTB = 0x01;
+			break;
+		LZeroPress:
+			if(PINA == 0x01){
+				state = LZeroPress;
+			}
+			else{
+				state = LZeroRelease;
+			}
+			break;
+		LZeroRelease:
+			if(PINA == 0x00){
+				state = LOnePress;
+			}
+			else{
+				state = LZeroRelease;
+			}
+			break;
+		LOnePress:
+			if(PINA == 0x00){
+				state = LOneRelease;
+			}
+			else{
+				state = LOnePress;
+			}
+			break;
+		LOneRelease:
+			if(PINA == 0x00){
+				state = LOneRelease;
+			}
+			else{
+				state = LZeroPress;
+			}
+			break;
+		default:
+			break;
+	}
+	
+	switch(state){
+		Start:
+		PORTB = 0x01;
+		break;
+		LZeroPress:
+			PORTB = 0x01;
+		break;
+		LZeroRelease:
+			PORTB = 0x01;
+		break;
+		LOnePress:
+			PORTB = 0x02;
+		break;
+		LOneRelease:
+			PORTB = 0x02;
+		break;
+		default:
+		break;
+	}
+}
+
+int main(void) {
+	DDRA = 0x00;PORTA = 0xFF;
+	DDRB = 0xFF;PORTB = 0x01;
+    /* Insert DDR and PORT initializations */
+	state = Start;
     /* Insert your solution below */
     while (1) {
-
+		Tick();
     }
     return 1;
 }

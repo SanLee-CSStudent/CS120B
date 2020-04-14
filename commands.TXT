@@ -3,6 +3,7 @@ avr-gcc -mmcu=atmega1284 -Wall -o build/objects/main.elf source/main.c
 avr-gcc -mmcu=atmega1284 -I/usr/csshare/pkgs/simavr/ -Iheader/ -D_SIMULATE_ -Wall -g -Og -Wl,--undefined=_mmcu,--section-start=.mmcu=910000 -o build/objects/main.elf source/main.c
 
 --> creates simulation environment that enables 'make test'
+--> make test automatically simulates and compiles the program
 
 cp source/main.c turnin/slee488_lab3_part5.c && cp test/tests.gdb turnin/slee488_lab3_part5_tests.gdb
 
