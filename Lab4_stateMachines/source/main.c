@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, Init, Inc, Dec, Simul, Reset} state;
+enum STATE{Start, Init, Inc, Dec, Reset} state;
 
 void Tick(){
 	char c = PORTC;
@@ -29,7 +29,7 @@ void Tick(){
 				state = Dec;
 			}
 			else if(PINA == 0x03){
-				state = Simul;
+				state = Reset;
 			}
 			else {
 				state = Init;
@@ -42,17 +42,7 @@ void Tick(){
 		case Dec:
 			state = Init;
 			break;
-		case Simul:
-			if(PINA == 0x00){
-				state = Reset;
-			}
-			else if(PINA == 0x03){
-				state = Simul;
-			}
-			else{
-				state = Init;
-			}
-			break;
+	
 		case Reset:
 			state = Init;
 			break;
@@ -76,9 +66,6 @@ void Tick(){
 			if(PORTC > 0){
 				PORTC = PORTC - 1;
 			}
-		break;
-		case Simul:
-			
 		break;
 		case Reset:
 			PORTC = 0x00;
