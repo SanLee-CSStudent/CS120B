@@ -26,6 +26,12 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
+test "Failed test"
+setPINA 0x00
+continue 2
+expectPORTB 0x01
+checkResult
+
 test "first half cycle"
 setPINA 0x00
 continue 2
