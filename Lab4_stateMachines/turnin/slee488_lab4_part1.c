@@ -29,10 +29,10 @@ void Tick(){
 			break;
 		case LZeroRelease:
 			if(PINA == 0x00){
-				state = LOnePress;
+				state = LZeroRelease;
 			}
 			else{
-				state = LZeroRelease;
+				state = LOnePress;
 			}
 			break;
 		case LOnePress:
