@@ -36,8 +36,8 @@ void Tick(){
 
 			break;
 		case Inc:
-			unsigned char tempA = (PINA & 0x01);
-			if(tempA == 0x01){
+			// unsigned char tempA = (PINA & 0x01);
+			if(PINA == 0x01){
 				state = Inc;
 			}
 			else{
@@ -47,8 +47,8 @@ void Tick(){
 			break;
 			
 		case Dec:
-			unsigned char tempB = (PINA & 0x02);
-			if(tempB == 0x02){
+			// unsigned char tempB = (PINA & 0x02);
+			if(PINA == 0x02){
 				state = Dec;
 			}
 			else{
