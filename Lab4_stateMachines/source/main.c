@@ -13,8 +13,10 @@
 #endif
 
 enum STATE{Start, Init, Inc, Dec, Simul, Reset} state;
-char c = PORTC;
+
 void Tick(){
+	char c = PORTC;
+	
 	switch(state){
 		case Start:
 			state = Init;
