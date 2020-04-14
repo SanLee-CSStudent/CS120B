@@ -65,7 +65,7 @@ void Tick(){
 		break;
 		case Dec:
 			if(PORTC > 0){
-				PORTC--;
+				PORTC = PORTC - 1;
 			}
 		break;
 		case Reset:
