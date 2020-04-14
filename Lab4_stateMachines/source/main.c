@@ -72,7 +72,7 @@ void Tick(){
 			PORTC = 0x00;
 		break;
 		default:
-			PORTC = 0x07;
+			
 		break;
 	}
 }
