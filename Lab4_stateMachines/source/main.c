@@ -16,10 +16,10 @@ enum STATE{Start, LZeroPress, LZeroRelease, LOnePress, LOneRelease} state;
 
 void Tick(){
 	switch(state){
-		Start:
+		case Start:
 			PORTB = 0x01;
 			break;
-		LZeroPress:
+		case LZeroPress:
 			if(PINA == 0x01){
 				state = LZeroPress;
 			}
@@ -27,7 +27,7 @@ void Tick(){
 				state = LZeroRelease;
 			}
 			break;
-		LZeroRelease:
+		case LZeroRelease:
 			if(PINA == 0x00){
 				state = LOnePress;
 			}
@@ -35,7 +35,7 @@ void Tick(){
 				state = LZeroRelease;
 			}
 			break;
-		LOnePress:
+		case LOnePress:
 			if(PINA == 0x00){
 				state = LOneRelease;
 			}
@@ -43,7 +43,7 @@ void Tick(){
 				state = LOnePress;
 			}
 			break;
-		LOneRelease:
+		case LOneRelease:
 			if(PINA == 0x00){
 				state = LOneRelease;
 			}
@@ -56,19 +56,19 @@ void Tick(){
 	}
 	
 	switch(state){
-		Start:
-		PORTB = 0x01;
-		break;
-		LZeroPress:
+		case Start:
 			PORTB = 0x01;
 		break;
-		LZeroRelease:
+		case LZeroPress:
 			PORTB = 0x01;
 		break;
-		LOnePress:
+		case LZeroRelease:
+			PORTB = 0x01;
+		break;
+		case LOnePress:
 			PORTB = 0x02;
 		break;
-		LOneRelease:
+		case LOneRelease:
 			PORTB = 0x02;
 		break;
 		default:
