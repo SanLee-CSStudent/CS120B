@@ -27,24 +27,28 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 test "Wait"
+set state = Init
 setPINA 0x00
 continue 2
 expectPORTC 0x07
 checkResult
 
 test "Increment"
+set state = Init
 setPINA 0x01
 continue 2
 expectPORTC 0x08
 checkResult
 
 test "Decrement"
+set state = Init
 setPINA 0x02
 continue 2
 expectPORTC 0x06
 checkResult
 
 test "Reset"
+set state = Init
 setPINA 0x03
 continue 2
 expectPORTC 0x00
