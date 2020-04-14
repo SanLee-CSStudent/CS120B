@@ -29,7 +29,7 @@ void Tick(){
 				state = Dec;
 			}
 			else if(PINA == 0x03){
-				state = Reset;
+				state = Simul;
 			}
 			else {
 				state = Init;
@@ -37,20 +37,10 @@ void Tick(){
 
 			break;
 		case Inc:
-			if(PINA == 0x00){
-				state = Init;
-			}
-			else{
-				state = Simul;
-			}
+			state = Init;
 			break;
 		case Dec:
-			if(PINA == 0x00){
-				state = Init;
-			}
-			else{
-				state = Simul;
-			}
+			state = Init;
 			break;
 		case Simul:
 			if(PINA == 0x00){
