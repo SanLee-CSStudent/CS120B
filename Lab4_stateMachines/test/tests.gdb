@@ -27,7 +27,6 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 test "first half cycle"
-set state = LZeroRelease
 setPINA 0x00
 continue 2
 setPINA 0x01
