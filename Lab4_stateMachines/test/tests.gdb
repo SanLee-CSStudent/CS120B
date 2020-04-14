@@ -26,29 +26,32 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Failed test"
+test "Wait"
 setPINA 0x00
 continue 2
-expectPORTB 0x01
+expectPORTC 0x07
 checkResult
 
-test "first half cycle"
+test "Increment"
+setPINA 0x01
+continue 2
 setPINA 0x00
 continue 2
 setPINA 0x01
-continue 2
-expectPORTB 0x02
+expectPORTC 0x09
 checkResult
 
-test "second half cycle"
-set state = LOnePress
-setPINA 0x00
+test "Decrement"
+setPINA 0x02
 continue 2
-setPINA 0x01
-continue 2
-expectPORTB 0x01
+expectPORTC 0x06
 checkResult
 
+test "Reset"
+setPINA 0x03
+continue 2
+expectPORTC 0x00
+checkResult
 # Add tests below
 
 # Report on how many tests passed/tests ran

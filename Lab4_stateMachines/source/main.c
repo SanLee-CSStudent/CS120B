@@ -12,44 +12,57 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, LZeroPress, LZeroRelease, LOnePress, LOneRelease} state;
-
+enum STATE{Start, Init, Inc, Dec, Simul, Reset} state;
+char c = PORTC;
 void Tick(){
 	switch(state){
 		case Start:
-			state = LZeroRelease;
+			state = Init;
 			break;
-		case LZeroPress:
+		case Init:
 			if(PINA == 0x01){
-				state = LZeroPress;
+				state = Inc;
+			}
+			else if(PINA == 0x02){
+				state = Dec;
+			}
+			else if(PINA == 0x03){
+				state = Reset;
+			}
+			else {
+				state = Init;
+			}
+
+			break;
+		case Inc:
+			if(PINA == 0x00){
+				state = Init;
 			}
 			else{
-				state = LZeroRelease;
+				state = Simul;
 			}
 			break;
-		case LZeroRelease:
+		case Dec:
 			if(PINA == 0x00){
-				state = LZeroRelease;
+				state = Init;
 			}
 			else{
-				state = LOnePress;
+				state = Simul;
 			}
 			break;
-		case LOnePress:
+		case Simul:
 			if(PINA == 0x00){
-				state = LOneRelease;
+				state = Reset;
+			}
+			else if(PINA == 0x03){
+				state = Simul;
 			}
 			else{
-				state = LOnePress;
+				state = Init;
 			}
 			break;
-		case LOneRelease:
-			if(PINA == 0x00){
-				state = LOneRelease;
-			}
-			else{
-				state = LZeroPress;
-			}
+		case Reset:
+			state = Init;
 			break;
 		default:
 			break;
@@ -57,19 +70,26 @@ void Tick(){
 	
 	switch(state){
 		case Start:
-			PORTB = 0x01;
+			PORTC = 0x07;
 		break;
-		case LZeroPress:
-			PORTB = 0x01;
+		case Init:
+			PORTC = 0x07;
 		break;
-		case LZeroRelease:
-			PORTB = 0x01;
+		case Inc:
+			if(c < 0x09){
+				PORTC = PORTC + 1;
+			}
 		break;
-		case LOnePress:
-			PORTB = 0x02;
+		case Dec:
+			if(c > 0){
+				PORTC = PORTC - 1;
+			}
 		break;
-		case LOneRelease:
-			PORTB = 0x02;
+		case Simul:
+			
+		break;
+		case Reset:
+			PORTC = 0x00;
 		break;
 		default:
 		break;
@@ -78,7 +98,7 @@ void Tick(){
 
 int main(void) {
 	DDRA = 0x00;PORTA = 0xFF;
-	DDRB = 0xFF;PORTB = 0x01;
+	DDRC = 0xFF;PORTC = 0x00;
     /* Insert DDR and PORT initializations */
 	state = Start;
     /* Insert your solution below */
