@@ -15,16 +15,16 @@
 enum STATE{Start, Init, PassPress, PassRelease, Open, Lock} state;
 
 void Tick(){
-	
+	unsigned char a = PINA;
 	switch(state){
 		case Start:
 			state = Init;
 			break;
 		case Init:
-			if(PINA == 0x04){
+			if(a == 0x04){
 				state = PassPress;
 			}
-			else if(PINA == 0x80){
+			else if(a == 0x80){
 				state = Lock;
 			}
 			else{
@@ -33,7 +33,7 @@ void Tick(){
 		
 			break;
 		case PassPress:
-			if(PINA == 0x04){
+			if(a == 0x04){
 				state = PassPress;
 			}
 			else{
@@ -42,7 +42,7 @@ void Tick(){
 			break;
 			
 		case PassRelease:
-			if(PINA == 0x02){
+			if(a == 0x02){
 				state = Open;
 			}
 			else{
