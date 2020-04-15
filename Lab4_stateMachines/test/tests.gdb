@@ -26,17 +26,13 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Stay at Init"
-setPINA 0x00
-continue 2
-expectPORTB 0x00
-expectPORTC 0x01
-checkResult
 
 test "Open"
-setPINA 0x02
+setPINA 0x04
 continue 2
-setPINA 0x01
+setPINA 0x00
+continue 2
+setPINA 0x02
 continue 2
 expectPORTB 0x01
 expectPORTC 0x02
