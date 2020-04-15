@@ -33,10 +33,7 @@ void Tick(){
 		
 			break;
 		case PassPress:
-			if(PINA == 0x00){
-				state = PassRelease;
-			}
-			else if(PINA == 0x04){
+			if(PINA == 0x04){
 				state = PassPress;
 			}
 			else{

@@ -42,6 +42,15 @@ expectPORTC 0x11
 checkResult
 
 test "Open"
+set state = Open
+setPINA 0x02
+continue 2
+expectPORTB 0x01
+expectPORTC 0x02
+checkResult
+
+test "Open"
+set state = Init
 setPINA 0x04
 continue 2
 setPINA 0x00
