@@ -26,6 +26,20 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
+test "PassPress"
+setPINA 0x04
+continue 2
+expectPORTB 0x00
+expectPORTC 0x10
+checkResult
+
+test "PassPress"
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expectPORTC 0x11
+checkResult
+
 test "Open"
 set state = Init
 setPINA 0x04
