@@ -26,7 +26,6 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-
 test "Open"
 setPINA 0x04
 continue 2
