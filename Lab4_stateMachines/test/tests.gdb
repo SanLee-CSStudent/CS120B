@@ -33,7 +33,7 @@ expectPORTB 0x00
 expectPORTC 0x10
 checkResult
 
-test "PassPress"
+test "PassRelease"
 set state = PassPress
 setPINA 0x00
 continue 2
