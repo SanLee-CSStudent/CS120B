@@ -21,7 +21,7 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-			if(PINA = 0x04){
+			if(PINA == 0x04){
 				state = PassPress;
 			}
 			else if(PINA == 0x80){
