@@ -1,0 +1,16 @@
+Breakpoint 1 at 0x2f4: file source/main.c, line 104.
+Note: automatically using hardware breakpoints for read-only addresses.
+======================================================
+Running all tests..."
+
+"Open"...
+	Expected 0x01 
+	PORTB '0x800025:	0x00
+
+	Expected 0x02 
+	PORTC '0x800028:	0x01
+"Fail"..."Lock"...
+	Expected 0x03 
+	PORTC '0x800028:	0x01
+======================================================
+Quitting: Remote doesn't know how to detach
