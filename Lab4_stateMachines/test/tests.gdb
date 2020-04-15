@@ -26,7 +26,7 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Stay at Init"
+
 setPINA 0x00
 continue 2
 expectPORTB 0x00
