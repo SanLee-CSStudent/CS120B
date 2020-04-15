@@ -34,6 +34,7 @@ expectPORTC 0x10
 checkResult
 
 test "PassPress"
+set state = PassPress
 setPINA 0x00
 continue 2
 expectPORTB 0x00
