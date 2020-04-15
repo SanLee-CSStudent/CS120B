@@ -15,7 +15,7 @@
 enum STATE{Start, Init, PassPress, PassRelease, Open, Lock} state;
 
 void Tick(){
-	
+
 	switch(state){
 		case Start:
 			state = Init;
@@ -32,7 +32,6 @@ void Tick(){
 			}
 		
 			break;
-			
 		case PassPress:
 			if(PINA == 0x04){
 				state = PassPress;
@@ -53,6 +52,7 @@ void Tick(){
 			
 		case Open:
 			state = Init;
+			
 			break;
 			
 		case Lock:
@@ -61,6 +61,8 @@ void Tick(){
 			break;
 			
 		default:
+			PORTB = 0x00;
+			PORTC = 0x00;
 			break;
 	}
 	
