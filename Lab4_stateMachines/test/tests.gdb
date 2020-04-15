@@ -27,6 +27,7 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 test "Open"
+set state = Init
 setPINA 0x04
 continue 2
 setPINA 0x00

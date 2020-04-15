@@ -51,7 +51,7 @@ void Tick(){
 			break;
 			
 		case Open:
-			// state = Init;
+			state = Init;
 			
 			break;
 			
