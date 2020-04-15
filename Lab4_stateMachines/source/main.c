@@ -33,7 +33,6 @@ void Tick(){
 		
 			break;
 		case PassPress:
-			// unsigned char tempA = (PINA & 0x01);
 			if(PINA == 0x02){
 				state = PassPress;
 			}
@@ -41,6 +40,7 @@ void Tick(){
 				state = PassRelease;
 			}
 			break;
+			
 		case PassRelease:
 			if(PINA == 0x01){
 				state = Open;
@@ -49,9 +49,11 @@ void Tick(){
 				state = Init;
 			}
 			break;
+			
 		case Open:
 			state = Init;
 			break;
+			
 		case Lock:
 			state = Init;
 			
