@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, Init, Inc, Dec, Reset} state;
+enum STATE{Start, Init, PassPress, PassRelease, Open, Lock} state;
 
 void Tick(){
 	
@@ -21,43 +21,40 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-			if(PINA == 0x01){
-				state = Inc;
-			}
-			else if(PINA == 0x02){
-				state = Dec;
-			}
-			else if(PINA == 0x03){
-				state = Reset;
-			}
-			else {
-				state = Init;
-			}
-
-			break;
-		case Inc:
-			// unsigned char tempA = (PINA & 0x01);
-			if(PINA == 0x01){
-				state = Inc;
-			}
-			else{
-				state = Init;
-			}
-			
-			break;
-			
-		case Dec:
-			// unsigned char tempB = (PINA & 0x02);
 			if(PINA == 0x02){
-				state = Dec;
+				state = PassPress;
+			}
+			else if(PINA == 0x80){
+				state = Lock;
+			}
+			else{
+				state = Init;
+			}
+		
+			break;
+		case PassPress:
+			// unsigned char tempA = (PINA & 0x01);
+			if(PINA == 0x02){
+				state = PassPress;
+			}
+			else{
+				state = PassRelease;
+			}
+			break;
+		case PassRelease:
+			if(PINA == 0x01){
+				state = Open;
 			}
 			else{
 				state = Init;
 			}
 			break;
-	
-		case Reset:
+		case Open:
 			state = Init;
+			break;
+		case Lock:
+			state = Init;
+			
 			break;
 			
 		default:
@@ -66,33 +63,39 @@ void Tick(){
 	
 	switch(state){
 		case Start:
-			PORTC = 0x07;
-		break;
-		case Init:
-
-		break;
-		case Inc:
-			if(PORTC < 0x09){
-				PORTC++;
-			}
-		break;
-		case Dec:
-			if(PORTC > 0){
-				PORTC = PORTC - 1;
-			}
-		break;
-		case Reset:
+			PORTB = 0x00;
 			PORTC = 0x00;
-		break;
+			break;
+		case Init:
+			
+			PORTC = 0x01;
+			break;
+		case PassPress:
+			
+			PORTC = 0x10;
+			break;
+		case PassRelease:
+			
+			PORTC = 0x11;
+			break;
+		case Open:
+			PORTB = 0x01;
+			PORTC = 0x02;
+			break;
+		case Lock:
+			PORTB = 0x00;
+			PORTC = 0x03;
+			break;
 		default:
 			
-		break;
+			break;
 	}
 }
 
 int main(void) {
 	DDRA = 0x00;PORTA = 0xFF;
-	DDRC = 0xFF;PORTC = 0x07;
+	DDRB = 0xFF;PORTB = 0x00;
+	DDRC = 0xFF;PORTC = 0x00;
     /* Insert DDR and PORT initializations */
 	state = Start;
     /* Insert your solution below */
