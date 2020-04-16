@@ -46,7 +46,7 @@ void Tick(){
 				state = Open;
 			}
 			else{
-				state = Init;
+				//state = Init;
 			}
 			break;
 			
