@@ -45,13 +45,13 @@ void Tick(){
 			
 		case PassRelease:
 			passFlag = passFlag + 1;
-			if(PINA == 0x00 && passFlag == 1){
+			if(PINA == 0x01 && passFlag == 1){
 				state = PassRelease;
 			}
 			else if(PINA == 0x02 && passFlag == 2){
 				state = PassRelease;
 			}
-			else if(PINA == 0x00 && passFlag == 3){
+			else if(PINA == 0x01 && passFlag == 3){
 				state = Open;
 			}
 			else{
