@@ -54,7 +54,7 @@ void Tick(){
 				state = Open;
 			}
 			else{
-				//state = Init;
+				state = Init;
 			}
 			break;
 			
@@ -103,6 +103,7 @@ void Tick(){
 			PORTC = 0x02;
 			break;
 		case Lock:
+			lockFlag = 1;
 			PORTB = 0x00;
 			PORTC = 0x03;
 			break;

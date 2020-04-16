@@ -26,60 +26,24 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "PassPress"
-setPINA 0x04
-continue 2
-expectPORTB 0x00
-expectPORTC 0x10
-checkResult
-
-test "PassRelease"
-set state = PassPress
-setPINA 0x00
-continue 2
-expectPORTB 0x00
-expectPORTC 0x11
-checkResult
-
 test "Open"
-set state = Open
-setPINA 0x02
-continue 2
-expectPORTB 0x01
-expectPORTC 0x02
-checkResult
-
-test "Open"
-set state = Init
 setPINA 0x04
 continue 2
 setPINA 0x00
-continue 2
-setPINA 0x02
-continue 2
-expectPORTB 0x01
-expectPORTC 0x02
-checkResult
-
-test "Fail"
-setPINA 0x02
-continue 2
-setPINA 0x00
-continue 2
-expectPORTB 0x00
-expectPORTC 0x01
-checkResult
-
-test "Lock"
-setPINA 0x02
 continue 2
 setPINA 0x01
 continue 2
-setPINA 0x80
-expectPORTB 0x00
-expectPORTC 0x03
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue
+expectPORTB 0x01
+expectPORTC 0x02
 checkResult
-# Add tests below
 
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
