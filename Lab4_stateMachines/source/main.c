@@ -44,14 +44,16 @@ void Tick(){
 			break;
 			
 		case PassRelease:
-			passFlag = passFlag + 1;
-			if(PINA == 0x01 && passFlag == 1){
+			
+			if(PINA == 0x01 && passFlag == 0){
 				state = PassRelease;
+				passFlag = passFlag + 1;
 			}
-			else if(PINA == 0x02 && passFlag == 2){
+			else if(PINA == 0x02 && passFlag == 1){
 				state = PassRelease;
+				passFlag = passFlag + 1;
 			}
-			else if(PINA == 0x01 && passFlag == 3){
+			else if(PINA == 0x01 && passFlag == 2){
 				state = Open;
 			}
 			else{
@@ -81,11 +83,10 @@ void Tick(){
 			PORTC = 0x00;
 			break;
 		case Init:
-			
+			passFlag = 0;
 			PORTC = 0x01;
 			break;
 		case PassPress:
-			passFlag = 0;
 			PORTC = 0x10;
 			break;
 		case PassRelease:
