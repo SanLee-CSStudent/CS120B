@@ -13,6 +13,8 @@
 #endif
 
 enum STATE{Start, Init, PassPress, PassRelease, Open, Lock} state;
+unsigned char lockFlag = 0;
+unsigned char passFlag = 0;
 
 void Tick(){
 
@@ -42,7 +44,13 @@ void Tick(){
 			break;
 			
 		case PassRelease:
-			if(PINA == 0x02){
+			if(PINA == 0x00 && passFlag == 0){
+				state = PassRelease;
+			}
+			else if(PINA == 0x02 && passFlag == 1){
+				state = PassRelease;
+			}
+			else if(PINA == 0x00 && passFlag == 2){
 				state = Open;
 			}
 			else{
@@ -76,15 +84,22 @@ void Tick(){
 			PORTC = 0x01;
 			break;
 		case PassPress:
-			
+			passFlag = 0;
 			PORTC = 0x10;
 			break;
 		case PassRelease:
-			
+			passFlag = passFlag + 1;
 			PORTC = 0x11;
 			break;
 		case Open:
-			PORTB = 0x01;
+			if(lockFlag){
+				PORTB = 0x00;
+			}
+			else{
+				PORTB = 0x01;
+			}
+			lockFlag = !lockFlag;
+			
 			PORTC = 0x02;
 			break;
 		case Lock:

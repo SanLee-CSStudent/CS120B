@@ -13,6 +13,7 @@
 #endif
 
 enum STATE{Start, Init, PassPress, PassRelease, Open, Lock} state;
+unsigned char lockFlag = 0;
 
 void Tick(){
 
@@ -84,7 +85,14 @@ void Tick(){
 			PORTC = 0x11;
 			break;
 		case Open:
-			PORTB = 0x01;
+			if(lockFlag){
+				PORTB = 0x00;
+			}
+			else{
+				PORTB = 0x01;
+			}
+			lockFlag = !lockFlag;
+			
 			PORTC = 0x02;
 			break;
 		case Lock:
