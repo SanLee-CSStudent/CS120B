@@ -5,7 +5,7 @@ avr-gcc -mmcu=atmega1284 -I/usr/csshare/pkgs/simavr/ -Iheader/ -D_SIMULATE_ -Wal
 --> creates simulation environment that enables 'make test'
 --> make test automatically simulates and compiles the program
 
-cp source/main.c turnin/slee488_lab4_part5.c && cp test/tests.gdb turnin/slee488_lab4_part5_tests.gdb
+cp source/main.c turnin/slee488_lab5_part3.c && cp test/tests.gdb turnin/slee488_lab5_part3_tests.gdb
 
 tar -czvf slee488_lab2.tgz\\ turnin/
 
