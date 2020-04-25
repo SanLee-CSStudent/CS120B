@@ -107,7 +107,7 @@ void Tick(){
 			}
 		break;
 
-		case ResetR:
+		case Reset:
 			sum = 0x00;
 		break;
 		

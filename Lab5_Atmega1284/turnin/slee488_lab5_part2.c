@@ -13,8 +13,8 @@
 #endif
 
 enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset, ResetR} state;
-unsigned char sum;
-unsigned char button;
+unsigned char sum = 0x00;
+unsigned char button = 0x00;
 
 void Tick(){
 	
@@ -22,6 +22,7 @@ void Tick(){
 		case Start:
 			state = Init;
 			break;
+
 		case Init:
 			if(button == 0x01){
 				state = Inc;
@@ -42,6 +43,9 @@ void Tick(){
 			if(button == 0x01){
 				state = Inc;
 			}
+            else if(button == 0x03){
+				state = Reset;
+			}
 			else{
 				state = IncR;
 			}
@@ -54,8 +58,11 @@ void Tick(){
 			break;
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
-			if(PINA == 0x02){
+			if(button == 0x02){
 				state = Dec;
+			}
+            else if(button == 0x03){
+				state = Reset;
 			}
 			else{
 				state = DecR;
@@ -84,24 +91,24 @@ void Tick(){
 	
 	switch(state){
 		case Start:
-			PORTC = 0x00;
+			sum = 0x00;
 		break;
 		case Init:
 
 		break;
 		case IncR:
-			if(PORTC < 0x09){
-				PORTC++;
+			if(sum < 0x09){
+				sum++;
 			}
 		break;
 		case DecR:
-			if(PORTC > 0){
-				PORTC--;
+			if(sum > 0){
+				sum--;
 			}
 		break;
 
-		case ResetR:
-			PORTC = 0x00;
+		case Reset:
+			sum = 0x00;
 		break;
 		
 		default:
