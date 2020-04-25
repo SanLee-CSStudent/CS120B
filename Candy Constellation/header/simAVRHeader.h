@@ -10,7 +10,7 @@ AVR_MCU(F_CPU,"atmega1284");
 AVR_MCU_VCD_FILE("build/results/Candy Constellation_trace.vcd",1000);
 
 const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_ = {
-    { AVR_MCU_VCD_SYMBOL("PINA0"), .mask = 1 << 0,.what = (void*)&PINA, } , // Example individual pin
+    { AVR_MCU_VCD_SYMBOL("PORTA"), .what = (void*)&PORTA, } , // Example individual pin
     { AVR_MCU_VCD_SYMBOL("PORTB"), .what = (void*)&PORTB, } , // Example full port
 };
 
