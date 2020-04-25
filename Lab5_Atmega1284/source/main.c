@@ -22,6 +22,7 @@ void Tick(){
 		case Start:
 			state = Init;
 			break;
+
 		case Init:
 			if(button == 0x01){
 				state = Inc;
@@ -54,7 +55,7 @@ void Tick(){
 			break;
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
-			if(PINA == 0x02){
+			if(button == 0x02){
 				state = Dec;
 			}
 			else{
