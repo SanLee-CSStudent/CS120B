@@ -66,6 +66,10 @@ int main(void) {
             i++;
             set_PWM(keyFrequencies[(i%8)]);
         }
+        else{
+            set_PWM(0x00);
+        }
+        
         if(button == 0x02){
             break;
         }
