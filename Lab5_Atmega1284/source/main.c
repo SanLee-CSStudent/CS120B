@@ -43,6 +43,9 @@ void Tick(){
 			if(button == 0x01){
 				state = Inc;
 			}
+            else if(button == 0x03){
+				state = Reset;
+			}
 			else{
 				state = IncR;
 			}
@@ -57,6 +60,9 @@ void Tick(){
 			// unsigned char tempB = (PINA & 0x02);
 			if(button == 0x02){
 				state = Dec;
+			}
+            else if(button == 0x03){
+				state = Reset;
 			}
 			else{
 				state = DecR;
