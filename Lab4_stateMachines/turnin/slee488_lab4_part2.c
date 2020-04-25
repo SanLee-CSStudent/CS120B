@@ -13,6 +13,7 @@
 #endif
 
 enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset} state;
+unsigned char button = 0x00;
 
 void Tick(){
 	
@@ -21,13 +22,13 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-			if(PINA == 0x01){
+			if(button == 0x01){
 				state = Inc;
 			}
-			else if(PINA == 0x02){
+			else if(button == 0x02){
 				state = Dec;
 			}
-			else if(PINA == 0x03){
+			else if(button == 0x03){
 				state = Reset;
 			}
 			else {
@@ -41,7 +42,7 @@ void Tick(){
 			
 			break;
 		case IncR:
-			if(PINA == 0x01){
+			if(button == 0x01){
 				state = IncR;
 			}
 			else {
@@ -50,7 +51,7 @@ void Tick(){
 			break;
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
-			if(PINA == 0x02){
+			if(button == 0x02){
 				state = DecR;
 			}
 			else{
@@ -58,7 +59,7 @@ void Tick(){
 			}
 			break;
 		case DecR:
-			if(PINA == 0x02){
+			if(button == 0x02){
 				state = DecR;
 			}
 			else {
@@ -108,6 +109,7 @@ int main(void) {
 	state = Start;
     /* Insert your solution below */
     while (1) {
+		button = ~PINA & 0x03;
 		Tick();
     }
     return 1;
