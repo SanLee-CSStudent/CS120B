@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-const double[8] keyFrequencies{261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
+const double keyFrequencies[8] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
 unsigned char i;
 void set_PWM(double frequency){
     static double current_frequency;
@@ -22,7 +22,7 @@ void set_PWM(double frequency){
             TCCR3B &= 0x08;
         }
         else{
-            TCCRB |= 0x03;
+            TCCR3B |= 0x03;
         }
 
         if(frequency < 0.954){
@@ -63,7 +63,7 @@ int main(void) {
 
         if(PINA == 0x01){
             i++;
-            set_PWM(keyFrequencies[i%8]);
+            set_PWM(keyFrequencies[(i%8)]);
         }
         if(PINA == 0x02){
             break;
