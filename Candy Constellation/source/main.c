@@ -59,17 +59,17 @@ int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-    PWM_on();
+    
     while (1) {
         button = ~PINA & 0x03;
         if(button){
             i++;
+            PWM_on();
             set_PWM(keyFrequencies[(i%8)]);
         }
         else{
-            set_PWM(0x00);
+            PWM_off();
         }
-        
         if(button == 0x02){
             break;
         }
