@@ -13,8 +13,8 @@
 #endif
 
 enum STATE{Start, Init, stage0, stage1, stage2, stage3, stage4, stage5, r0, r1, r2, r3, r4, r5, r6} state;
-unsigned char LED;
-unsigned char button;
+unsigned char LED = 0x00;
+unsigned char button = 0x00;
 
 void Tick(){
 	
@@ -155,31 +155,38 @@ void Tick(){
 		case Start:
 			LED = 0x00;
 			break;
+
 		case Init:
             LED = 0x00;
 			break;
+
 		case stage0:
             LED = LED | 0x01;
 			break;
+
         case stage1:
             LED = LED | 0x04;
 			break;
+
         case stage2:
             LED = LED | 0x10;
 			break;
+
         case stage3:
             LED = LED | 0x02;
 			break;
+
         case stage4:
             LED = LED | 0x08;
 			break;
+
         case stage5:
             LED = LED | 0x20;
 			break;
+
 		default:
 			break;
 
-        PORTC = LED;
 	}
 }
 
@@ -192,6 +199,7 @@ int main(void) {
     while (1) {
         button = ~PINA & 0x01;
 		Tick();
+        PORTC = LED;
     }
     return 1;
 }
