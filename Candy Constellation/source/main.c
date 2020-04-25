@@ -13,7 +13,8 @@
 #endif
 
 const double keyFrequencies[8] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
-unsigned char i;
+unsigned char i = 0x00;
+unsigned char button = 0x00;
 void set_PWM(double frequency){
     static double current_frequency;
 
@@ -60,12 +61,12 @@ int main(void) {
     /* Insert your solution below */
     PWM_on();
     while (1) {
-
-        if(PINA == 0x01){
+        button = ~PINA & 0x03;
+        if(button){
             i++;
             set_PWM(keyFrequencies[(i%8)]);
         }
-        if(PINA == 0x02){
+        if(button == 0x02){
             break;
         }
     }
