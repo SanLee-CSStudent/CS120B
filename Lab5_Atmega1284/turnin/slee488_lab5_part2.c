@@ -12,7 +12,9 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset} state;
+enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset, ResetR} state;
+unsigned char sum;
+unsigned char button;
 
 void Tick(){
 	
@@ -21,13 +23,13 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-			if(PINA == 0x01){
+			if(button == 0x01){
 				state = Inc;
 			}
-			else if(PINA == 0x02){
+			else if(button == 0x02){
 				state = Dec;
 			}
-			else if(PINA == 0x03){
+			else if(button == 0x03){
 				state = Reset;
 			}
 			else {
@@ -37,39 +39,45 @@ void Tick(){
 			break;
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
-			state = IncR;
+			if(button == 0x01){
+				state = Inc;
+			}
+			else{
+				state = IncR;
+			}
 			
 			break;
 		case IncR:
-			if(PINA == 0x01){
-				state = IncR;
-			}
-			else {
-				state = Init;
-			}
+
+			state = Init;
+			
 			break;
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
 			if(PINA == 0x02){
-				state = DecR;
+				state = Dec;
 			}
 			else{
-				state = Init;
+				state = DecR;
 			}
 			break;
 		case DecR:
-			if(PINA == 0x02){
-				state = DecR;
-			}
-			else {
-				state = Init;
-			}
+			state = Init;
+
 			break;
 
 		case Reset:
+			if(button == 0x03){
+				state = Reset;
+			}
+			else{
+				state = ResetR;
+			}
+			break;
+		
+		case ResetR:
 			state = Init;
 			break;
-			
 		default:
 			break;
 	}
@@ -81,20 +89,21 @@ void Tick(){
 		case Init:
 
 		break;
-		case Inc:
+		case IncR:
 			if(PORTC < 0x09){
 				PORTC++;
 			}
 		break;
-		case Dec:
+		case DecR:
 			if(PORTC > 0){
-				PORTC = PORTC - 1;
+				PORTC--;
 			}
 		break;
 
-		case Reset:
+		case ResetR:
 			PORTC = 0x00;
 		break;
+		
 		default:
 			
 		break;
@@ -108,7 +117,9 @@ int main(void) {
 	state = Start;
     /* Insert your solution below */
     while (1) {
+		button = ~PINA & 0x03;
 		Tick();
+		PORTC = sum;
     }
     return 1;
 }

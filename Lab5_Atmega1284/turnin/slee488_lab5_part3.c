@@ -13,6 +13,8 @@
 #endif
 
 enum STATE{Start, Init, stage0, stage1, stage2, stage3, stage4, stage5, r0, r1, r2, r3, r4, r5, r6} state;
+unsigned char LED = 0x00;
+unsigned char button = 0x00;
 
 void Tick(){
 	
@@ -21,13 +23,16 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-            if(PINA == 0x01){
+            if(button){
                 state = r0;
+            }
+            else{
+                state = Init;
             }
 			break;
 
         case r0:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage0;
             }
             else{
@@ -36,7 +41,7 @@ void Tick(){
             break;
 
 		case stage0:
-            if(PINA == 0x01){
+            if(button){
                 state = r1;
             }
             else{
@@ -45,7 +50,7 @@ void Tick(){
 			break;
 
         case r1:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage1;
             }
             else{
@@ -54,7 +59,7 @@ void Tick(){
             break;
 
         case stage1:
-            if(PINA == 0x01){
+            if(button){
                 state = r2;
             }
             else{
@@ -63,7 +68,7 @@ void Tick(){
 			break;
 
         case r2:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage2;
             }
             else{
@@ -72,7 +77,7 @@ void Tick(){
             break;
 
         case stage2:
-            if(PINA == 0x01){
+            if(button){
                 state = r3;
             }
             else{
@@ -81,7 +86,7 @@ void Tick(){
 			break;
 
         case r3:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage3;
             }
             else{
@@ -90,7 +95,7 @@ void Tick(){
             break;
 
         case stage3:
-            if(PINA == 0x01){
+            if(button){
                 state = r4;
             }
             else{
@@ -99,7 +104,7 @@ void Tick(){
 			break;
 
         case r4:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage4;
             }
             else{
@@ -108,7 +113,7 @@ void Tick(){
             break;
 
         case stage4:
-            if(PINA == 0x01){
+            if(button){
                 state = r5;
             }
             else{
@@ -117,7 +122,7 @@ void Tick(){
 			break;
 
         case r5:
-            if(PINA == 0x00){
+            if(!button){
                 state = stage5;
             }
             else{
@@ -126,7 +131,7 @@ void Tick(){
             break;
 
         case stage5:
-            if(PINA == 0x01){
+            if(button){
                 state = r6;
             }
             else{
@@ -135,7 +140,7 @@ void Tick(){
 			break;
 
         case r6:
-            if(PINA == 0x00){
+            if(!button){
                 state = Init;
             }
             else{
@@ -148,31 +153,40 @@ void Tick(){
 	
 	switch(state){
 		case Start:
-			PORTC = 0x00;
+			LED = 0x00;
 			break;
+
 		case Init:
-            PORTC = 0x00;
+            LED = 0x00;
 			break;
+
 		case stage0:
-            PORTC = PORTC | 0x01;
+            LED = LED | 0x01;
 			break;
+
         case stage1:
-            PORTC = PORTC | 0x04;
+            LED = LED | 0x04;
 			break;
+
         case stage2:
-            PORTC = PORTC | 0x10;
+            LED = LED | 0x10;
 			break;
+
         case stage3:
-            PORTC = PORTC | 0x02;
+            LED = LED | 0x02;
 			break;
+
         case stage4:
-            PORTC = PORTC | 0x08;
+            LED = LED | 0x08;
 			break;
+
         case stage5:
-            PORTC = PORTC | 0x20;
+            LED = LED | 0x20;
 			break;
+
 		default:
 			break;
+
 	}
 }
 
@@ -183,7 +197,9 @@ int main(void) {
 	state = Start;
     /* Insert your solution below */
     while (1) {
+        button = ~PINA & 0x01;
 		Tick();
+        PORTC = LED;
     }
     return 1;
 }

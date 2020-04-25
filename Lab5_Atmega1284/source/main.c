@@ -12,9 +12,9 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, Init, stage0, stage1, stage2, stage3, stage4, stage5, r0, r1, r2, r3, r4, r5, r6} state;
-unsigned char LED = 0x00;
-unsigned char button = 0x00;
+enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset, ResetR} state;
+unsigned char sum;
+unsigned char button;
 
 void Tick(){
 	
@@ -23,170 +23,90 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-            if(button){
-                state = r0;
-            }
-            else{
-                state = Init;
-            }
+			if(button == 0x01){
+				state = Inc;
+			}
+			else if(button == 0x02){
+				state = Dec;
+			}
+			else if(button == 0x03){
+				state = Reset;
+			}
+			else {
+				state = Init;
+			}
+
+			break;
+		case Inc:
+			// unsigned char tempA = (PINA & 0x01);
+			if(button == 0x01){
+				state = Inc;
+			}
+			else{
+				state = IncR;
+			}
+			
+			break;
+		case IncR:
+
+			state = Init;
+			
+			break;
+		case Dec:
+			// unsigned char tempB = (PINA & 0x02);
+			if(PINA == 0x02){
+				state = Dec;
+			}
+			else{
+				state = DecR;
+			}
+			break;
+		case DecR:
+			state = Init;
+
 			break;
 
-        case r0:
-            if(!button){
-                state = stage0;
-            }
-            else{
-                state = r0;
-            }
-            break;
-
-		case stage0:
-            if(button){
-                state = r1;
-            }
-            else{
-                state = stage0;
-            }
+		case Reset:
+			if(button == 0x03){
+				state = Reset;
+			}
+			else{
+				state = ResetR;
+			}
 			break;
-
-        case r1:
-            if(!button){
-                state = stage1;
-            }
-            else{
-                state = r1;
-            }
-            break;
-
-        case stage1:
-            if(button){
-                state = r2;
-            }
-            else{
-                state = stage1;
-            }
+		
+		case ResetR:
+			state = Init;
 			break;
-
-        case r2:
-            if(!button){
-                state = stage2;
-            }
-            else{
-                state = r2;
-            }
-            break;
-
-        case stage2:
-            if(button){
-                state = r3;
-            }
-            else{
-                state = stage2;
-            }
-			break;
-
-        case r3:
-            if(!button){
-                state = stage3;
-            }
-            else{
-                state = r3;
-            }
-            break;
-
-        case stage3:
-            if(button){
-                state = r4;
-            }
-            else{
-                state = stage3;
-            }
-			break;
-
-        case r4:
-            if(!button){
-                state = stage4;
-            }
-            else{
-                state = r4;
-            }
-            break;
-
-        case stage4:
-            if(button){
-                state = r5;
-            }
-            else{
-                state = stage4;
-            }
-			break;
-
-        case r5:
-            if(!button){
-                state = stage5;
-            }
-            else{
-                state = r5;
-            }
-            break;
-
-        case stage5:
-            if(button){
-                state = r6;
-            }
-            else{
-                state = stage5;
-            }
-			break;
-
-        case r6:
-            if(!button){
-                state = Init;
-            }
-            else{
-                state = r6;
-            }
-            break;
 		default:
 			break;
 	}
 	
 	switch(state){
 		case Start:
-			LED = 0x00;
-			break;
-
+			PORTC = 0x00;
+		break;
 		case Init:
-            LED = 0x00;
-			break;
 
-		case stage0:
-            LED = LED | 0x01;
-			break;
+		break;
+		case IncR:
+			if(PORTC < 0x09){
+				PORTC++;
+			}
+		break;
+		case DecR:
+			if(PORTC > 0){
+				PORTC--;
+			}
+		break;
 
-        case stage1:
-            LED = LED | 0x04;
-			break;
-
-        case stage2:
-            LED = LED | 0x10;
-			break;
-
-        case stage3:
-            LED = LED | 0x02;
-			break;
-
-        case stage4:
-            LED = LED | 0x08;
-			break;
-
-        case stage5:
-            LED = LED | 0x20;
-			break;
-
+		case ResetR:
+			PORTC = 0x00;
+		break;
+		
 		default:
-			break;
-
+			
+		break;
 	}
 }
 
@@ -197,9 +117,9 @@ int main(void) {
 	state = Start;
     /* Insert your solution below */
     while (1) {
-        button = ~PINA & 0x01;
+		button = ~PINA & 0x03;
 		Tick();
-        PORTC = LED;
+		PORTC = sum;
     }
     return 1;
 }
