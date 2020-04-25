@@ -13,11 +13,11 @@
 #endif
 
 enum STATE{Start, Init, stage0, stage1, stage2, stage3, stage4, stage5, r0, r1, r2, r3, r4, r5, r6} state;
-unsigned char LED = 0x00;
+unsigned char LED;
 unsigned char button;
 
 void Tick(){
-	button = ~PINA & 0x01;
+	
 	switch(state){
 		case Start:
 			state = Init;
@@ -26,10 +26,13 @@ void Tick(){
             if(button){
                 state = r0;
             }
+            else{
+                state = Init;
+            }
 			break;
 
         case r0:
-            if(button){
+            if(!button){
                 state = stage0;
             }
             else{
@@ -187,6 +190,7 @@ int main(void) {
 	state = Start;
     /* Insert your solution below */
     while (1) {
+        button = ~PINA & 0x01;
 		Tick();
     }
     return 1;
