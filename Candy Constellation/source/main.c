@@ -67,9 +67,7 @@ int main(void) {
             PWM_on();
             set_PWM(keyFrequencies[(i%8)]);
         }
-        else{
-            PWM_off();
-        }
+
         if(button == 0x02){
             break;
         }
