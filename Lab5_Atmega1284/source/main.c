@@ -1,4 +1,4 @@
-/*	Author: slee488
+/*	Author: lab
  *  Partner(s) Name: 
  *	Lab Section:
  *	Assignment: Lab #  Exercise #
@@ -12,121 +12,40 @@
 #include "simAVRHeader.h"
 #endif
 
-enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset, ResetR} state;
-unsigned char sum = 0x00;
-unsigned char button = 0x00;
-
-void Tick(){
-	
-	switch(state){
-		case Start:
-			state = Init;
-			break;
-
-		case Init:
-			if(button == 0x01){
-				state = Inc;
-			}
-			else if(button == 0x02){
-				state = Dec;
-			}
-			else if(button == 0x03){
-				state = Reset;
-			}
-			else {
-				state = Init;
-			}
-
-			break;
-		case Inc:
-			// unsigned char tempA = (PINA & 0x01);
-			if(button == 0x01){
-				state = Inc;
-			}
-            else if(button == 0x03){
-				state = Reset;
-			}
-			else{
-				state = IncR;
-			}
-			
-			break;
-		case IncR:
-
-			state = Init;
-			
-			break;
-		case Dec:
-			// unsigned char tempB = (PINA & 0x02);
-			if(button == 0x02){
-				state = Dec;
-			}
-            else if(button == 0x03){
-				state = Reset;
-			}
-			else{
-				state = DecR;
-			}
-			break;
-		case DecR:
-			state = Init;
-
-			break;
-
-		case Reset:
-			if(button == 0x03){
-				state = Reset;
-			}
-			else{
-				state = ResetR;
-			}
-			break;
-		
-		case ResetR:
-			state = Init;
-			break;
-		default:
-			break;
-	}
-	
-	switch(state){
-		case Start:
-			sum = 0x00;
-		break;
-		case Init:
-
-		break;
-		case IncR:
-			if(sum < 0x09){
-				sum++;
-			}
-		break;
-		case DecR:
-			if(sum > 0){
-				sum--;
-			}
-		break;
-
-		case Reset:
-			sum = 0x00;
-		break;
-		
-		default:
-			
-		break;
-	}
-}
+unsigned char LED;
 
 int main(void) {
-	DDRA = 0x00;PORTA = 0xFF;
-	DDRC = 0xFF;PORTC = 0x00;
     /* Insert DDR and PORT initializations */
-	state = Start;
+    DDRA = 0x00; PORTA = 0xFF;
+    DDRC = 0xFF; PORTC = 0x00;
     /* Insert your solution below */
+    unsigned char level;
     while (1) {
-		button = ~PINA & 0x03;
-		Tick();
-		PORTC = sum;
+        level = ~PINA & 0x0F;
+        if(level == 0x00){
+            LED = 0x40;
+        }
+        if(level > 0x00 && level <= 0x02){
+            LED = 0x60;
+        }
+        if(level > 0x02 && level <= 0x04){
+            LED = 0x70;
+        }
+        if(level > 0x04 && level <= 0x06){
+            LED = 0x38;
+        }
+        if(level > 0x06 && level <= 0x09){
+            LED = 0x3C;
+        }
+        if(level > 0x09 && level <= 0x0C){
+            LED = 0x3E;
+        }
+        if(level > 0x0C && level <= 0x0F){
+            LED = 0x3F;
+        }
+
+        PORTC = LED;
+
     }
     return 1;
 }
