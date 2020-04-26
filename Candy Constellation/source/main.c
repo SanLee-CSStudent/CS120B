@@ -165,7 +165,7 @@ void Tick(){
 
             break;
 
-        PlayR:
+        case PlayR:
 
             break;
 
@@ -176,9 +176,8 @@ void Tick(){
 
 void Translate(){
     FILE* sheet;
-    sheet = fopen("Sheet Music.txt", "r");
 
-    while(!sheet.EOF()){
+    while(sheet = fopen("Sheet Music.txt", "r") != EOF){
         fscanf(sheet, "%s", melody);
     }
     
