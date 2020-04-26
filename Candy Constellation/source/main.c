@@ -9,6 +9,7 @@
  */
 #include <avr/io.h>
 #ifdef _SIMULATE_
+#include "timer.h"
 #include "simAVRHeader.h"
 #include <stdio.h>
 #endif
