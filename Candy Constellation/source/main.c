@@ -10,12 +10,20 @@
 #include <avr/io.h>
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
+#include <stdio.h>
 #endif
 
-const double keyFrequencies[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
+const double keys[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
+const double beat[4] = {896, 448, 224, 112};
+char melody[255];
+volatile unsigned char beatFlag = 0x00;
 unsigned char i = 0x00;
 unsigned char button = 0x00;
-enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR} states;
+enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
+
+void TimerISR(){
+    beatFlag = 0x01;
+}
 
 void set_PWM(double frequency){
     static double current_frequency;
@@ -35,7 +43,7 @@ void set_PWM(double frequency){
             OCR3A = 0x0000;
         }
         else{
-            OCR3A = (short) (8000000 / (128 * frequency)) - 1;
+            OCR3A = (short) (8000000 / (2 * 128 * frequency)) - 1;
         }
 
         TCNT3 = 0;
@@ -73,6 +81,9 @@ void Tick(){
             else if(button == 0x02){
                 states = DecKey;
             }
+            else if(button == 0x04){
+                states = Play;
+            }
             else{
                 states = Wait;
             }
@@ -104,6 +115,19 @@ void Tick(){
             states = Wait;
             break;
 
+        case Play:
+            if(button == 0x04){
+                states = Play;
+            }
+            else{
+                states = PlayR;
+            }
+            break;
+
+        case PlayR:
+            states = PlayR;
+
+            break;
         default:
             break;
     }
@@ -126,7 +150,7 @@ void Tick(){
             break;
 
         case IncKeyR:
-            set_PWM(keyFrequencies[i%8]);
+            set_PWM(keys[i%8]);
             break;
 
         case DecKey:
@@ -134,7 +158,15 @@ void Tick(){
             break;
 
         case DecKeyR:
-            set_PWM(keyFrequencies[i%8]);
+            set_PWM(keys[i%8]);
+            break;
+
+        case Play:
+
+            break;
+
+        PlayR:
+
             break;
 
         default:
@@ -142,19 +174,35 @@ void Tick(){
     }
 }
 
+void Translate(){
+    FILE* sheet;
+    sheet = fopen("Sheet Music.txt", "r");
+
+    while(!sheet.EOF()){
+        fscanf(sheet, "%s", melody);
+    }
+    
+
+    printf(melody[0]);
+    fclose();
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
+    TimerSet(beat[3]);
+    TimerOn();
     states = Start;
     PWM_on();
     while (1) {
-        button = ~PINA & 0x07;
+        button = ~PINA & 0x0F;
         Tick();
-
-        if(button == 0x04){
-            break;
+        while(!beatFlag){}
+        beatFlag = 0x00;
+        if(button == 0x08){
+            set_PWM(0);
         }
     }
     PWM_off();
