@@ -12,6 +12,7 @@
 #include "timer.h"
 #include "simAVRHeader.h"
 #include <stdio.h>
+#include <stdlib.h>
 #endif
 
 const double keys[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
