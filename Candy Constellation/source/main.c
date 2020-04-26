@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-const double keyFrequencies[8] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
+const double keyFrequencies[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
 unsigned char i = 0x00;
 unsigned char button = 0x00;
 void set_PWM(double frequency){
