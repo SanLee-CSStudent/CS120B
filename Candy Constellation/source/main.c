@@ -22,10 +22,6 @@ unsigned char i = 0x00;
 unsigned char button = 0x00;
 enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
 
-void TimerISR(){
-    beatFlag = 0x01;
-}
-
 void set_PWM(double frequency){
     static double current_frequency;
 
@@ -199,8 +195,8 @@ int main(void) {
     while (1) {
         button = ~PINA & 0x0F;
         Tick();
-        while(!beatFlag){}
-        beatFlag = 0x00;
+        while(!TimerFlag){}
+        TimerFlag = 0x00;
         if(button == 0x08){
             set_PWM(0);
         }
