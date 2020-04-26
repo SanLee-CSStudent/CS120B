@@ -15,6 +15,8 @@
 const double keyFrequencies[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
 unsigned char i = 0x00;
 unsigned char button = 0x00;
+enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR} states;
+
 void set_PWM(double frequency){
     static double current_frequency;
 
@@ -54,21 +56,104 @@ void PWM_off(){
     TCCR3B = 0x00;
 }
 
+void Tick(){
+    switch (states){
+        case Start:
+            states = Init;
+            break;
+        
+        case Init:
+            states = Wait;
+            break;
+
+        case Wait:
+            if(button){
+                states = IncKey;
+            }
+            else if(button == 0x02){
+                states = DecKey;
+            }
+            else{
+                states = Wait;
+            }
+            break;
+
+        case IncKey:
+            if(button){
+                states = IncKey;
+            }
+            else{
+                states = IncKeyR;
+            }
+            break;
+
+        case IncKeyR:
+            states = Wait;
+            break;
+
+        case DecKey:
+            if(button == 0x02){
+                states = DecKey;
+            }
+            else{
+                states = DecKeyR;
+            }
+            break;
+
+        case DecKeyR:
+            states = Wait;
+            break;
+
+        default:
+            break;
+    }
+
+    switch (states){
+        case Start:
+            states = Init;
+            break;
+        
+        case Init:
+            states = Wait;
+            break;
+
+        case Wait:
+
+            break;
+
+        case IncKey:
+            i++;
+            break;
+
+        case IncKeyR:
+            set_PWM(keyFrequencies[i%8]);
+            break;
+
+        case DecKey:
+            i--;
+            break;
+
+        case DecKeyR:
+            set_PWM(keyFrequencies[i%8]);
+            break;
+
+        default:
+            break;
+    }
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
+    states = Start;
     
     while (1) {
-        button = ~PINA & 0x03;
-        if(button){
-            i++;
-            PWM_on();
-            set_PWM(keyFrequencies[(i%8)]);
-        }
+        button = ~PINA & 0x07;
+        Tick();
 
-        if(button == 0x02){
+        if(button == 0x04){
             break;
         }
     }
