@@ -148,7 +148,7 @@ int main(void) {
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
     states = Start;
-    
+    PWM_on();
     while (1) {
         button = ~PINA & 0x07;
         Tick();
