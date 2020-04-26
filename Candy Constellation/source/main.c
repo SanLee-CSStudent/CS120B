@@ -177,13 +177,13 @@ void Tick(){
 void Translate(){
     FILE* sheet;
 
-    while(sheet = fopen("Sheet Music.txt", "r") != EOF){
+    while((sheet = fopen("Sheet Music.txt", "r")) != EOF){
         fscanf(sheet, "%s", melody);
     }
     
 
-    printf(melody[0]);
-    fclose();
+    printf("%s", melody[0]);
+    fclose(sheet);
 }
 
 int main(void) {
