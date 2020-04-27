@@ -190,15 +190,15 @@ int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-    TimerSet(beat[3]);
-    TimerOn();
+    // TimerSet(beat[3]);
+    // TimerOn();
     states = Start;
     PWM_on();
     while (1) {
         button = ~PINA & 0x0F;
         Tick();
-        while(!TimerFlag){}
-        TimerFlag = 0x00;
+        // while(!TimerFlag){}
+        // TimerFlag = 0x00;
         if(button == 0x08){
             set_PWM(0);
         }
