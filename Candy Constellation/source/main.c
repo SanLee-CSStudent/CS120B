@@ -121,14 +121,15 @@ void Tick(){
                 states = PlayR;
             }
 
-            if(EndFlag == 0x01){
-                states = Wait;
-                EndFlag = 0x00;
-            }
             break;
 
         case PlayR:
             states = PlayR;
+
+            if(EndFlag == 0x01){
+                states = Wait;
+                EndFlag = 0x00;
+            }
 
             break;
         default:
@@ -210,10 +211,12 @@ int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-    TimerSet(1);
     TimerOn();
-    states = Start;
+    TimerSet(beat[3]);
     PWM_on();
+
+    states = Start;
+
     while (1) {
         button = ~PINA & 0x0F;
         while(!TimerFlag){}
