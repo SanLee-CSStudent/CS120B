@@ -143,18 +143,20 @@ void Tick(){
             break;
 
         case IncKey:
-            i++;
+            
             break;
 
         case IncKeyR:
+            i++;
             set_PWM(keys[i%8]);
             break;
 
         case DecKey:
-            i--;
+            
             break;
 
         case DecKeyR:
+            i--;
             set_PWM(keys[i%8]);
             break;
 
@@ -171,7 +173,7 @@ void Tick(){
     }
 }
 
-void Translate(){
+/*void Translate(){
     FILE* sheet;
 
     while((sheet = fopen("Sheet Music.txt", "r")) != EOF){
@@ -181,7 +183,7 @@ void Translate(){
 
     printf("%s", melody[0]);
     fclose(sheet);
-}
+}*/
 
 int main(void) {
     /* Insert DDR and PORT initializations */
