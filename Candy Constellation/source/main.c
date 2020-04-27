@@ -17,7 +17,7 @@
 const double keys[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
 const double beat[4] = {896, 448, 224, 112};
 char melody[255];
-volatile unsigned char beatFlag = 0x00;
+volatile unsigned char Tick = 0x00;
 unsigned char i = 0x00;
 unsigned char button = 0x00;
 enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
@@ -131,11 +131,11 @@ void Tick(){
 
     switch (states){
         case Start:
-            states = Init;
+
             break;
         
         case Init:
-            states = Wait;
+
             break;
 
         case Wait:
@@ -148,7 +148,7 @@ void Tick(){
 
         case IncKeyR:
             i++;
-            set_PWM(keys[i%8]);
+            set_PWM(keys[i % 8]);
             break;
 
         case DecKey:
@@ -156,8 +156,8 @@ void Tick(){
             break;
 
         case DecKeyR:
-            i -= 1;
-            set_PWM(keys[i%8]);
+            i--;
+            set_PWM(keys[i % 8]);
             break;
 
         case Play:
@@ -165,7 +165,20 @@ void Tick(){
             break;
 
         case PlayR:
-
+            Tick++;
+            if(Tick % 8 == 0 && Tick < 16){
+                set_PWM(keys[0]);
+            }
+            else if(Tick % 8 == 0 && Tick < 32){
+                set_PWM(keys[4]);
+            }
+            else if(Tick % 8 == 0 && Tick < 48){
+                set_PWM(keys[5]);
+            }
+            else{
+                set_PWM(keys[4]);
+                states = Init;
+            }
             break;
 
         default:
@@ -190,15 +203,16 @@ int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-    // TimerSet(beat[3]);
-    // TimerOn();
+    TimerSet(beat[3]);
+    TimerOn();
     states = Start;
     PWM_on();
     while (1) {
         button = ~PINA & 0x0F;
+        while(!TimerFlag){}
+        TimerFlag = 0x00;
+
         Tick();
-        // while(!TimerFlag){}
-        // TimerFlag = 0x00;
         if(button == 0x08){
             set_PWM(0);
         }
