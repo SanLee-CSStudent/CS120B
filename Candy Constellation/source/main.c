@@ -17,7 +17,7 @@
 const double keys[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
 const double beat[4] = {896, 448, 224, 112};
 char melody[255];
-volatile unsigned char Tick = 0x00;
+volatile unsigned char tick = 0x00;
 unsigned char i = 0x00;
 unsigned char button = 0x00;
 enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
@@ -165,14 +165,14 @@ void Tick(){
             break;
 
         case PlayR:
-            Tick++;
-            if(Tick % 8 == 0 && Tick < 16){
+            tick++;
+            if(tick % 8 == 0 && tick < 16){
                 set_PWM(keys[0]);
             }
-            else if(Tick % 8 == 0 && Tick < 32){
+            else if(tick % 8 == 0 && tick < 32){
                 set_PWM(keys[4]);
             }
-            else if(Tick % 8 == 0 && Tick < 48){
+            else if(tick % 8 == 0 && tick < 48){
                 set_PWM(keys[5]);
             }
             else{
