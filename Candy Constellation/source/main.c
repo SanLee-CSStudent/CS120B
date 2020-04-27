@@ -156,7 +156,7 @@ void Tick(){
             break;
 
         case DecKeyR:
-            i--;
+            i -= 1;
             set_PWM(keys[i%8]);
             break;
 
