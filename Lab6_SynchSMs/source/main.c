@@ -42,11 +42,13 @@ void Tick(){
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
             if(button == 0x01){
-
                 state = Inc;
             }
             else if(button == 0x03){
                 state = Reset;
+            }
+            else if(!button && i > 0){
+                state = Init;
             }
             else{
 			    state = IncR;
@@ -70,6 +72,9 @@ void Tick(){
 			}
             else if(button == 0x03){
                 state = Reset;
+            }
+            else if(!button && i > 0){
+                state = Init;
             }
 			else{
 				state = DecR;
@@ -114,28 +119,38 @@ void Tick(){
                 i++;
                 if(i == 10){
                     i = 0;
-                    PORTC++;
+                    if(PORTC < 9){
+                        PORTC++;
+                    }
+                    
                 }
             }
-            else{
-                if(PORTC < 0x09){
-                    PORTC++;
-                }
-            }
+
 		break;
+        
+        case IncR:
+            if(PORTC < 9){
+                PORTC++;
+            }
+            break;
+        
 		case Dec:
             if(button == 0x02){
                 i++;
-                if(PORTC > 0){
-                    PORTC = PORTC - 1;
+                if(i==10){
+                    if(PORTC > 0){
+                        PORTC = PORTC - 1;
+                    }
                 }
             }
-            else{
-                if(PORTC > 0){
-                    PORTC = PORTC - 1;
-                }
-            }
+
 		break;
+
+        case DecR:
+            if(PORTC > 0){
+                PORTC = PORTC - 1;
+            }
+            break;
 
 		case ResetR:
 			PORTC = 0x00;
