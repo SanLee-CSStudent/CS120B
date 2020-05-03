@@ -77,6 +77,7 @@ void Tick(){
                 states = PRESS;
             }
             else if(!button && !press){
+                press = 0x01;
                 if(next == 0x01){
                     states = TWO;
                 }
@@ -90,7 +91,6 @@ void Tick(){
                     states = ONE;
                 }
             }
-  
             else {
                 states = RELEASE;
             }
