@@ -41,7 +41,10 @@ void Tick(){
 			break;
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
-            if(button == 0x01){
+            if(button == 0x00){
+                state = IncR;
+            }
+            else if(button == 0x01){
                 state = Inc;
             }
             else if(button == 0x03){
@@ -62,7 +65,10 @@ void Tick(){
 
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
-			if(button == 0x02){
+            if(button == 0x00){
+                state = DecR;
+            }
+			else if(button == 0x02){
 
 				state = Dec;
 			}
@@ -127,8 +133,9 @@ void Tick(){
 		case Dec:
             i++;
             if(i == 10){
+                i = 0;
                 if(PORTC > 0){
-                    PORTC = PORTC - 1;
+                    PORTC--;
                 }
             }
         
@@ -136,7 +143,7 @@ void Tick(){
 
         case DecR:
             if(PORTC > 0){
-                PORTC = PORTC - 1;
+                PORTC--;
             }
             break;
 
