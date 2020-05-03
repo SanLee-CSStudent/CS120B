@@ -13,158 +13,108 @@
 #include "timer.h"
 #endif
 
-enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RESUMEPRESS, RESUMERELEASE, RELEASE} states;
-unsigned char LEDC = 0x00;
+enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset} state;
 unsigned char button = 0x00;
-unsigned char press = 0x00;
-unsigned char next = 0x00;
-
-void stayLit(int );
 
 void Tick(){
+	
+	switch(state){
+		case Start:
+			state = Init;
+			break;
+		case Init:
+			if(button == 0x01){
+				state = Inc;
+			}
+			else if(button == 0x02){
+				state = Dec;
+			}
+			else if(button == 0x03){
+				state = Reset;
+			}
+			else {
+				state = Init;
+			}
 
-    switch(states){
-        case Start:
-            states = ONE;
-            break;
+			break;
+		case Inc:
+			// unsigned char tempA = (PINA & 0x01);
+			state = IncR;
+			
+			break;
+		case IncR:
+			if(button == 0x01){
+				state = IncR;
+			}
+			else {
+				state = Init;
+			}
+			break;
+		case Dec:
+			// unsigned char tempB = (PINA & 0x02);
+			if(button == 0x02){
+				state = DecR;
+			}
+			else{
+				state = Init;
+			}
+			break;
+		case DecR:
+			if(button == 0x02){
+				state = DecR;
+			}
+			else {
+				state = Init;
+			}
+			break;
 
-        case ONE:
-            next = 0x01;
-            if(button){
-                states= PRESS;
-            }
-            else{
-                states = TWO;
-            }
-            break;
+		case Reset:
+			state = Init;
+			break;
+			
+		default:
+			break;
+	}
+	
+	switch(state){
+		case Start:
+			PORTC = 0x07;
+		break;
+		case Init:
 
-        case TWO:
-            next = 0x02;
-            if(button){
-                states= PRESS;
-            }
-            else{
-                states = THREE;
-            }
-            break;
+		break;
+		case Inc:
+			if(PORTC < 0x09){
+				PORTC++;
+			}
+		break;
+		case Dec:
+			if(PORTC > 0){
+				PORTC = PORTC - 1;
+			}
+		break;
 
-        case THREE:
-            next = 0x04;
-            if(button){
-                states= PRESS;
-            }
-            else{
-                states = FOUR;
-            }
-            break;
-        
-        case FOUR:
-            next = 0x08;
-            if(button){
-                states= PRESS;
-            }
-            else{
-                states = ONE;
-            }
-            break;
-        
-        case PRESS:
-            if(button){
-                states = PRESS;
-            }
-            else {
-                states = RELEASE;
-            }
-            break;
-
-        case RELEASE:
-            if(button){
-                states = RESUMEPRESS;
-            }
-            else{
-                states = RELEASE;
-            }
-
-            break;
-
-        case RESUMEPRESS:
-            if(button){
-                states = RESUMEPRESS;
-            }
-            else{
-                states = RESUMERELEASE;
-            }
-            break;
-
-        case RESUMERELEASE:
-            if(next == 0x01){
-                states = TWO;
-            }
-            else if(next == 0x02){
-                states = THREE;
-            }
-            else if(next == 0x04){
-                states = FOUR;
-            }
-            else{
-                states = ONE;
-            }
-            
-            break;
-
-        default:
-            break;
-    }
-
-    switch(states){
-        case Start:
-            break;
-
-        case ONE:
-            LEDC = 0x01;
-            break;
-
-        case TWO:
-            LEDC = 0x02;
-            break;
-
-        case THREE:
-            LEDC = 0x04;
-            break;
-
-        case FOUR:
-            LEDC = 0x02;
-            break;
-        
-        case RELEASE:
-            // stayLit(LEDC);
-            break;
-
-        default:
-            break;
-    }
-
-}
-
-void stayLit(int c){
-    LEDC = c;
+		case Reset:
+			PORTC = 0x00;
+		break;
+		default:
+			
+		break;
+	}
 }
 
 int main(void) {
+	DDRA = 0x00;PORTA = 0xFF;
+	DDRC = 0xFF;PORTC = 0x07;
     /* Insert DDR and PORT initializations */
-    DDRA = 0x00; PORTA = 0xFF;
-    DDRC = 0xFF; PORTC = 0x00;
-
-    states = Start;
-
-    TimerSet(300);
+	state = Start;
+    /* Insert your solution below */
+    TimerSet(100);
     TimerOn();
 
-    /* Insert your solution below */
     while (1) {
-        button = (~PINA) & 0x01;
-        Tick();
-        PORTC = LEDC;
+		button = ~PINA & 0x03;
+		Tick();
         while(!TimerFlag){}
         TimerFlag = 0;
     }
