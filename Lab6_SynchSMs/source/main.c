@@ -92,7 +92,7 @@ void Tick(){
                 states = RESUMEPRESS;
             }
             else{
-                states = RESUMERELEASE
+                states = RESUMERELEASE;
             }
             break;
 
