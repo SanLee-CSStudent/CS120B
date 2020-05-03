@@ -19,6 +19,8 @@ unsigned char button = 0x00;
 unsigned char press = 0x00;
 unsigned char next = 0x00;
 
+void stayLit(int );
+
 void Tick(){
 
     switch(states){
