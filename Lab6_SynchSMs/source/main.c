@@ -13,7 +13,7 @@
 #include "timer.h"
 #endif
 
-enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RELEASE} states;
+enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RESUMEPRESS, RESUMERELEASE, RELEASE} states;
 unsigned char LEDC = 0x00;
 unsigned char button = 0x00;
 unsigned char press = 0x00;
@@ -31,7 +31,6 @@ void Tick(){
         case ONE:
             next = 0x01;
             if(button){
-                press = 0x01;
                 states= PRESS;
             }
             else{
@@ -42,7 +41,6 @@ void Tick(){
         case TWO:
             next = 0x02;
             if(button){
-                press = 0x01;
                 states= PRESS;
             }
             else{
@@ -53,7 +51,6 @@ void Tick(){
         case THREE:
             next = 0x04;
             if(button){
-                press = 0x01;
                 states= PRESS;
             }
             else{
@@ -64,7 +61,6 @@ void Tick(){
         case FOUR:
             next = 0x08;
             if(button){
-                press = 0x01;
                 states= PRESS;
             }
             else{
@@ -76,21 +72,6 @@ void Tick(){
             if(button){
                 states = PRESS;
             }
-            else if(!button && !press){
-                press = 0x01;
-                if(next == 0x01){
-                    states = TWO;
-                }
-                else if(next == 0x02){
-                    states = THREE;
-                }
-                else if(next == 0x04){
-                    states = FOUR;
-                }
-                else{
-                    states = ONE;
-                }
-            }
             else {
                 states = RELEASE;
             }
@@ -98,8 +79,7 @@ void Tick(){
 
         case RELEASE:
             if(button){
-                press = 0x00;
-                states = PRESS;
+                states = RESUMEPRESS;
             }
             else{
                 states = RELEASE;
@@ -107,8 +87,32 @@ void Tick(){
 
             break;
 
+        case RESUMEPRESS:
+            if(button){
+                states = RESUMEPRESS;
+            }
+            else{
+                states = RESUMERELEASE
+            }
+            break;
+
+        case RESUMERELEASE:
+            if(next == 0x01){
+                states = TWO;
+            }
+            else if(next == 0x02){
+                states = THREE;
+            }
+            else if(next == 0x04){
+                states = FOUR;
+            }
+            else{
+                states = ONE;
+            }
+            
+            break;
+
         default:
-            states = ONE;
             break;
     }
 
