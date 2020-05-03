@@ -102,13 +102,7 @@ void Tick(){
             break;
 
         case RELEASE:
-            if(button){
-                press = 0x00;
-                states = PRESS;
-            }
-            else{
-                states = RELEASE;
-            }
+            states = RELEASE;
 
             break;
 
@@ -142,7 +136,6 @@ void Tick(){
             break;
 
         default:
-            states = ONE;
             break;
     }
 
