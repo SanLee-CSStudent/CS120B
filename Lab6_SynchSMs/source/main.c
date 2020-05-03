@@ -135,7 +135,7 @@ void Tick(){
             break;
         
         case RELEASE:
-            stayLit(LEDC);
+            // stayLit(LEDC);
             break;
 
         default:
