@@ -25,7 +25,7 @@ int main(void) {
     /* Insert your solution below */
     while (1) {
         tmpC = ~tmpC;
-        PORTC = tmpB;
+        PORTC = tmpC;
         while(!TimerFlag){}
         TimerFlag = 0;
     }
