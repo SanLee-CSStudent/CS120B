@@ -73,7 +73,7 @@ void Tick(){
             break;
         
         case PRESS:
-            /*if(button && press){
+            if(button && press){
                 states = PRESS;
             }
             else if(button && !press){
@@ -92,9 +92,6 @@ void Tick(){
                 else{
                     states = ONE;
                 }
-            }*/
-            if(button){
-                states = PRESS;
             }
             else {
                 states = RELEASE;
