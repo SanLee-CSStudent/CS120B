@@ -56,12 +56,8 @@ void Tick(){
 			
 			break;
 		case IncR:
-			if(button == 0x01){
-				state = IncR;
-			}
-			else {
-				state = Init;
-			}
+			state = Init;
+			
 			break;
 
 		case Dec:
@@ -82,12 +78,8 @@ void Tick(){
 			break;
 
 		case DecR:
-			if(button == 0x02){
-				state = DecR;
-			}
-			else {
-				state = Init;
-			}
+			state = Init;
+			
 			break;
 
         case Reset:
@@ -115,15 +107,13 @@ void Tick(){
 
 		break;
 		case Inc:
-            if(button == 0x01){
-                i++;
-                if(i == 10){
-                    i = 0;
-                    if(PORTC < 9){
-                        PORTC++;
-                    }
-                    
+            i++;
+            if(i == 10){
+                i = 0;
+                if(PORTC < 9){
+                    PORTC++;
                 }
+                
             }
 
 		break;
@@ -135,15 +125,13 @@ void Tick(){
             break;
         
 		case Dec:
-            if(button == 0x02){
-                i++;
-                if(i==10){
-                    if(PORTC > 0){
-                        PORTC = PORTC - 1;
-                    }
+            i++;
+            if(i == 10){
+                if(PORTC > 0){
+                    PORTC = PORTC - 1;
                 }
             }
-
+        
 		break;
 
         case DecR:
