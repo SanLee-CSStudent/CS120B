@@ -13,8 +13,9 @@
 #include "timer.h"
 #endif
 
-enum STATE{Start, Init, Inc, Dec, IncR, DecR, Reset} state;
+enum STATE{Start, Init, Inc, Dec, IncR, DecR, ResetR, Reset} state;
 unsigned char button = 0x00;
+unsigned char i = 0x00;
 
 void Tick(){
 	
@@ -23,6 +24,7 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
+            i = 0;
 			if(button == 0x01){
 				state = Inc;
 			}
@@ -39,7 +41,16 @@ void Tick(){
 			break;
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
-			state = IncR;
+            if(button == 0x01){
+
+                state = Inc;
+            }
+            else if(button == 0x03){
+                state = Reset;
+            }
+            else{
+			    state = IncR;
+            }
 			
 			break;
 		case IncR:
@@ -50,15 +61,21 @@ void Tick(){
 				state = Init;
 			}
 			break;
+
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
 			if(button == 0x02){
+
+				state = Dec;
+			}
+            else if(button == 0x03){
+                state = Reset;
+            }
+			else{
 				state = DecR;
 			}
-			else{
-				state = Init;
-			}
 			break;
+
 		case DecR:
 			if(button == 0x02){
 				state = DecR;
@@ -68,7 +85,16 @@ void Tick(){
 			}
 			break;
 
-		case Reset:
+        case Reset:
+            if(button == 0x03){
+                state = Reset;
+            }
+            else{
+                state = ResetR;
+            }
+            break;
+
+		case ResetR:
 			state = Init;
 			break;
 			
@@ -84,17 +110,34 @@ void Tick(){
 
 		break;
 		case Inc:
-			if(PORTC < 0x09){
-				PORTC++;
-			}
+            if(button == 0x01){
+                i++;
+                if(i == 10){
+                    i = 0;
+                    PORTC++;
+                }
+            }
+            else{
+                if(PORTC < 0x09){
+                    PORTC++;
+                }
+            }
 		break;
 		case Dec:
-			if(PORTC > 0){
-				PORTC = PORTC - 1;
-			}
+            if(button == 0x02){
+                i++;
+                if(PORTC > 0){
+                    PORTC = PORTC - 1;
+                }
+            }
+            else{
+                if(PORTC > 0){
+                    PORTC = PORTC - 1;
+                }
+            }
 		break;
 
-		case Reset:
+		case ResetR:
 			PORTC = 0x00;
 		break;
 		default:
