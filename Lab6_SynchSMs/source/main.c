@@ -25,8 +25,6 @@ void Tick(){
 			state = Init;
 			break;
 		case Init:
-            i = 0;
-            pressing = 0x00;
 			if(button == 0x01){
 				state = Inc;
 			}
@@ -43,6 +41,10 @@ void Tick(){
 			break;
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
+            if(!button && pressing){
+                pressing = 0x00;
+                state = Init;
+            }
 
             if(button == 0x01){
                 state = Inc;
@@ -50,9 +52,6 @@ void Tick(){
             }
             else if(button == 0x03){
                 state = Reset;
-            }
-            else if(!button && pressing){
-                state = Init;
             }
             else{
 			    state = IncR;
@@ -66,15 +65,17 @@ void Tick(){
 
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
+            if(!button && pressing){
+                pressing = 0x00;
+                state = Init;
+            }
+
 			if(button == 0x02){
                 pressing = 0x01;
 				state = Dec;
 			}
             else if(button == 0x03){
                 state = Reset;
-            }
-            else if(!button && pressing){
-                state = Init;
             }
 			else{
 				state = DecR;
