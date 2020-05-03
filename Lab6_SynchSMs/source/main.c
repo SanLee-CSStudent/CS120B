@@ -93,7 +93,7 @@ void Tick(){
                     states = ONE;
                 }
             }
-            else{
+            else if(!button && press){
                 states = RELEASE;
             }
             break;
