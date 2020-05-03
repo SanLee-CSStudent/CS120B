@@ -16,6 +16,7 @@
 enum STATE{Start, Init, Inc, Dec, IncR, DecR, ResetR, Reset} state;
 unsigned char button = 0x00;
 unsigned char i = 0x00;
+unsigned char pressing = 0x00;
 
 void Tick(){
 	
@@ -25,6 +26,7 @@ void Tick(){
 			break;
 		case Init:
             i = 0;
+            pressing = 0x00;
 			if(button == 0x01){
 				state = Inc;
 			}
@@ -41,16 +43,15 @@ void Tick(){
 			break;
 		case Inc:
 			// unsigned char tempA = (PINA & 0x01);
-            if(button == 0x00){
-                state = IncR;
-            }
-            else if(button == 0x01){
+
+            if(button == 0x01){
                 state = Inc;
+                pressing = 0x01;
             }
             else if(button == 0x03){
                 state = Reset;
             }
-            else if(!button && i > 0){
+            else if(!button && pressing){
                 state = Init;
             }
             else{
@@ -65,17 +66,14 @@ void Tick(){
 
 		case Dec:
 			// unsigned char tempB = (PINA & 0x02);
-            if(button == 0x00){
-                state = DecR;
-            }
-			else if(button == 0x02){
-
+			if(button == 0x02){
+                pressing = 0x01;
 				state = Dec;
 			}
             else if(button == 0x03){
                 state = Reset;
             }
-            else if(!button && i > 0){
+            else if(!button && pressing){
                 state = Init;
             }
 			else{
