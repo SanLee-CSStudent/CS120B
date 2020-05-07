@@ -77,7 +77,7 @@ enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RESUMEPRESS, RESUMERELEASE, RELE
 unsigned char LEDC = 0x00;
 unsigned char button = 0x00;
 unsigned char press = 0x00;
-unsigned char score = 0x05;
+unsigned char score = 0x08;
 unsigned char tick = 0x00;
 
 void stayLit(int );
@@ -253,26 +253,29 @@ void Tick(){
             }
             else if(tick % 8 == 1){
 
-                LCD_DisplayString(1, "VI");
+                LCD_DisplayString(2, "I");
             }
             else if(tick % 8 == 2){
 
-                LCD_DisplayString(1, "VIC");
+                LCD_DisplayString(3, "C");
             }
             else if(tick % 8 == 3){
 
-                LCD_DisplayString(1, "VICT");
+                LCD_DisplayString(4, "T");
             }
             else if(tick % 8 == 4){
 
-                LCD_DisplayString(1, "VICTO");
+                LCD_DisplayString(5, "O");
             }
             else if(tick % 8 == 5){
 
-                LCD_DisplayString(1, "VICTOR");
+                LCD_DisplayString(6, "R");
             }
             else if(tick % 8 == 6){
 
+                LCD_DisplayString(7, "Y");
+            }
+            else if(tick % 8 == 7){
                 LCD_DisplayString(1, "VICTORY");
             }
             else{
