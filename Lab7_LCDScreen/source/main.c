@@ -73,196 +73,184 @@ ISR(TIMER1_COMPA_vect)
 	}
 }
 
-
-enum STATE{Start, Init, Inc, Dec, IncR, DecR, IncP, DecP, ResetR, Reset} state;
+enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RESUMEPRESS, RESUMERELEASE, RELEASE} states;
+unsigned char LEDC = 0x00;
 unsigned char button = 0x00;
-unsigned char i = 0x00;
-unsigned char pressing = 0x00;
-unsigned char count = 0x00;
+unsigned char press = 0x00;
+unsigned char score = 0x05;
+
+void stayLit(int );
 
 void Tick(){
-	
-	switch(state){
-		case Start:
-			state = Init;
-			break;
-		case Init:
-			if(button == 0x01){
-				state = Inc;
-			}
-			else if(button == 0x02){
-				state = Dec;
-			}
-			else if(button == 0x03){
-				state = Reset;
-			}
-			else {
-				state = Init;
-			}
 
-			break;
-		case Inc:
-			// unsigned char tempA = (PINA & 0x01);
-            if(button == 0x01){
-                state = IncP;
-                // pressing = 0x01;
-            }
-            else if(button == 0x03){
-                state = Reset;
+    switch(states){
+        case Start:
+            states = ONE;
+            break;
+
+        case ONE:
+            
+            if(button){
+                if(press == 0x01){
+                    states = TWO;
+                }
+                else{
+                    states= PRESS;
+                    score--;
+                }
             }
             else{
-			    state = IncR;
+                press = 0x00;
+                states = TWO;
             }
-			
-			break;
+            
+            break;
 
-		case IncP:
-			if(button == 0x01){
-                pressing = 0x01;
-				state = IncP;
-			}
-			else{
-				state = Init;
-			}
-			break;
-		
-		case IncR:
-			state = Init;
-			
-			break;
+        case TWO:
 
-		case Dec:
-			// unsigned char tempB = (PINA & 0x02);
-			if(button == 0x02){
-				state = DecP;
-			}
-            else if(button == 0x03){
-                state = Reset;
-            }
-			else{
-				state = DecR;
-			}
-			break;
+            if(button){
+                if(press == 0x01){
+                    states = THREE;
+                }
+                else{
+                    states= PRESS;
+                    score++;
 
-		case DecP:
-			if(button == 0x02){
-				state = DecP;
-			}
-			else{
-				state = Init;
-			}
-			break;
-
-		case DecR:
-			state = Init;
-			
-			break;
-
-        case Reset:
-            if(button == 0x03){
-                state = Reset;
+                }
             }
             else{
-                state = ResetR;
+                press = 0x00;
+                states = THREE;
+            }
+
+            break;
+
+        case THREE:
+
+            if(button){
+                if(press == 0x01){
+                    states = FOUR;
+                }
+                else{
+                    states= PRESS;
+                    score--;
+                }
+            }
+            else{
+                states = FOUR;
+                press = 0x00;
+            }
+
+            break;
+        
+        case FOUR:
+            
+            if(button){
+                if(press == 0x01){
+                    states = ONE;
+                }
+                else{
+                    states= PRESS;
+                    score++;
+                }
+            }
+            else{
+                states = ONE;
+                press = 0x00;
+            }
+
+            break;
+        
+        case PRESS:
+            if(button){
+                states = PRESS;
+            }
+            else {
+                states = RELEASE;
             }
             break;
 
-		case ResetR:
-			state = Init;
-			break;
-			
-		default:
-			break;
-	}
-	
-	switch(state){
-		case Start:
-			count = 0x00;
-            LCD_WriteData(count + '0');
-		break;
-		case Init:
-
-		break;
-
-		case Inc:
-	
-			if(count < 9){
-				count++;
-			}
-            LCD_ClearScreen();
-			LCD_WriteData(count + '0');
-			break;
-
-		case IncP:
-            i += 1;
-            if(i == 10){
-                i = 0;
-                if(count < 9){
-                    count++;
-                }
-                LCD_ClearScreen();
-                LCD_WriteData(count + '0');
+        case RELEASE:
+            if(button){
+                states = ONE;
+                press = 0x01;
+            }
+            else{
+                states = RELEASE;
             }
 
-		break;
+            break;
 
-		case IncR:
-			
-			break;
-		
-		case Dec:
+        case RESUMEPRESS:
+            states = ONE;
 
-			if(count > 0){
-				count--;
-			}
-			LCD_ClearScreen();
-            LCD_WriteData(count + '0');
-			break;
+            break;
 
-		case DecP:
+        case RESUMERELEASE:
+            states = ONE;
             
-            if(i == 10){
-                i = 0;
-                if(count > 0){
-                    count--;
-                }
-                LCD_ClearScreen();
-                LCD_WriteData(count + '0');
-            }
-			i += 1;
+            break;
+
+        default:
+            break;
+    }
+
+    switch(states){
+        case Start:
+            break;
+
+        case ONE:
+            LEDC = 0x01;
+            break;
+
+        case TWO:
+            LEDC = 0x02;
+            break;
+
+        case THREE:
+            LEDC = 0x04;
+            break;
+
+        case FOUR:
+            LEDC = 0x02;
+            break;
         
-		break;
-
-		case DecR:
-			
-			break;
-
-		case ResetR:
-			count = 0x00;
+        case PRESS:
             LCD_ClearScreen();
-            LCD_WriteData(count + '0');
-		break;
-		default:
-			
-		break;
-	}
+            LCD_WriteData(score + '0');
+            break;
+
+        case RELEASE:
+
+            break;
+
+        default:
+            break;
+    }
+
 }
 
 int main(void) {
-	DDRA = 0x00;PORTA = 0xFF;
-	DDRC = 0xFF;PORTC = 0x00;
-    DDRD = 0xFF;PORTD = 0x00;
-    
     /* Insert DDR and PORT initializations */
-	state = Start;
-    /* Insert your solution below */
-    LCD_init();
-    TimerSet(100);
+    DDRA = 0x00; PORTA = 0xFF;
+    DDRB = 0xFF; PORTB = 0x00;
+    DDRC = 0xFF; PORTC = 0x00;
+    DDRD = 0xFF; PORTD = 0x00;
+    states = Start;
+
+    TimerSet(300);
     TimerOn();
 
+    LCD_init();
+
+    LCD_ClearScreen();
+    LCD_WriteData(score + '0');
+
+    /* Insert your solution below */
     while (1) {
-		button = ~PINA & 0x03;
-		Tick();
+        button = (~PINA) & 0x01;
+        Tick();
+        PORTB = LEDC;
         while(!TimerFlag){}
         TimerFlag = 0;
     }
