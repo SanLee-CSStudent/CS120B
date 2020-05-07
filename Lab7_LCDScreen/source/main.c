@@ -24,7 +24,7 @@ int main(void) {
     LCD_DisplayString(1, "Hello World");
 
     while (1) {
-
+        continue;
     }
     return 1;
 }
