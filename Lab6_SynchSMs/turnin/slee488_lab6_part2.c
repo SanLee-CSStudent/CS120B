@@ -10,14 +10,72 @@
 #include <avr/io.h>
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
-#include "timer.h"
 #endif
+
+#include <avr/interrupt.h>
+
+volatile unsigned char TimerFlag = 0; // TimerISR() sets this to 1. C programmer should clear to 0.
+
+// Internal variables for mapping AVR's ISR to our cleaner TimerISR model.
+unsigned long _avr_timer_M = 1; // Start count from here, down to 0. Default 1ms
+unsigned long _avr_timer_cntcurr = 0; // Current internal count of 1ms ticks
+
+// Set TimerISR() to tick every M ms
+void TimerSet(unsigned long M) {
+	_avr_timer_M = M;
+	_avr_timer_cntcurr = _avr_timer_M;
+}
+
+void TimerOn() {
+	// AVR timer/counter controller register TCCR1
+	TCCR1B 	= 0x0B;	// bit3 = 1: CTC mode (clear timer on compare)
+					// bit2bit1bit0=011: prescaler /64
+					// 00001011: 0x0B
+					// SO, 8 MHz clock or 8,000,000 /64 = 125,000 ticks/s
+					// Thus, TCNT1 register will count at 125,000 ticks/s
+
+	// AVR output compare register OCR1A.
+	OCR1A 	= 125;	// Timer interrupt will be generated when TCNT1==OCR1A
+					// We want a 1 ms tick. 0.001 s * 125,000 ticks/s = 125
+					// So when TCNT1 register equals 125,
+					// 1 ms has passed. Thus, we compare to 125.
+					// AVR timer interrupt mask register
+
+	TIMSK1 	= 0x02; // bit1: OCIE1A -- enables compare match interrupt
+
+	//Initialize avr counter
+	TCNT1 = 0;
+
+	// TimerISR will be called every _avr_timer_cntcurr milliseconds
+	_avr_timer_cntcurr = _avr_timer_M;
+
+	//Enable global interrupts
+	SREG |= 0x80;	// 0x80: 1000000
+}
+
+void TimerOff() {
+	TCCR1B 	= 0x00; // bit3bit2bit1bit0=0000: timer off
+}
+
+void TimerISR() {
+	TimerFlag = 1;
+}
+
+// In our approach, the C programmer does not touch this ISR, but rather TimerISR()
+ISR(TIMER1_COMPA_vect)
+{
+	// CPU automatically calls when TCNT0 == OCR0 (every 1 ms per TimerOn settings)
+	_avr_timer_cntcurr--; 			// Count down to 0 rather than up to TOP
+	if (_avr_timer_cntcurr == 0) { 	// results in a more efficient compare
+		TimerISR(); 				// Call the ISR that the user uses
+		_avr_timer_cntcurr = _avr_timer_M;
+	}
+}
 
 enum STATE{Start, ONE, TWO, THREE, FOUR, PRESS, RESUMEPRESS, RESUMERELEASE, RELEASE} states;
 unsigned char LEDC = 0x00;
 unsigned char button = 0x00;
 unsigned char press = 0x00;
-unsigned char next = 0x00;
 
 void stayLit(int );
 
@@ -29,43 +87,71 @@ void Tick(){
             break;
 
         case ONE:
-            next = 0x01;
+            
             if(button){
-                states= PRESS;
+                if(press == 0x01){
+                    states = TWO;
+                }
+                else{
+                    states= PRESS;
+                }
             }
             else{
+                press = 0x00;
                 states = TWO;
             }
+            
             break;
 
         case TWO:
-            next = 0x02;
+
             if(button){
-                states= PRESS;
+                if(press == 0x01){
+                    states = THREE;
+                }
+                else{
+                    states= PRESS;
+                }
             }
             else{
+                press = 0x00;
                 states = THREE;
             }
+
             break;
 
         case THREE:
-            next = 0x04;
+
             if(button){
-                states= PRESS;
+                if(press == 0x01){
+                    states = FOUR;
+                }
+                else{
+                    states= PRESS;
+                }
             }
             else{
                 states = FOUR;
+                press = 0x00;
             }
+
             break;
         
         case FOUR:
-            next = 0x08;
+            
             if(button){
-                states= PRESS;
+                if(press == 0x01){
+                    states = ONE;
+                }
+                else{
+                    states= PRESS;
+                }
             }
             else{
                 states = ONE;
+                press = 0x00;
             }
+
             break;
         
         case PRESS:
@@ -79,7 +165,8 @@ void Tick(){
 
         case RELEASE:
             if(button){
-                states = RESUMEPRESS;
+                states = ONE;
+                press = 0x01;
             }
             else{
                 states = RELEASE;
@@ -88,27 +175,12 @@ void Tick(){
             break;
 
         case RESUMEPRESS:
-            if(button){
-                states = RESUMEPRESS;
-            }
-            else{
-                states = RESUMERELEASE;
-            }
+            states = ONE;
+
             break;
 
         case RESUMERELEASE:
-            if(next == 0x01){
-                states = TWO;
-            }
-            else if(next == 0x02){
-                states = THREE;
-            }
-            else if(next == 0x04){
-                states = FOUR;
-            }
-            else{
-                states = ONE;
-            }
+            states = ONE;
             
             break;
 
@@ -137,7 +209,7 @@ void Tick(){
             break;
         
         case RELEASE:
-            // stayLit(LEDC);
+
             break;
 
         default:
@@ -146,14 +218,10 @@ void Tick(){
 
 }
 
-void stayLit(int c){
-    LEDC = c;
-}
-
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
-    DDRC = 0xFF; PORTC = 0x00;
+    DDRB = 0xFF; PORTB = 0x00;
 
     states = Start;
 
@@ -164,7 +232,7 @@ int main(void) {
     while (1) {
         button = (~PINA) & 0x01;
         Tick();
-        PORTC = LEDC;
+        PORTB = LEDC;
         while(!TimerFlag){}
         TimerFlag = 0;
     }
