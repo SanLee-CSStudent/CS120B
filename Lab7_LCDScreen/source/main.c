@@ -178,6 +178,7 @@ void Tick(){
 	switch(state){
 		case Start:
 			count = 0x00;
+            LCD_WriteData(count + '0');
 		break;
 		case Init:
 
@@ -188,6 +189,7 @@ void Tick(){
 			if(count < 9){
 				count++;
 			}
+            LCD_ClearScreen();
 			LCD_WriteData(count + '0');
 			break;
 
@@ -198,7 +200,7 @@ void Tick(){
                 if(count < 9){
                     count++;
                 }
-                
+                LCD_ClearScreen();
                 LCD_WriteData(count + '0');
             }
 
@@ -213,7 +215,7 @@ void Tick(){
 			if(count > 0){
 				count--;
 			}
-			
+			LCD_ClearScreen();
             LCD_WriteData(count + '0');
 			break;
 
@@ -224,6 +226,7 @@ void Tick(){
                 if(count > 0){
                     count--;
                 }
+                LCD_ClearScreen();
                 LCD_WriteData(count + '0');
             }
 			i += 1;
@@ -236,6 +239,7 @@ void Tick(){
 
 		case ResetR:
 			count = 0x00;
+            LCD_ClearScreen();
             LCD_WriteData(count + '0');
 		break;
 		default:
