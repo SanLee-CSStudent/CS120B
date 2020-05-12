@@ -109,7 +109,7 @@ void Tick(){
             break;
 
         case Do:
-            if(button = 0x01){
+            if(button == 0x01){
                 states = Do;
             }
             else{
@@ -118,20 +118,20 @@ void Tick(){
             break;
         
         case Re:
-            if(button = 0x02){
-                states = Do;
+            if(button == 0x02){
+                states = Re;
             }
             else{
-                states = DoR;
+                states = ReR;
             }
             break;
         
         case Mi:
-            if(button = 0x04){
-                states = Do;
+            if(button == 0x04){
+                states = Mi;
             }
             else{
-                states = DoR;
+                states = MiR;
             }
             break;
 
