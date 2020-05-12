@@ -13,7 +13,7 @@
 #endif
 
 unsigned short input;
-unsigned short max;
+unsigned short max = 0x00C3;
 unsigned char upper;
 unsigned char lower;
 
