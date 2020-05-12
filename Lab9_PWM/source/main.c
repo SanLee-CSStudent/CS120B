@@ -150,6 +150,7 @@ void Tick(){
         case PlayR:
             if(melody[j] == -1){
                 states = Wait;
+                break;
             }
 
             if(tick >= beats[j]){
