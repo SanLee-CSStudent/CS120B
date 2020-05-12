@@ -13,7 +13,6 @@
 #endif
 
 unsigned short input;
-unsigned short max;
 unsigned char upper;
 unsigned char lower;
 
@@ -31,18 +30,11 @@ int main(void) {
     ADC_init();
     while (1) {
         input = ADC;
-        if(input >= (max/2)){
-            lower = (char) input;
-            upper = (char) (input >> 8);
+        lower = (char) input;
+        upper = (char) (input >> 8);
 
-            PORTC = lower;
-            PORTD = upper;
-        }
-        else{
-            PORTC = 0x00;
-            PORTD = 0x00;
-        }
-        
+        PORTC = lower;
+        PORTD = upper;
     }
     return 1;
 }
