@@ -176,6 +176,7 @@ void Tick(){
         
         case PauseR:
             PauseFlag = !PauseFlag;
+            states = Wait;
             break;
 
         default:
