@@ -31,7 +31,7 @@ int main(void) {
     while (1) {
         input = ADC;
         lower = (char) input;
-        upper = (char) (8 << input);
+        upper = (char) (input >> 8);
 
         PORTC = lower;
         PORTD = upper;
