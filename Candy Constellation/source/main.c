@@ -14,12 +14,18 @@
 #include "stdio.h"
 #endif
 
-const double keys[8] = {523.25, 587.33, 659.255, 698.456, 783.991, 880.00, 987.767, 1046.50};
-const double beat[4] = {896, 448, 224, 112};
-char melody[255];
+const double keys[8] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
+const double beat[4] = {8, 4, 2, 1};
+const char beats[100] = {4, 4, 4, 4, 8, 8, 8, 2, 1, 1, 1, 1, 1, 1, 1, 6, 4, 2, 2, 2, 4, 4, 4, 4, 
+3,3,4,3,3,8,4,4};
+const double melody[100] = {440.00, 329.628, 440.00, 783.991, 739.989, 659.255, 
+440, 493.883, 554.365, 622.254, 659.255, 739.989, 830.609,
+440, 329.628, 277.183, 293.665, 329.628, 349.228, 440, 587,33, 698.456, 
+554.365,587.33,554.365,440, 329.628, 440, 687.33, 698.456}
 volatile unsigned char tick = 0x00;
 unsigned char EndFlag = 0x00;
 unsigned char i = 0x10;
+unsigned char j = 0x00;
 unsigned char button = 0x00;
 enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
 
@@ -124,13 +130,17 @@ void Tick(){
             break;
 
         case PlayR:
-            states = PlayR;
+            if(tick >= beats[j]){
+                
+                j++;
+                tick = 0;
+            }
 
             if(EndFlag == 0x01){
                 states = Wait;
                 EndFlag = 0x00;
             }
-
+            states = PlayR;
             break;
         default:
             break;
@@ -168,25 +178,13 @@ void Tick(){
             break;
 
         case Play:
-
+            j = 0x00;
             break;
 
         case PlayR:
-            tick++;
-            if(tick % 8 == 0 && tick < 16){
-                set_PWM(keys[0]);
-            }
-            else if(tick % 8 == 0 && tick < 32){
-                set_PWM(keys[4]);
-            }
-            else if(tick % 8 == 0 && tick < 48){
-                set_PWM(keys[5]);
-            }
-            else{
-                set_PWM(keys[4]);
-                EndFlag = 0x01;
-            }
+            set_PWM(melody[j]);
 
+            tick++;
             break;
 
         default:
@@ -212,17 +210,18 @@ int main(void) {
     DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
     TimerOn();
-    TimerSet(beat[3]);
+    TimerSet(112);
     PWM_on();
 
     states = Start;
 
     while (1) {
         button = ~PINA & 0x0F;
-        while(!TimerFlag){}
-        TimerFlag = 0x00;
 
         Tick();
+
+        while(!TimerFlag){}
+        TimerFlag = 0x00;
         if(button == 0x08){
             set_PWM(0);
         }
