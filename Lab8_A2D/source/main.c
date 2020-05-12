@@ -30,7 +30,7 @@ int main(void) {
     ADC_init();
     while (1) {
         input = ADC;
-        upper = (input >> 2);
+        upper = (input << 2);
         lower = (input & 0x03);
 
         PORTC = upper;
