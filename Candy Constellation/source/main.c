@@ -188,6 +188,7 @@ void Tick(){
             if(beats[j] == 100){
                 set_PWM(melody[j]);
                 j++;
+                break;
             }
             set_PWM(melody[j]);
 
