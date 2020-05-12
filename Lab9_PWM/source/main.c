@@ -148,7 +148,7 @@ void Tick(){
             break;
 
         case PlayR:
-            if(beats[j] == -1){
+            if(melody[j] == -1){
                 states = Wait;
             }
 
