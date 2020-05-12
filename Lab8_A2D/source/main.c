@@ -29,12 +29,12 @@ int main(void) {
 
     ADC_init();
     while (1) {
-        input = ADC;
-        upper = (input << 2);
-        lower = (input & 0x03);
+        input = PINA;
+        lower = input;
+        upper = (input << 8);
 
-        PORTC = upper;
-        PORTD = lower;
+        PORTC = lower;
+        PORTD = upper;
     }
     return 1;
 }
