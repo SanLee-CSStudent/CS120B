@@ -42,7 +42,7 @@ unsigned char i = 0x10;
 unsigned char j = 0x00;
 unsigned char button = 0x00;
 unsigned char PauseFlag = 0x00;
-enum STATE{Start, Init, Wait, Do, DoR, Re, ReR, Mi, MiR} states;
+enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR, Pause, PauseR} states;
 
 void set_PWM(double frequency){
     static double current_frequency;
@@ -95,55 +95,87 @@ void Tick(){
 
         case Wait:
             if(button == 0x01){
-                states = Do;
+                states = IncKey;
             }
             else if(button == 0x02){
-                states = Re;
+                states = DecKey;
             }
             else if(button == 0x04){
-                states = Mi;
+                states = Play;
+            }
+            else if(button == 0x08){
+                states = Pause;
             }
             else{
                 states = Wait;
             }
             break;
 
-        case Do:
-            if(button == 0x01){
-                states = Do;
+        case IncKey:
+            if(button){
+                states = IncKey;
             }
             else{
-                states = DoR;
-            }
-            break;
-        
-        case Re:
-            if(button == 0x02){
-                states = Re;
-            }
-            else{
-                states = ReR;
-            }
-            break;
-        
-        case Mi:
-            if(button == 0x04){
-                states = Mi;
-            }
-            else{
-                states = MiR;
+                states = IncKeyR;
             }
             break;
 
-        case DoR:
+        case IncKeyR:
             states = Wait;
             break;
-        
-        case ReR:
+
+        case DecKey:
+            if(button == 0x02){
+                states = DecKey;
+            }
+            else{
+                states = DecKeyR;
+            }
+            break;
+
+        case DecKeyR:
             states = Wait;
             break;
+
+        case Play:
+            if(button == 0x04){
+                states = Play;
+            }
+            else{
+                states = PlayR;
+            }
+
+            break;
+
+        case PlayR:
+            if(melody[j] == -1){
+                states = Wait;
+            }
+
+            if(tick >= beats[j]){
+                
+                j++;
+                tick = 0;
+            }
+
+            if(EndFlag == 0x01){
+                states = Wait;
+                EndFlag = 0x00;
+            }
+            states = PlayR;
+            break;
+
+        case Pause:
+            if(button == 0x08){
+                states = Pause;
+            }
+            else{
+                states = PauseR;
+            }
+            break;
         
-        case MiR:
+        case PauseR:
+            PauseFlag = !PauseFlag;
             states = Wait;
             break;
 
@@ -164,34 +196,73 @@ void Tick(){
 
             break;
 
-        case Do:
-            set_PWM(keys[0]);
-            break;
-        
-        case Re:
-            set_PWM(keys[1]);
-            break;
-        
-        case Mi:
-            set_PWM(keys[2]);
+        case IncKey:
+            
             break;
 
-        case DoR:
-            set_PWM(0);
+        case IncKeyR:
+            i++;
+            set_PWM(keys[i % 8]);
             break;
-        
-        case ReR:
-            set_PWM(0);
+
+        case DecKey:
+            
             break;
-        
-        case MiR:
-            set_PWM(0);
+
+        case DecKeyR:
+            i--;
+            set_PWM(keys[i % 8]);
+            break;
+
+        case Play:
+            j = 0x00;
+            break;
+
+        case PlayR:
+            if(j >= 200){
+                EndFlag = 0x01;
+                break;
+            }
+
+            if(beats[j] == 100){
+                set_PWM(melody[j]);
+                j++;
+                break;
+            }
+            set_PWM(melody[j]);
+            
+            tick++;
+            break;
+
+        case Pause:
+
+            break;
+
+        case PauseR:
+            if(PauseFlag){
+                set_PWM(0);
+            }
+            else{
+                set_PWM(keys[i%8]);
+            }
             break;
 
         default:
             break;
     }
 }
+
+/*void Translate(){
+    FILE* sheet;
+
+    while((sheet = fopen("Sheet Music.txt", "r")) != EOF){
+        fscanf(sheet, "%s", melody);
+    }
+    
+
+    printf("%s", melody[0]);
+    fclose(sheet);
+}*/
 
 int main(void) {
     /* Insert DDR and PORT initializations */
