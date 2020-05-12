@@ -29,7 +29,7 @@ int main(void) {
 
     ADC_init();
     while (1) {
-        input = PINA;
+        input = ADC;
         lower = input;
         upper = (input << 8);
 
