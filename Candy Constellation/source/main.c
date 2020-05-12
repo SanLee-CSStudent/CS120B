@@ -25,7 +25,11 @@ const char beats[200] = {4, 4, 4, 4, 8, 8, 8,
 4, 4, 4, 4, 3, 3, 4, 2, 2, 2, 4, 4, 4, 4,
 3, 3, 4, 3, 3, 8, 8,
 3, 100, 3, 4, 2, 2, 2, 4, 4, 100, 4, 4, 3, 3, 4, 100, 2, 2, 2,
-4, 4, 4, 4, 3, 100, 3, 3, 2, 100, 1, 2, 2};
+4, 4, 4, 4, 3, 100, 3, 3, 2, 100, 1, 2, 2,
+4, 4, 100, 4, 3, 3, 4, 100, 2, 2, 2,
+8, 8, 6, 8, 2,
+4, 4, 4, 4, 3, 3, 4, 3, 3, 12, 3, 3, 4, 2, 2, 2, 4, 4, 4, 4, 6, 8,
+4, 4, 4, 4, 12, 3, 100, 3, 100, 2};
 const double melody[200] = {440.00, 329.628, 440.00, 783.991, 739.989, 493.883, 0, 0,
 440, 493.883, 554.365, 622.254, 659.255, 739.989, 830.609,
 440, 329.628, 277.183, 293.665, 329.628, 349.19, 440, 587.33, 698.456, 554.365, 587.33, 554.365, 440, 329.628, 
@@ -35,13 +39,19 @@ const double melody[200] = {440.00, 329.628, 440.00, 783.991, 739.989, 493.883, 
 349.19, 440, 587.33, 698.456, 659.255, 554.365, 440, 329.628, 277.183, 329.628, 349.19, 440, 587.33, 493.883,
 554.365, 587.33, 659.255, 554.365, 440, 493.883, 587.33,
 0, 1046.5, 1174.66, 987.767, 783.991, 659.255, 783.991, 698.456, 880, 987.767, 1046.5, 880, 987.767, 1046.5, 987.767, 698.456, 783.991, 659.255, 783.991,
-698.456, 783.991, 1046.5, 783.991, 0, 1046.5, 1174.66, 987.767, 783.991, 0, 783.991, 659.255, 783.991};
+698.456, 783.991, 1046.5, 783.991, 0, 1046.5, 1174.66, 987.767, 783.991, 0, 783.991, 659.255, 783.991, 
+698.456, 880, 987.767, 1046.5, 880, 987.767, 1046.5, 987.767, 698.456, 783.991, 982.767, 1174.66, 
+1046.5, 1396.91, 1318.51, 1108.73, 0,
+349.228, 440, 587.33, 493.883, 554.365, 587.33, 554.365, 440, 329.628, 349.228,
+659.255, 554.365, 440, 329,628, 261.63, 329.628, 293.665, 349.228, 440, 587.33, 554.365, 659.255,
+587.33, 698.456, 880, 698.456, 880, 1174.66, 0, 1174.66, 0, 1174.6, -1};
 unsigned char tick = 0x00;
 unsigned char EndFlag = 0x00;
 unsigned char i = 0x10;
 unsigned char j = 0x00;
 unsigned char button = 0x00;
-enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR} states;
+unsigned char PauseFlag = 0x00;
+enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR, Pause, PauseR} states;
 
 void set_PWM(double frequency){
     static double current_frequency;
@@ -102,6 +112,9 @@ void Tick(){
             else if(button == 0x04){
                 states = Play;
             }
+            else if(button == 0x08){
+                states = Pause;
+            }
             else{
                 states = Wait;
             }
@@ -144,8 +157,12 @@ void Tick(){
             break;
 
         case PlayR:
+            if(melody[j] == -1){
+                states = Wait;
+                break;
+            }
+
             if(tick >= beats[j]){
-                
                 j++;
                 tick = 0;
             }
@@ -156,6 +173,21 @@ void Tick(){
             }
             states = PlayR;
             break;
+
+        case Pause:
+            if(button == 0x08){
+                states = Pause;
+            }
+            else{
+                states = PauseR;
+            }
+            break;
+        
+        case PauseR:
+            PauseFlag = !PauseFlag;
+            states = Wait;
+            break;
+
         default:
             break;
     }
@@ -211,6 +243,19 @@ void Tick(){
             tick++;
             break;
 
+        case Pause:
+
+            break;
+
+        case PauseR:
+            if(PauseFlag){
+                set_PWM(0);
+            }
+            else{
+                set_PWM(keys[i%8]);
+            }
+            break;
+
         default:
             break;
     }
@@ -246,9 +291,7 @@ int main(void) {
 
         while(!TimerFlag){}
         TimerFlag = 0x00;
-        if(button == 0x08){
-            set_PWM(0);
-        }
+        
     }
     PWM_off();
     return 1;
