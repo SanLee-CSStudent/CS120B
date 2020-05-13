@@ -164,7 +164,7 @@ void Tick(){
             }
 
             if(melody[j] == -1){
-                j = 16;
+                j = 8;
                 break;
             }
 
