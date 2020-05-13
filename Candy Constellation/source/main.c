@@ -160,6 +160,7 @@ void Tick(){
         case PlayR:
             if(button == 0x08){
                 states = Wait;
+                break;
             }
 
             if(melody[j] == -1){
