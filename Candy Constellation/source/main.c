@@ -52,7 +52,7 @@ unsigned char i = 0x10;
 unsigned char j = 0x00;
 unsigned char button = 0x00;
 unsigned char PauseFlag = 0x00;
-enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR, Pause, PauseR} states;
+enum STATE{Start, Init, Wait, IncKey, IncPress, IncKeyR, DecKey, DecPress, DecKeyR, Play, PlayR, Pause, PauseR} states;
 
 void set_PWM(double frequency){
     static double current_frequency;
@@ -123,7 +123,16 @@ void Tick(){
 
         case IncKey:
             if(button){
-                states = IncKey;
+                states = IncPress;
+            }
+            else{
+                states = IncKeyR;
+            }
+            break;
+
+        case IncPress:
+            if(button){
+                states = IncPress;
             }
             else{
                 states = IncKeyR;
@@ -136,7 +145,16 @@ void Tick(){
 
         case DecKey:
             if(button == 0x02){
-                states = DecKey;
+                states = DecPress;
+            }
+            else{
+                states = DecKeyR;
+            }
+            break;
+
+        case DecPress:
+            if(button){
+                states = DecPress;
             }
             else{
                 states = DecKeyR;
@@ -212,21 +230,21 @@ void Tick(){
             break;
 
         case IncKey:
-            
-            break;
-
-        case IncKeyR:
             i++;
             set_PWM(keys[i % 8]);
             break;
 
-        case DecKey:
+        case IncKeyR:
             
             break;
 
-        case DecKeyR:
+        case DecKey:
             i--;
             set_PWM(keys[i % 8]);
+            break;
+
+        case DecKeyR:
+            
             break;
 
         case Play:
