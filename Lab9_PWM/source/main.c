@@ -25,7 +25,7 @@ const char beats[200] = {4, 4, 4, 4, 8, 8, 8,
 4, 4, 4, 4, 3, 3, 4, 2, 2, 2, 4, 4, 4, 4,
 3, 3, 4, 3, 3, 8, 8,
 3, 100, 3, 4, 2, 2, 2, 4, 4, 100, 4, 4, 3, 3, 4, 100, 2, 2, 2,
-4, 4, 4, 4, 3, 100, 3, 3, 2, 100, 1, 2, 2, 1};
+4, 4, 4, 4, 3, 100, 3, 3, 2, 100, 1, 2, 2};
 const double melody[200] = {440.00, 329.628, 440.00, 783.991, 739.989, 493.883, 0, 0,
 440, 493.883, 554.365, 622.254, 659.255, 739.989, 830.609,
 440, 329.628, 277.183, 293.665, 329.628, 349.19, 440, 587.33, 698.456, 554.365, 587.33, 554.365, 440, 329.628, 
@@ -42,7 +42,7 @@ unsigned char i = 0x10;
 unsigned char j = 0x00;
 unsigned char button = 0x00;
 unsigned char PauseFlag = 0x00;
-enum STATE{Start, Init, Wait, IncKey, IncKeyR, DecKey, DecKeyR, Play, PlayR, Pause, PauseR} states;
+enum STATE{Start, Init, Wait, Do, DoR, Re, ReR, Mi, MiR} states;
 
 void set_PWM(double frequency){
     static double current_frequency;
@@ -95,87 +95,55 @@ void Tick(){
 
         case Wait:
             if(button == 0x01){
-                states = IncKey;
+                states = Do;
             }
             else if(button == 0x02){
-                states = DecKey;
+                states = Re;
             }
             else if(button == 0x04){
-                states = Play;
-            }
-            else if(button == 0x08){
-                states = Pause;
+                states = Mi;
             }
             else{
                 states = Wait;
             }
             break;
 
-        case IncKey:
-            if(button){
-                states = IncKey;
+        case Do:
+            if(button == 0x01){
+                states = Do;
             }
             else{
-                states = IncKeyR;
-            }
-            break;
-
-        case IncKeyR:
-            states = Wait;
-            break;
-
-        case DecKey:
-            if(button == 0x02){
-                states = DecKey;
-            }
-            else{
-                states = DecKeyR;
-            }
-            break;
-
-        case DecKeyR:
-            states = Wait;
-            break;
-
-        case Play:
-            if(button == 0x04){
-                states = Play;
-            }
-            else{
-                states = PlayR;
-            }
-
-            break;
-
-        case PlayR:
-            if(melody[j] == -1){
-                states = Wait;
-                break;
-            }
-
-            if(tick >= beats[j]){
-                j++;
-                tick = 0;
-            }
-
-            if(EndFlag == 0x01){
-                states = Wait;
-                EndFlag = 0x00;
-            }
-            states = PlayR;
-            break;
-
-        case Pause:
-            if(button == 0x08){
-                states = Pause;
-            }
-            else{
-                states = PauseR;
+                states = DoR;
             }
             break;
         
-        case PauseR:
-            PauseFlag = !PauseFlag;
+        case Re:
+            if(button == 0x02){
+                states = Re;
+            }
+            else{
+                states = ReR;
+            }
+            break;
+        
+        case Mi:
+            if(button == 0x04){
+                states = Mi;
+            }
+            else{
+                states = MiR;
+            }
+            break;
+
+        case DoR:
+            states = Wait;
+            break;
+        
+        case ReR:
+            states = Wait;
+            break;
+        
+        case MiR:
             states = Wait;
             break;
 
@@ -196,73 +164,34 @@ void Tick(){
 
             break;
 
-        case IncKey:
-            
+        case Do:
+            set_PWM(keys[0]);
+            break;
+        
+        case Re:
+            set_PWM(keys[1]);
+            break;
+        
+        case Mi:
+            set_PWM(keys[2]);
             break;
 
-        case IncKeyR:
-            i++;
-            set_PWM(keys[i % 8]);
+        case DoR:
+            set_PWM(0);
             break;
-
-        case DecKey:
-            
+        
+        case ReR:
+            set_PWM(0);
             break;
-
-        case DecKeyR:
-            i--;
-            set_PWM(keys[i % 8]);
-            break;
-
-        case Play:
-            j = 0x00;
-            break;
-
-        case PlayR:
-            if(j >= 200){
-                EndFlag = 0x01;
-                break;
-            }
-
-            if(beats[j] == 100){
-                set_PWM(melody[j]);
-                j++;
-                break;
-            }
-            set_PWM(melody[j]);
-            
-            tick++;
-            break;
-
-        case Pause:
-
-            break;
-
-        case PauseR:
-            if(PauseFlag){
-                set_PWM(0);
-            }
-            else{
-                set_PWM(keys[i%8]);
-            }
+        
+        case MiR:
+            set_PWM(0);
             break;
 
         default:
             break;
     }
 }
-
-/*void Translate(){
-    FILE* sheet;
-
-    while((sheet = fopen("Sheet Music.txt", "r")) != EOF){
-        fscanf(sheet, "%s", melody);
-    }
-    
-
-    printf("%s", melody[0]);
-    fclose(sheet);
-}*/
 
 int main(void) {
     /* Insert DDR and PORT initializations */
