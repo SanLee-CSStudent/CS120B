@@ -15,6 +15,7 @@
 
 unsigned char TLED = 0x00;
 unsigned char BLED = 0x00;
+unsigned char button = 0x00;
 
 enum TL_States {TL_Start, ONE, TWO, THREE} tState;
 void TL_tick(){
@@ -124,6 +125,52 @@ void CL_tick(){
     }
 }
 
+enum ES_States{eStart, eWait, ON} eState;
+void ES_tick(){
+    switch(eState){
+        case eStart:
+            eState = eWait;
+            break;
+
+        case eWait:
+            if(button){
+                eState = ON;
+            }
+            else{
+                eState = eWait;
+            }
+            break;
+
+        case ON:
+            if(button){
+                eState = ON;
+            }
+            else{
+                eState = Wait;
+            }
+        
+        default:
+
+            break;
+    }
+
+    switch(eState){
+        case eStart:
+            break;
+
+        case eWait:
+            PORTB = 0x00;
+            break;
+
+        case ON:
+            PORTB = 0x10;
+            break;
+        
+        default:
+            break;
+    }
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
@@ -141,7 +188,9 @@ int main(void) {
     tState = TL_Start;
     bState = BS_Start;
     cState = Start;
+    eState = eStart;
     while (1) {
+        button = (~PINA) & 0x01;
         if(TL_elapsedTime >= 300){
             TL_tick();
             TL_elapsedTime = 0;
@@ -153,6 +202,7 @@ int main(void) {
         }
 
         CL_tick();
+        ES_tick();
 
         while(!TimerFlag){}
         TimerFlag = 0;
