@@ -126,7 +126,10 @@ void CL_tick(){
     }
 }
 
-enum ES_States{eStart, eWait, eON, HIGH, LOW} eState;
+unsigned char threshhold = 0x03;
+unsigned char eTick = 0x00;
+
+enum ES_States{eStart, eWait, eON, HIGH, LOW, Inc, Dec} eState;
 void ES_tick(){
     switch(eState){
         case eStart:
@@ -136,35 +139,76 @@ void ES_tick(){
         case eWait:
             if(button){
                 eState = eON;
+                
+            }
+            else if(button == 0x02){
+                eState = Inc;
+                
+            }
+            else if(button == 0x04){
+                eState = Dec;
+                
             }
             else{
                 eState = eWait;
             }
             break;
 
+        case Inc:
+            if(button == 0x02){
+                eState = Inc;
+            }
+            else{
+                if(threshhold < 8){
+                    threshhold++;
+                }   
+            }
+            
+            break;
+
+        case Dec:
+            if(button == 0x04){
+                eState = Dec;
+            }
+            else{
+                if(threshhold > 1){
+                    threshhold--;
+                }
+            }
+
+            break;
+
         case eON:
+            eTick = 0;
             if(button){
                 eState = HIGH;
             }
             else{
                 eState = eWait;
             }
+            break;
         
         case HIGH:
-            if(button){
-                eState = LOW;
-            }
-            else{
-                eState = eWait;
+            if(eTick > threshhold){
+                if(button){
+                    eState = LOW;
+                    eTick = 0;
+                }
+                else{
+                    eState = eWait;
+                }
             }
             break;
 
         case LOW:
-            if(button){
-                eState = HIGH;
-            }
-            else{
-                eState = eWait;
+            if(eTick > threshhold){
+                if(button){
+                    eTick = 0;
+                    eState = HIGH;
+                }
+                else{
+                    eState = eWait;
+                }
             }
             break;
 
@@ -188,11 +232,12 @@ void ES_tick(){
 
         case HIGH:
             frequency = 0x10;
-
+            eTick++;
             break;
 
         case LOW:
             frequency = 0x00;
+            eTick++;
             break;
         
         default:
@@ -207,19 +252,19 @@ int main(void) {
     DDRC = 0xFF; PORTC = 0x00;
 
     /* Insert your solution below */
-    TimerSet(2);
+    TimerSet(1);
     TimerOn();
 
     unsigned long TL_elapsedTime = 0;
     unsigned long BS_elapsedTime = 0;
-    const unsigned long period = 2;
+    const unsigned long period = 1;
 
     tState = TL_Start;
     bState = BS_Start;
     cState = Start;
     eState = eStart;
     while (1) {
-        button = (~PINA) & 0x01;
+        button = (~PINA) & 0x07;
         
 
         if(BS_elapsedTime >= 1000){
