@@ -131,24 +131,33 @@ int main(void) {
     DDRC = 0xFF; PORTC = 0x00;
 
     /* Insert your solution below */
-    TimerSet(1000);
+    TimerSet(100);
     TimerOn();
 
-    // unsigned long TL_elapsedTime = 0;
-    // unsigned long BS_elapsedTime = 0;
-    // const unsigned long period = 1000;
+    unsigned long TL_elapsedTime = 0;
+    unsigned long BS_elapsedTime = 0;
+    const unsigned long period = 100;
 
-    PORTB = 0x00;
     tState = TL_Start;
     bState = BS_Start;
     cState = Start;
     while (1) {
-        TL_tick();
-        BS_tick();
+        if(TL_elapsedTime >= 300){
+            TL_tick();
+            TL_elapsedTime = 0;
+        }
+
+        if(BS_elapsedTime >= 1000){
+            BS_tick();
+            BS_elapsedTime = 0;
+        }
+
         CL_tick();
 
         while(!TimerFlag){}
         TimerFlag = 0;
+        TL_elapsedTime += period;
+        BS_elapsedTime += period;
     }
     return 1;
 }
