@@ -16,10 +16,10 @@
 unsigned char TLED = 0x00;
 unsigned char BLED = 0x00;
 
-enum TL_States {Start, ONE, TWO, THREE} tState;
+enum TL_States {TL_Start, ONE, TWO, THREE} tState;
 void TL_tick(){
     switch(tState){
-        case Start:
+        case TL_Start:
             tState = ONE;
             break;
         
@@ -39,7 +39,7 @@ void TL_tick(){
     }
 
     switch(tState){
-        case Start:
+        case TL_Start:
             TLED = 0x00;
             break;
         
@@ -59,10 +59,10 @@ void TL_tick(){
     }
 }
 
-enum BS_States {Start, BLINK, OFF} bState;
+enum BS_States {BS_Start, BLINK, OFF} bState;
 void BS_tick(){
     switch(bState){
-        case Start:
+        case BS_Start:
             bState = BLINK;
             break;
         
@@ -79,7 +79,7 @@ void BS_tick(){
     }
 
     switch(bState){
-        case Start:
+        case BS_Start:
             BLED = 0x00;
             break;
         
@@ -133,13 +133,13 @@ int main(void) {
     TimerSet(1000);
     TimerOn();
 
-    unsigned long TL_elapsedTime = 0;
-    unsigned long BS_elapsedTime = 0;
-    const unsigned long period = 1000;
+    // unsigned long TL_elapsedTime = 0;
+    // unsigned long BS_elapsedTime = 0;
+    // const unsigned long period = 1000;
 
     PORTB = 0x00;
-    tState = Start;
-    bState = Start;
+    tState = TL_Start;
+    bState = BS_Start;
     cState = Start;
     while (1) {
         TL_tick();
