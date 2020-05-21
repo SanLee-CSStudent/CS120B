@@ -125,7 +125,7 @@ void CL_tick(){
     }
 }
 
-enum ES_States{eStart, eWait, ON} eState;
+enum ES_States{eStart, eWait, eON, eOFF} eState;
 void ES_tick(){
     switch(eState){
         case eStart:
@@ -134,21 +134,25 @@ void ES_tick(){
 
         case eWait:
             if(button){
-                eState = ON;
+                eState = eON;
             }
             else{
                 eState = eWait;
             }
             break;
 
-        case ON:
+        case eON:
             if(button){
-                eState = ON;
+                eState = eON;
             }
             else{
-                eState = eWait;
+                eState = eOFF;
             }
         
+        case eOFF:
+            eState = eWait;
+            break;
+
         default:
 
             break;
@@ -162,9 +166,14 @@ void ES_tick(){
             
             break;
 
-        case ON:
+        case eON:
             PORTB = 0x10;
-            // PORTB = 0x00;
+            
+            break;
+
+        case eOFF:
+            PORTB = 0x00;
+
             break;
         
         default:
