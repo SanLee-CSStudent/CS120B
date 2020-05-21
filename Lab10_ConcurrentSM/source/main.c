@@ -15,6 +15,7 @@
 
 unsigned char TLED = 0x00;
 unsigned char BLED = 0x00;
+unsigned char frequency = 0x10;
 unsigned char button = 0x00;
 
 enum TL_States {TL_Start, ONE, TWO, THREE} tState;
@@ -160,14 +161,16 @@ void ES_tick(){
 
     switch(eState){
         case eStart:
-            break;
-
-        case eWait:
             PORTB = 0x00;
             break;
 
+        case eWait:
+            
+            break;
+
         case eON:
-            PORTB = ~(0x10) & 0x10;
+            frequency = ~frequency & 0x10;
+            PORTB = PORTB | frequency;
             
             break;
 
