@@ -146,7 +146,7 @@ void ES_tick(){
                 eState = ON;
             }
             else{
-                eState = Wait;
+                eState = eWait;
             }
         
         default:
