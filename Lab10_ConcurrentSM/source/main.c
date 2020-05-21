@@ -162,6 +162,7 @@ void ES_tick(){
                 if(threshhold < 8){
                     threshhold++;
                 }   
+                eState = eWait;
             }
             
             break;
@@ -174,6 +175,7 @@ void ES_tick(){
                 if(threshhold > 1){
                     threshhold--;
                 }
+                eState = eWait;
             }
 
             break;
