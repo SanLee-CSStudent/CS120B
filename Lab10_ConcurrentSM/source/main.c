@@ -159,11 +159,12 @@ void ES_tick(){
             break;
 
         case eWait:
-            PORTB = 0x00;
+            
             break;
 
         case ON:
             PORTB = 0x10;
+            PORTB = 0x00;
             break;
         
         default:
