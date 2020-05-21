@@ -126,7 +126,7 @@ void CL_tick(){
     }
 }
 
-enum ES_States{eStart, eWait, eON, eOFF} eState;
+enum ES_States{eStart, eWait, eON, HIGH, LOW} eState;
 void ES_tick(){
     switch(eState){
         case eStart:
@@ -144,14 +144,28 @@ void ES_tick(){
 
         case eON:
             if(button){
-                eState = eON;
+                eState = HIGH;
             }
             else{
                 eState = eWait;
             }
         
-        case eOFF:
-            eState = eWait;
+        case HIGH:
+            if(button){
+                eState = LOW;
+            }
+            else{
+                eState = eWait;
+            }
+            break;
+
+        case LOW:
+            if(button){
+                eState = HIGH;
+            }
+            else{
+                eState = eWait;
+            }
             break;
 
         default:
@@ -169,14 +183,16 @@ void ES_tick(){
             break;
 
         case eON:
-            frequency = ~frequency & 0x10;
-            PORTB = PORTB | frequency;
-            
+                       
             break;
 
-        case eOFF:
-            PORTB = 0x00;
+        case HIGH:
+            frequency = 0x10;
 
+            break;
+
+        case LOW:
+            frequency = 0x00;
             break;
         
         default:
@@ -218,7 +234,7 @@ int main(void) {
         }
 
         ES_tick();
-
+        PORTB = frequency;
         while(!TimerFlag){}
         TimerFlag = 0;
         TL_elapsedTime += period;
