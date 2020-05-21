@@ -146,7 +146,7 @@ void ES_tick(){
                 eState = eON;
             }
             else{
-                eState = eOFF;
+                eState = eWait;
             }
         
         case eOFF:
@@ -163,11 +163,11 @@ void ES_tick(){
             break;
 
         case eWait:
-            
+            PORTB = 0x00;
             break;
 
         case eON:
-            PORTB = 0x10;
+            PORTB = ~(0x10) & 0x10;
             
             break;
 
@@ -188,12 +188,12 @@ int main(void) {
     DDRC = 0xFF; PORTC = 0x00;
 
     /* Insert your solution below */
-    TimerSet(100);
+    TimerSet(2);
     TimerOn();
 
     unsigned long TL_elapsedTime = 0;
     unsigned long BS_elapsedTime = 0;
-    const unsigned long period = 100;
+    const unsigned long period = 2;
 
     tState = TL_Start;
     bState = BS_Start;
@@ -201,17 +201,19 @@ int main(void) {
     eState = eStart;
     while (1) {
         button = (~PINA) & 0x01;
-        if(TL_elapsedTime >= 300){
-            TL_tick();
-            TL_elapsedTime = 0;
-        }
+        
 
         if(BS_elapsedTime >= 1000){
             BS_tick();
             BS_elapsedTime = 0;
         }
 
-        CL_tick();
+        if(TL_elapsedTime >= 300){
+            TL_tick();
+            CL_tick();
+            TL_elapsedTime = 0;
+        }
+
         ES_tick();
 
         while(!TimerFlag){}
