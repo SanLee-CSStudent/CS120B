@@ -232,11 +232,13 @@ void ES_tick(){
 
         case HIGH:
             frequency = 0x10;
+            PORTB = frequency;
             eTick++;
             break;
 
         case LOW:
             frequency = 0x00;
+            PORTB = frequency;
             eTick++;
             break;
         
@@ -279,7 +281,7 @@ int main(void) {
         }
 
         ES_tick();
-        PORTB = frequency;
+        
         while(!TimerFlag){}
         TimerFlag = 0;
         TL_elapsedTime += period;
