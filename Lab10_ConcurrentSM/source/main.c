@@ -137,7 +137,7 @@ void ES_tick(){
             break;
 
         case eWait:
-            if(button){
+            if(button == 0x01){
                 eState = eON;
                 
             }
