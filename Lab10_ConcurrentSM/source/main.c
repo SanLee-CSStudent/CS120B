@@ -116,7 +116,7 @@ void CL_tick(){
             break;
 
         case Combine:
-            PORTB = TLED | BLED;
+            PORTC = TLED | BLED;
             break;
 
         default:
@@ -128,6 +128,7 @@ int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
+    DDRC = 0xFF; PORTC = 0x00;
 
     /* Insert your solution below */
     TimerSet(1000);
