@@ -35,7 +35,6 @@ void Ping()
             break;
 
         default:
-            ping_state = PInit;
             break;
     }
     switch(ping_state)

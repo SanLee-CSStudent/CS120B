@@ -60,6 +60,7 @@ int main(void) {
     detect_zc_state = DZCInit;
     transmit_state = TInit;
 
+    PORTB = 0;
     while (1) {
         Ping();
         Detect_EQ();
