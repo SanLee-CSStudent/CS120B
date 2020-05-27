@@ -22,7 +22,7 @@ typedef enum transmit_states {TInit, TTransmit                                  
 unsigned char pingActive = 0x00; 
 unsigned char detect = 0x00;
 unsigned char zerocross = 0x00;
-unsigned char amplitude = 0x00;
+unsigned char maxAmplitude = 0x00;
 
 
 /* state variables --- do not alter */

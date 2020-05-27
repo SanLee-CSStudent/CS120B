@@ -11,6 +11,7 @@ void Ping()
     switch(ping_state)
     {
         case PInit:
+            ping_state = PHigh;
             break;
 
         case PHigh:

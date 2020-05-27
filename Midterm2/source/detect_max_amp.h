@@ -1,6 +1,8 @@
 
 //define local variable(s) here.  Use static keyword to keep local, e.g:
 //   static int i;  // defines a local int named i
+static char localMax = 0x00;
+static char amplitude = 0x00;
 
 /* complete the state machine. */
 
@@ -40,10 +42,16 @@ void Detect_Max_Amp()
 
         case DMAWait:
             amplitude = 0x00;
+            localMax = amplitude;
+            maxAmplitude = 0x00;
             break;
 
         case DMADetect:
-            amplitude = (PINA >> 3) << 3;
+            amplitude = (PINA >> 3);
+            if(localMax < amplitude){
+                localMax = amplitude;
+                maxAmplitude = localMax;
+            }
             break;
         
         default:

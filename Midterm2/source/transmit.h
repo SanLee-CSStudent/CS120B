@@ -27,7 +27,7 @@ void Transmit()
             break;
 
         case TTransmit:
-            PORTB = pingActive | detect | zerocross | amplitude;
+            PORTB = pingActive | detect | zerocross | (maxAmplitude << 3);
             break;
         
         default:
