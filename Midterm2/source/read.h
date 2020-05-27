@@ -24,4 +24,3 @@ void Read()
             break;
     }
 }
-
