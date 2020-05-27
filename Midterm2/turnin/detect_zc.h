@@ -11,16 +11,10 @@ void Detect_ZC()
     switch(detect_zc_state)
     {
         case DZCInit:
-            detect_zc_state = DZCWait;
+            detect_zc_state = firstSample;
             break;
         
         case DZCWait:
-            if(detect){
-                detect_zc_state = firstSample;
-            }
-            else{
-                detect_zc_state = DZCWait;
-            }
             break;  
 
         case firstSample:
@@ -28,12 +22,7 @@ void Detect_ZC()
             break;
 
         case secondSample:
-            if(!detect){
-                detect_zc_state = DZCWait;
-            }
-            else{
-                detect_zc_state = firstSample;
-            }
+            detect_zc_state = firstSample;
 
             break;
 
