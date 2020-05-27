@@ -1,7 +1,7 @@
 
 //define local variable(s) here.  Use static keyword to keep local, e.g:
 //   static int i;  // defines a local int named i
-static unsigned char pTick = 0x00;
+static char pTick = 0x00;
 
 
 /*complete the state machine*/
@@ -45,12 +45,12 @@ void Ping()
 
         case PHigh:
             pingActive = 0x01;
-            pTick += 1;
+            pTick++;
             break;
 
         case PLow:
             pingActive = 0x00;
-            pTick += 1;
+            pTick++;
             break;
 
         default:
