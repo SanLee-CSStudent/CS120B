@@ -118,6 +118,8 @@ int DS_Tick(int state){
     return state;
 }
 
+enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRB = 0xFF; PORTB = 0x00;
@@ -164,7 +166,7 @@ int main(void) {
             case 'D': LCD_DisplayString(1, "D"); break;
             case '*': LCD_DisplayString(1, "*"); break;
             case '#': LCD_DisplayString(1, "#"); break;
-            default: LCD_DisplayString(1, " "); break;
+            default: break;
         }
 
         while(!TimerFlag);
