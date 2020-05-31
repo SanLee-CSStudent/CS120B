@@ -208,7 +208,7 @@ int main(void) {
         }
 
         if(KS_task.elapsedTime == KS_task.period){
-            KS_task.state = DS_task.TickFct(KS_task.state);
+            KS_task.state = KS_task.TickFct(KS_task.state);
             KS_task.elapsedTime = 0;
         }
 
