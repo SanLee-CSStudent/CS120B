@@ -16,10 +16,10 @@
 #include "timer.h"
 #include "keypad.h"
 
-typedef struct _task{
-    signed char state;
-    unsigned long int period;
-    unsigned long int elapsedTime;
+typedef struct task{
+    int state;
+    unsigned long period;
+    unsigned long elapsedTime;
     int (*TickFct)(int);
 } task;
 
@@ -65,7 +65,7 @@ int main(void) {
 
     LCD_DisplayString(-1, "CS12B is Legend... wait for it DARY!");
 
-    static _task DS_task;
+    static task DS_task;
     DS_task.state = DS_Start;
     DS_task.period = 100;
     DS_task.elapsedTime = DS_task.period;
