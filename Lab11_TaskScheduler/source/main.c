@@ -48,6 +48,7 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
+            LCD_ClearScreen();
             LCD_DisplayString(i, "CS120B is Legend... wait for it DARY!");
             i--;
             break;
