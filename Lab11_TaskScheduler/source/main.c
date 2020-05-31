@@ -54,6 +54,56 @@ int DS_Tick(int state){
             }
             else if(i == 1){LCD_DisplayString(16, "C");}
             else if(i == 2){LCD_DisplayString(15, "CS");}
+            else if(i == 3){LCD_DisplayString(14, "CS1");}
+            else if(i == 4){LCD_DisplayString(13, "CS12");}
+            else if(i == 5){LCD_DisplayString(12, "CS120");}
+            else if(i == 6){LCD_DisplayString(11, "CS120B");}
+            else if(i == 7){LCD_DisplayString(10, "CS120B ");}
+            else if(i == 8){LCD_DisplayString(9, "CS120B i");}
+            else if(i == 9){LCD_DisplayString(8, "CS120B is");}
+            else if(i == 10){LCD_DisplayString(7, "CS120B is ");}
+            else if(i == 11){LCD_DisplayString(6, "CS120B is L");}
+            else if(i == 12){LCD_DisplayString(5, "CS120B is Le");}
+            else if(i == 13){LCD_DisplayString(4, "CS120B is Leg");}
+            else if(i == 14){LCD_DisplayString(3, "CS120B is Lege");}
+            else if(i == 15){LCD_DisplayString(2, "CS120B is Legen");}
+            else if(i == 16){LCD_DisplayString(1, "CS120B is Legend");}
+            else if(i == 17){LCD_DisplayString(1, "S120B is Legend.");}
+            else if(i == 18){LCD_DisplayString(1, "120B is Legend..");}
+            else if(i == 19){LCD_DisplayString(1, "20B is Legend...");}
+            else if(i == 20){LCD_DisplayString(1, "0B is Legend...w");}
+            else if(i == 21){LCD_DisplayString(1, "B is Legend...wa");}
+            else if(i == 22){LCD_DisplayString(1, " is Legend...wai");}
+            else if(i == 23){LCD_DisplayString(1, "is Legend...wait");}
+            else if(i == 24){LCD_DisplayString(1, "s Legend...wait ");}
+            else if(i == 25){LCD_DisplayString(1, " Legend...wait f");}
+            else if(i == 26){LCD_DisplayString(1, "Legend...wait fo");}
+            else if(i == 27){LCD_DisplayString(1, "egend...wait for");}
+            else if(i == 28){LCD_DisplayString(1, "gend...wait for ");}
+            else if(i == 29){LCD_DisplayString(1, "end...wait for i");}
+            else if(i == 30){LCD_DisplayString(1, "nd...wait for it");}
+            else if(i == 31){LCD_DisplayString(1, "d...wait for it ");}
+            else if(i == 32){LCD_DisplayString(1, "...wait for it D");}
+            else if(i == 33){LCD_DisplayString(1, "..wait for it DA");}
+            else if(i == 34){LCD_DisplayString(1, ".wait for it DAR");}
+            else if(i == 35){LCD_DisplayString(1, "wait for it DARY");}
+            else if(i == 36){LCD_DisplayString(1, "ait for it DARY!");}
+            else if(i == 37){LCD_DisplayString(1, "it for it DARY!");}
+            else if(i == 38){LCD_DisplayString(1, "t for it DARY!");}
+            else if(i == 39){LCD_DisplayString(1, " for it DARY!");}
+            else if(i == 40){LCD_DisplayString(1, "for it DARY!");}
+            else if(i == 41){LCD_DisplayString(1, "or it DARY!");}
+            else if(i == 42){LCD_DisplayString(1, "r it DARY!");}
+            else if(i == 43){LCD_DisplayString(1, " it DARY!");}
+            else if(i == 44){LCD_DisplayString(1, "it DARY!");}
+            else if(i == 45){LCD_DisplayString(1, "t DARY!");}
+            else if(i == 46){LCD_DisplayString(1, " DARY!");}
+            else if(i == 47){LCD_DisplayString(1, "DARY!");}
+            else if(i == 48){LCD_DisplayString(1, "ARY!");}
+            else if(i == 49){LCD_DisplayString(1, "RY!");}
+            else if(i == 50){LCD_DisplayString(1, "Y!");}
+            else if(i == 51){LCD_DisplayString(1, "!");}
+            else if(i == 52){LCD_DisplayString(1, "");}
             else{
                 i = 0;
             }
