@@ -66,7 +66,7 @@ int main(void) {
 
     LCD_init();
     LCD_ClearScreen();
-    LCD_DisplayString(-1, "Hello World");
+    LCD_DisplayString(0, "Hello World");
 
     static task DS_task;
     DS_task.state = DS_Start;
