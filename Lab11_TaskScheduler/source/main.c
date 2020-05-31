@@ -141,7 +141,7 @@ int main(void) {
     while (1) {
 
         if(DS_task.elapsedTime == DS_task.period){
-            DS_task.state = DS_task.TickFct(DS_task.state);
+            // DS_task.state = DS_task.TickFct(DS_task.state);
             DS_task.elapsedTime = 0;
         }
 
