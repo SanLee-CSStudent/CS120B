@@ -65,7 +65,7 @@ int main(void) {
     unsigned char input;
 
     LCD_init();
-
+    LCD_ClearScreen();
     LCD_DisplayString(1, "Hello World");
 
     static task DS_task;
