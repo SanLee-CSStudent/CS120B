@@ -20,7 +20,7 @@ typedef struct _task{
     signed char state;
     unsigned long int period;
     unsigned long int elapsedTime;
-    int *TickFct(int);
+    int (*TickFct)(int);
 } task;
 
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
