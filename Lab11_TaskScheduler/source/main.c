@@ -120,6 +120,59 @@ int DS_Tick(int state){
 
 enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
 
+int KS_Tick(int state){
+    switch(state){
+        case KS_Start:
+            state = KS_Wait;
+            break;
+
+        case KS_Wait:
+
+            break;
+        
+        default:
+
+            break;
+    }
+
+    switch(state){
+        case KS_Start:
+            state = KS_Wait;
+            break;
+
+        case KS_Wait:
+            input = GetKeypadKey();
+
+            switch(input){
+                // case '\0': LCD_DisplayString(1, ""); break;
+                case '0': LCD_DisplayString(1, "0"); break;
+                case '1': LCD_DisplayString(1, "1"); break;
+                case '2': LCD_DisplayString(1, "2"); break;
+                case '3': LCD_DisplayString(1, "3"); break;
+                case '4': LCD_DisplayString(1, "4"); break;
+                case '5': LCD_DisplayString(1, "5"); break;
+                case '6': LCD_DisplayString(1, "6"); break;
+                case '7': LCD_DisplayString(1, "7"); break;
+                case '8': LCD_DisplayString(1, "8"); break;
+                case '9': LCD_DisplayString(1, "9"); break;
+                case 'A': LCD_DisplayString(1, "A"); break;
+                case 'B': LCD_DisplayString(1, "B"); break;
+                case 'C': LCD_DisplayString(1, "C"); break;
+                case 'D': LCD_DisplayString(1, "D"); break;
+                case '*': LCD_DisplayString(1, "*"); break;
+                case '#': LCD_DisplayString(1, "#"); break;
+                default: break;
+            }
+            break;
+        
+        default:
+
+            break;
+    }
+
+    return state;
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRB = 0xFF; PORTB = 0x00;
@@ -148,26 +201,27 @@ int main(void) {
         }
 
         input = GetKeypadKey();
-        switch(input){
-            case '\0': LCD_DisplayString(1, ""); break;
-            case '0': LCD_DisplayString(1, "0"); break;
-            case '1': LCD_DisplayString(1, "1"); break;
-            case '2': LCD_DisplayString(1, "2"); break;
-            case '3': LCD_DisplayString(1, "3"); break;
-            case '4': LCD_DisplayString(1, "4"); break;
-            case '5': LCD_DisplayString(1, "5"); break;
-            case '6': LCD_DisplayString(1, "6"); break;
-            case '7': LCD_DisplayString(1, "7"); break;
-            case '8': LCD_DisplayString(1, "8"); break;
-            case '9': LCD_DisplayString(1, "9"); break;
-            case 'A': LCD_DisplayString(1, "A"); break;
-            case 'B': LCD_DisplayString(1, "B"); break;
-            case 'C': LCD_DisplayString(1, "C"); break;
-            case 'D': LCD_DisplayString(1, "D"); break;
-            case '*': LCD_DisplayString(1, "*"); break;
-            case '#': LCD_DisplayString(1, "#"); break;
-            default: break;
-        }
+
+            switch(input){
+                // case '\0': LCD_DisplayString(1, ""); break;
+                case '0': LCD_DisplayString(1, "0"); break;
+                case '1': LCD_DisplayString(1, "1"); break;
+                case '2': LCD_DisplayString(1, "2"); break;
+                case '3': LCD_DisplayString(1, "3"); break;
+                case '4': LCD_DisplayString(1, "4"); break;
+                case '5': LCD_DisplayString(1, "5"); break;
+                case '6': LCD_DisplayString(1, "6"); break;
+                case '7': LCD_DisplayString(1, "7"); break;
+                case '8': LCD_DisplayString(1, "8"); break;
+                case '9': LCD_DisplayString(1, "9"); break;
+                case 'A': LCD_DisplayString(1, "A"); break;
+                case 'B': LCD_DisplayString(1, "B"); break;
+                case 'C': LCD_DisplayString(1, "C"); break;
+                case 'D': LCD_DisplayString(1, "D"); break;
+                case '*': LCD_DisplayString(1, "*"); break;
+                case '#': LCD_DisplayString(1, "#"); break;
+                default: break;
+            }
 
         while(!TimerFlag);
         TimerFlag = 0;
