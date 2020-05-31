@@ -118,7 +118,7 @@ int DS_Tick(int state){
     return state;
 }
 
-/*enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
 
 int KS_Tick(int state){
     switch(state){
@@ -127,7 +127,7 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-
+            state = KS_Wait;
             break;
         
         default:
@@ -137,7 +137,7 @@ int KS_Tick(int state){
 
     switch(state){
         case KS_Start:
-            state = KS_Wait;
+
             break;
 
         case KS_Wait:
@@ -171,7 +171,9 @@ int KS_Tick(int state){
     }
 
     return state;
-}*/
+}
+
+unsigned char input;
 
 int main(void) {
     /* Insert DDR and PORT initializations */
@@ -179,7 +181,6 @@ int main(void) {
     DDRC = 0xF0; PORTC = 0x0F;
     DDRD = 0xFF; PORTD = 0x00;
     /* Insert your solution below */
-    unsigned char input;
 
     LCD_init();
     LCD_ClearScreen();
@@ -189,6 +190,12 @@ int main(void) {
     DS_task.period = 200;
     DS_task.elapsedTime = DS_task.period;
     DS_task.TickFct = &DS_Tick;
+
+    static task KS_task;
+    KS_task.state = KS_Start;
+    KS_task.period = 200;
+    KS_task.elapsedTime = KS_task.period;
+    KS_task.TickFct = &KS_Tick;
 
     TimerSet(200);
     TimerOn();
@@ -200,33 +207,16 @@ int main(void) {
             DS_task.elapsedTime = 0;
         }
 
-        input = GetKeypadKey();
-
-        switch(input){
-            // case '\0': LCD_DisplayString(1, ""); break;
-            case '0': LCD_DisplayString(1, "0"); break;
-            case '1': LCD_DisplayString(1, "1"); break;
-            case '2': LCD_DisplayString(1, "2"); break;
-            case '3': LCD_DisplayString(1, "3"); break;
-            case '4': LCD_DisplayString(1, "4"); break;
-            case '5': LCD_DisplayString(1, "5"); break;
-            case '6': LCD_DisplayString(1, "6"); break;
-            case '7': LCD_DisplayString(1, "7"); break;
-            case '8': LCD_DisplayString(1, "8"); break;
-            case '9': LCD_DisplayString(1, "9"); break;
-            case 'A': LCD_DisplayString(1, "A"); break;
-            case 'B': LCD_DisplayString(1, "B"); break;
-            case 'C': LCD_DisplayString(1, "C"); break;
-            case 'D': LCD_DisplayString(1, "D"); break;
-            case '*': LCD_DisplayString(1, "*"); break;
-            case '#': LCD_DisplayString(1, "#"); break;
-            default: break;
+        if(KS_task.elapsedTime == KS_task.period){
+            KS_task.state = DS_task.TickFct(DS_task.state);
+            KS_task.elapsedTime = 0;
         }
 
         while(!TimerFlag);
         TimerFlag = 0;
 
         DS_task.elapsedTime += 200;
+        KS_task.elapsedTime += 200;
     }
     return 1;
 }
