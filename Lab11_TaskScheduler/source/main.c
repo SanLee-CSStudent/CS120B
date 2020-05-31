@@ -147,30 +147,30 @@ int main(void) {
 
         input = GetKeypadKey();
         switch(input){
-            case '\0': PORTB = 0x1F; break;
-            case '0': PORTB = 0x00; break;
-            case '1': PORTB = 0x01; break;
-            case '2': PORTB = 0x02; break;
-            case '3': PORTB = 0x03; break;
-            case '4': PORTB = 0x04; break;
-            case '5': PORTB = 0x05; break;
-            case '6': PORTB = 0x06; break;
-            case '7': PORTB = 0x07; break;
-            case '8': PORTB = 0x08; break;
-            case '9': PORTB = 0x09; break;
-            case 'A': PORTB = 0x0A; break;
-            case 'B': PORTB = 0x0B; break;
-            case 'C': PORTB = 0x0C; break;
-            case 'D': PORTB = 0x0D; break;
-            case '*': PORTB = 0x0E; break;
-            case '#': PORTB = 0x0F; break;
-            default: PORTB = 0x1B; break;
+            case '\0': LCD_DisplayString(1, ""); break;
+            case '0': LCD_DisplayString(1, "0"); break;
+            case '1': LCD_DisplayString(1, "1"); break;
+            case '2': LCD_DisplayString(1, "2"); break;
+            case '3': LCD_DisplayString(1, "3"); break;
+            case '4': LCD_DisplayString(1, "4"); break;
+            case '5': LCD_DisplayString(1, "5"); break;
+            case '6': LCD_DisplayString(1, "6"); break;
+            case '7': LCD_DisplayString(1, "7"); break;
+            case '8': LCD_DisplayString(1, "8"); break;
+            case '9': LCD_DisplayString(1, "9"); break;
+            case 'A': LCD_DisplayString(1, "A"); break;
+            case 'B': LCD_DisplayString(1, "B"); break;
+            case 'C': LCD_DisplayString(1, "C"); break;
+            case 'D': LCD_DisplayString(1, "D"); break;
+            case '*': LCD_DisplayString(1, "*"); break;
+            case '#': LCD_DisplayString(1, "#"); break;
+            default: LCD_DisplayString(1, " "); break;
         }
 
         while(!TimerFlag);
         TimerFlag = 0;
 
-        DS_task.elapsedTime += 100;
+        DS_task.elapsedTime += 200;
     }
     return 1;
 }
