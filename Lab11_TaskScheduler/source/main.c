@@ -28,6 +28,8 @@ typedef struct task{
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
 
 int DS_Tick(int state){
+    static unsigned char i = 0x10;
+
     switch(state){
         case DS_Start:
             state = DS_Wait;
@@ -46,7 +48,8 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-
+            LCD_DisplayString(i, "CS120B is Legend... wait for it DARY!");
+            i--;
             break;
 
         default:
@@ -66,7 +69,6 @@ int main(void) {
 
     LCD_init();
     LCD_ClearScreen();
-    LCD_DisplayString(0, "Hello World");
 
     static task DS_task;
     DS_task.state = DS_Start;
