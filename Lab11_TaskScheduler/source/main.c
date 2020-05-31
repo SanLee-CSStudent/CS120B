@@ -12,7 +12,47 @@
 #include "simAVRHeader.h"
 #endif
 
+#include "io.h"
+#include "timer.h"
 #include "keypad.h"
+
+typedef struct _task{
+    signed char state;
+    unsigned long int period;
+    unsigned long int elapsedTime;
+    int (*TickFct){int};
+} task;
+
+enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
+
+int Display_Tick(int state){
+    switch(state){
+        case DS_Start:
+            state = DS_Wait;
+            break;
+
+        case DS_Wait:
+            state = DS_Wait;
+            break;
+
+        default:
+            break;
+    }
+
+    switch(state){
+        case DS_Start:
+            break;
+
+        case DS_Wait:
+
+            break;
+
+        default:
+            break;
+    }
+
+    return state;
+}
 
 int main(void) {
     /* Insert DDR and PORT initializations */
@@ -21,7 +61,28 @@ int main(void) {
     /* Insert your solution below */
     unsigned char input;
 
+    LCD_init();
+
+    LCD_DisplayString(-1, "CS12B is Legend... wait for it DART!")
+
+    static _task DS_task;
+    DS_task.state = DS_Start;
+    DS_task.period = 100;
+    DS_task.elapsedTime = DS_task.period;
+    DS_task.TickFct = &Display_Tick;
+
+    TimerSet(100);
+    TimerOn();
+
     while (1) {
+
+        if(DS_task.elapsedTime == DS_task.period){
+            DS_task.state = DS_task.TickFct(DS_task.state);
+            DS_task.elapsedTime = 0;
+        }
+
+        DS_task.elapsedTime += 100;
+
         input = GetKeypadKey();
         switch(input){
             case '\0': PORTB = 0x1F; break;
@@ -43,6 +104,9 @@ int main(void) {
             case '#': PORTB = 0x0F; break;
             default: PORTB = 0x1B; break;
         }
+
+        while(!TimerFlag);
+        TimerFlag = 0;
     }
     return 1;
 }
