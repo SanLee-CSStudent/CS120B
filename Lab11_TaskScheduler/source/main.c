@@ -63,7 +63,7 @@ int main(void) {
 
     LCD_init();
 
-    LCD_DisplayString(-1, "CS12B is Legend... wait for it DARY!");
+    LCD_DisplayString(1, "CS12B is Legend... wait for it DARY!");
 
     static task DS_task;
     DS_task.state = DS_Start;
