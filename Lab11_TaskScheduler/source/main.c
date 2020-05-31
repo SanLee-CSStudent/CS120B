@@ -58,12 +58,13 @@ int main(void) {
     /* Insert DDR and PORT initializations */
     DDRB = 0xFF; PORTB = 0x00;
     DDRC = 0xF0; PORTC = 0x0F;
+    DDRD = 0xFF; PORTD = 0x00;
     /* Insert your solution below */
     unsigned char input;
 
     LCD_init();
 
-    LCD_DisplayString(-1, "Hello World");
+    LCD_DisplayString(1, "Hello World");
 
     static task DS_task;
     DS_task.state = DS_Start;
