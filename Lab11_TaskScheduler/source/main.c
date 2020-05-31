@@ -131,11 +131,11 @@ int main(void) {
 
     static task DS_task;
     DS_task.state = DS_Start;
-    DS_task.period = 225;
+    DS_task.period = 200;
     DS_task.elapsedTime = DS_task.period;
     DS_task.TickFct = &DS_Tick;
 
-    TimerSet(225);
+    TimerSet(200);
     TimerOn();
 
     while (1) {
