@@ -118,6 +118,8 @@ int DS_Tick(int state){
     return state;
 }
 
+unsigned char input;
+
 enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
 
 int KS_Tick(int state){
@@ -173,8 +175,6 @@ int KS_Tick(int state){
     return state;
 }
 
-unsigned char input;
-
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRB = 0xFF; PORTB = 0x00;
@@ -208,7 +208,7 @@ int main(void) {
         }
 
         if(KS_task.elapsedTime == KS_task.period){
-            KS_task.state = DS_task.TickFct(DS_task.state);
+            KS_task.state = DS_task.TickFct(KS_task.state);
             KS_task.elapsedTime = 0;
         }
 
