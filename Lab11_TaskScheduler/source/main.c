@@ -28,7 +28,7 @@ typedef struct task{
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
 
 int DS_Tick(int state){
-    static signed char i = 0x10;
+    static unsigned char i = 0x00;
 
     switch(state){
         case DS_Start:
@@ -49,13 +49,16 @@ int DS_Tick(int state){
 
         case DS_Wait:
             // LCD_ClearScreen();
-            LCD_DisplayString(i, "CS120B is Legend...wait for it DARY!");
-            if(i > -36){
-                i--;
+            if(i == 0){
+                LCD_ClearScreen();
             }
+            else if(i == 1){LCD_DisplayString(16, "C");}
+            else if(i == 2){LCD_DisplayString(15, "CS");}
             else{
-                i = 0x10;
+                i = 0;
             }
+
+            i++;
             break;
 
         default:
