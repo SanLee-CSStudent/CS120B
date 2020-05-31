@@ -20,7 +20,7 @@ typedef struct _task{
     signed char state;
     unsigned long int period;
     unsigned long int elapsedTime;
-    int (*TickFct){int};
+    int *TickFct(int);
 } task;
 
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
@@ -63,7 +63,7 @@ int main(void) {
 
     LCD_init();
 
-    LCD_DisplayString(-1, "CS12B is Legend... wait for it DART!")
+    LCD_DisplayString(-1, "CS12B is Legend... wait for it DARY!");
 
     static _task DS_task;
     DS_task.state = DS_Start;
