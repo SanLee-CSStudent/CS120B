@@ -8,13 +8,12 @@
  *	code, is my own original work.
  */
 #include <avr/io.h>
-#ifdef _SIMULATE_
-#include "simAVRHeader.h"
-#endif
-
 #include "io.h"
 #include "timer.h"
 #include "keypad.h"
+#ifdef _SIMULATE_
+#include "simAVRHeader.h"
+#endif
 
 typedef struct task{
     int state;
@@ -25,7 +24,7 @@ typedef struct task{
 
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
 
-int Display_Tick(int state){
+int DS_Tick(int state){
     switch(state){
         case DS_Start:
             state = DS_Wait;
@@ -70,7 +69,7 @@ int main(void) {
     DS_task.state = DS_Start;
     DS_task.period = 100;
     DS_task.elapsedTime = DS_task.period;
-    DS_task.TickFct = &Display_Tick;
+    DS_task.TickFct = &DS_Tick;
 
     TimerSet(100);
     TimerOn();
@@ -81,8 +80,6 @@ int main(void) {
             DS_task.state = DS_task.TickFct(DS_task.state);
             DS_task.elapsedTime = 0;
         }
-
-        DS_task.elapsedTime += 100;
 
         input = GetKeypadKey();
         switch(input){
@@ -108,6 +105,8 @@ int main(void) {
 
         while(!TimerFlag);
         TimerFlag = 0;
+
+        DS_task.elapsedTime += 100;
     }
     return 1;
 }
