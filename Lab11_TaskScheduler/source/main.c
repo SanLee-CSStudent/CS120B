@@ -66,7 +66,7 @@ enum KEYPAD_STATE{KS_Start, KS_Wait, KS_Press, KS_Release} KS_states;
 
 int KS_Tick(int state){
     static unsigned char i = 0x01;
-
+    input = GetKeypadKey();
     switch(state){
         case KS_Start:
             state = KS_Wait;
@@ -175,7 +175,7 @@ int main(void) {
     TimerOn();
 
     while (1) {
-        input = GetKeypadKey();
+        
         if(DS_task.elapsedTime == DS_task.period){
             // DS_task.state = DS_task.TickFct(DS_task.state);
             DS_task.elapsedTime = 0;
