@@ -160,6 +160,7 @@ int main(void) {
     LCD_init();
     LCD_ClearScreen();
     LCD_DisplayString(1, "Congratulations!");
+    LCD_Cursor(1);
 
     static task DS_task;
     DS_task.state = DS_Start;
