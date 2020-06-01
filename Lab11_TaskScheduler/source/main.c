@@ -66,6 +66,7 @@ enum KEYPAD_STATE{KS_Start, KS_Wait, KS_Press, KS_Release} KS_states;
 
 int KS_Tick(int state){
     static unsigned char i = 0x01;
+    unsigned char key = 0x00;
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
@@ -83,6 +84,7 @@ int KS_Tick(int state){
             break;
         
         case KS_Press:
+            input = GetKeypadKey();
             state = KS_Release;
             break;
 
