@@ -62,7 +62,7 @@ int DS_Tick(int state){
 
 unsigned char input;
 
-enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Wait, KS_Press, KS_Release} KS_states;
 
 int KS_Tick(int state){
     static unsigned char i = 0x01;
@@ -73,9 +73,28 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            state = KS_Wait;
+
+            if(input != '\0'){
+                state = KS_Press;
+            }
+            else{
+                state = KS_Wait;
+            }
             break;
         
+        case KS_Press:
+            state = KS_Release;
+            break;
+
+        case KS_Release:
+            if(input != '\0'){
+                state = KS_Release;
+            }
+            else{
+                state = KS_Wait;
+            }
+            break;
+
         default:
 
             break;
@@ -87,8 +106,10 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            input = GetKeypadKey();
+            
+            break;
 
+        case KS_Press:
             switch(input){
                 // case '\0': LCD_DisplayString(1, ""); break;
                 LCD_Cursor(i);
@@ -154,7 +175,7 @@ int main(void) {
     TimerOn();
 
     while (1) {
-
+        input = GetKeypadKey();
         if(DS_task.elapsedTime == DS_task.period){
             // DS_task.state = DS_task.TickFct(DS_task.state);
             DS_task.elapsedTime = 0;
