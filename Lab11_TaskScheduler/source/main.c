@@ -91,26 +91,32 @@ int KS_Tick(int state){
 
             switch(input){
                 // case '\0': LCD_DisplayString(1, ""); break;
-                case '0': LCD_DisplayString(i, ""); LCD_DisplayString(i, "0"); break;
-                case '1': LCD_DisplayString(i, ""); LCD_DisplayString(i, "1"); break;
-                case '2': LCD_DisplayString(i, ""); LCD_DisplayString(i, "2"); break;
-                case '3': LCD_DisplayString(i, ""); LCD_DisplayString(i, "3"); break;
-                case '4': LCD_DisplayString(i, ""); LCD_DisplayString(i, "4"); break;
-                case '5': LCD_DisplayString(i, ""); LCD_DisplayString(i, "5"); break;
-                case '6': LCD_DisplayString(i, ""); LCD_DisplayString(i, "6"); break;
-                case '7': LCD_DisplayString(i, ""); LCD_DisplayString(i, "7"); break;
-                case '8': LCD_DisplayString(i, ""); LCD_DisplayString(i, "8"); break;
-                case '9': LCD_DisplayString(i, ""); LCD_DisplayString(i, "9"); break;
-                case 'A': LCD_DisplayString(i, ""); LCD_DisplayString(i, "A"); break;
-                case 'B': LCD_DisplayString(i, ""); LCD_DisplayString(i, "B"); break;
-                case 'C': LCD_DisplayString(i, ""); LCD_DisplayString(i, "C"); break;
-                case 'D': LCD_DisplayString(i, ""); LCD_DisplayString(i, "D"); break;
-                case '*': LCD_DisplayString(i, ""); LCD_DisplayString(i, "*"); break;
-                case '#': LCD_DisplayString(i, ""); LCD_DisplayString(i, "#"); break;
+                LCD_Cursor(i);
+                case '0': LCD_WriteData(0 + '0'); break;
+                case '1': LCD_WriteData(1 + '0'); break;
+                case '2': LCD_WriteData(2 + '0'); break;
+                case '3': LCD_WriteData(3 + '0'); break;
+                case '4': LCD_WriteData(4 + '0'); break;
+                case '5': LCD_WriteData(5 + '0');  break;
+                case '6': LCD_WriteData(6 + '0');  break;
+                case '7': LCD_WriteData(7 + '0');  break;
+                case '8': LCD_WriteData(8 + '0');  break;
+                case '9': LCD_WriteData(9 + '0');  break;
+                case 'A': LCD_WriteData('A');  break;
+                case 'B': LCD_WriteData('B'); break;
+                case 'C': LCD_WriteData('C'); break;
+                case 'D': LCD_WriteData('D'); break;
+                case '*': LCD_WriteData('*'); break;
+                case '#': LCD_WriteData('#'); break;
                 default: break;
                 
             }
-            i++;
+            if(i < 16){
+                i++;
+            }
+            else{
+                i = 0x01;
+            }
             break;
         
         default:
