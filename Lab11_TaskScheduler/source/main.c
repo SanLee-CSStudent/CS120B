@@ -114,7 +114,7 @@ int KS_Tick(int state){
         case KS_Press:
             switch(input){
                 // case '\0': LCD_DisplayString(1, ""); break;
-                LCD_Cursor(i);
+                // LCD_Cursor(i);
                 case '0': LCD_WriteData(0 + '0'); break;
                 case '1': LCD_WriteData(1 + '0'); break;
                 case '2': LCD_WriteData(2 + '0'); break;
@@ -138,7 +138,7 @@ int KS_Tick(int state){
                 i++;
             }
             else{
-                i = 0x01;
+                LCD_Cursor(1);
             }
             break;
         
