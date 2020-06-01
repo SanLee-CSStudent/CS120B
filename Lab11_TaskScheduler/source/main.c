@@ -138,7 +138,8 @@ int KS_Tick(int state){
                 i++;
             }
             else{
-                LCD_Cursor(1);
+                i = 1;
+                LCD_Cursor(i);
             }
             break;
         
