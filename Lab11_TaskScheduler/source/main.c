@@ -304,6 +304,7 @@ int KS_Tick(int state){
             break;
 
         case GAMEOVER:
+            displayGO++;
             if(displayGO == 1){
                 LCD_Cursor(displayGO);
                 LCD_WriteData('!');
