@@ -135,9 +135,11 @@ int DS_Tick(int state){
 
                     if(!loc){
                         s.displacement = 32;
+                        s.sLoc = 1;
                     }
                     else{
                         s.displacement = 16;
+                        s.sLoc = 0;
                     }
 
                     stones[curr] = s;
@@ -160,13 +162,25 @@ int DS_Tick(int state){
                 LCD_Cursor(stones[i].displacement);
                 LCD_WriteData('#');
                 LCD_Cursor(location);
-                if(stones[i].displacement > 0){
-                    stones[i].displacement--;
+                if(stones[i].sLoc){
+                    if(stones[i].displacement > 17){
+                        stones[i].displacement--;
+                    }
+                    else{
+                        s.end = 1;
+                        curr = i;
+                    }
                 }
                 else{
-                    s.end = 1;
-                    curr = i;
+                    if(stones[i].displacement > 0){
+                        stones[i].displacement--;
+                    }
+                    else{
+                        s.end = 1;
+                        curr = i;
+                    }
                 }
+                
             }
             
             /*for(i = 0; i < max; i++){
@@ -196,6 +210,8 @@ enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOff
 
 int KS_Tick(int state){
     unsigned char key = 0x00;
+    unsigned char l;
+
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
@@ -256,11 +272,18 @@ int KS_Tick(int state){
 
             }
             else if(button == 0x02){
-                location = -1;
+                location = 17;
                 
             }
 
             LCD_Cursor(location);
+
+            for(l = 0; l < max; l++){
+                if(stones[l].displacement == location){
+                    LCD_DisplayString(1, "!!GAME OVER!!");
+                    break;
+                }
+            }
             break;
         
         case KS_PausePress:
