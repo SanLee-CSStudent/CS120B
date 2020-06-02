@@ -282,8 +282,6 @@ int main(void) {
     LCD_ClearScreen();
     // LCD_DisplayString(1, "Congratulations!");
     LCD_Cursor(17);
-    LCD_WriteData('*');
-    LCD_Cursor(1);
     obstacles = QueueInit(8);
 
     static task DS_task;
