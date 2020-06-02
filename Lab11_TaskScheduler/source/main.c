@@ -128,7 +128,7 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(delay > maxDelay){
+            if(delay > 12){
                 if(size > curr){
                     loc = QueueDequeue(obstacles);
                     s.end = 0;
@@ -150,6 +150,7 @@ int DS_Tick(int state){
                 else{
                     max = size;
                 }
+                delay = 0;
             }
             
             for(i = 0; i < max; i++){
