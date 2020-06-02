@@ -250,7 +250,7 @@ int KS_Tick(int state){
 
             }
             else if(button == 0x02){
-                location = -1;
+                location = -6;
                 
             }
 
@@ -281,7 +281,7 @@ int main(void) {
     LCD_init();
     LCD_ClearScreen();
     // LCD_DisplayString(1, "Congratulations!");
-    LCD_Cursor(17);
+    LCD_Cursor(1);
     obstacles = QueueInit(8);
 
     static task DS_task;
