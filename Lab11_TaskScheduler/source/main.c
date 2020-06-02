@@ -51,7 +51,7 @@ int M_Tick(int state){
             break;
 
         case M_Wait:
-            if(button == 1){
+            if(button == 0x01){
                 state = M_SingleClear;
             }
             else{
@@ -60,7 +60,13 @@ int M_Tick(int state){
             break;
 
         case M_SingleClear:
-            state = M_Single;
+            if(button == 0x01){
+                state = M_SingleClear;
+            }
+            else if(button == 0x00){
+                state = M_Single;
+            }
+            
             break;
 
         case M_Single:
