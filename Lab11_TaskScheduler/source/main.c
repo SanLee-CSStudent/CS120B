@@ -168,6 +168,7 @@ int DS_Tick(int state){
                         stones[i].displacement--;
                     }
                     else{
+                        stones[i].displacement = 0;
                         s.end = 1;
                         curr = i;
                     }
@@ -177,6 +178,7 @@ int DS_Tick(int state){
                         stones[i].displacement--;
                     }
                     else{
+                        stones[i].displacement = 0;
                         s.end = 1;
                         curr = i;
                     }
@@ -220,16 +222,17 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            if(gameover){
-                state = GAMEOVER;
-            }
-
             if(button == 0x04){
                 state = KS_PausePress;
             }
             else{
                 state = KS_Wait;
             }
+
+            if(gameover){
+                state = GAMEOVER;
+            }
+
             break;
 
         case KS_PausePress:
