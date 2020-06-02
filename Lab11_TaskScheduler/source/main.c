@@ -23,6 +23,7 @@
 unsigned char button = 0x00;
 signed char location = 1;
 unsigned char pause = 0x00;
+unsigned char startSingle = 0x00;
 unsigned char gameover = 0x00;
 
 static Queue obstacles;
@@ -40,14 +41,69 @@ typedef struct stone{
     unsigned char end;
 } stone;
 
-enum REPLENISH_OBSTACLE {RO_Start, RO_Wait} RO_states;
+enum MENU {M_Start, M_Wait, M_Single} M_states;
+
+int M_Tick(int state){
+
+    switch(state){
+        case M_Start:
+            state = M_Wait;
+            break;
+
+        case M_Wait:
+            if(button == 1){
+                state = M_Single;
+            }
+            else{
+                state = M_Wait;
+            }
+            break;
+
+        case M_Single:
+            state = M_Single;
+            break;
+
+        default:
+            break;
+    }
+
+    switch(state){
+        case M_Start:
+
+            break;
+
+        case M_Wait:
+
+            break;
+
+        case M_Single:
+            startSingle = 1;
+            break;
+
+        default:
+            break;
+    }
+
+    return state;
+}
+
+enum REPLENISH_OBSTACLE {RO_Start, RO_Init, RO_Wait} RO_states;
 
 int RO_Tick(int state){
     unsigned char random;
 
     switch(state){
         case RO_Start:
-            state = RO_Wait;
+            state = RO_Init;
+            break;
+
+        case RO_Init:
+            if(startSingle){
+                state = RO_Wait;
+            }
+            else{
+                state = RO_Init;
+            }
             break;
 
         case RO_Wait:
@@ -86,7 +142,7 @@ unsigned curr = 0;
 unsigned char delay = 0;
 unsigned char maxDelay = -1;
 
-enum DISPLAY_STATES {DS_Start, DS_Wait, DS_Pause} DS_states;
+enum DISPLAY_STATES {DS_Start, DS_Init, DS_Wait, DS_Pause} DS_states;
 
 int DS_Tick(int state){
     unsigned char loc = 0x00;
@@ -97,7 +153,16 @@ int DS_Tick(int state){
     
     switch(state){
         case DS_Start:
-            state = DS_Wait;
+            state = DS_Init;
+            break;
+
+        case DS_Init:
+            if(startSingle){
+                state = DS_Wait;
+            }
+            else{
+                state = DS_Init;
+            }
             break;
 
         case DS_Wait:
@@ -209,7 +274,7 @@ int DS_Tick(int state){
 
 unsigned char input;
 
-enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress, GAMEOVER} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Init, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress, GAMEOVER} KS_states;
 
 int KS_Tick(int state){
     static unsigned char displayGO = 0x01;
@@ -218,7 +283,16 @@ int KS_Tick(int state){
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
-            state = KS_Wait;
+            state = KS_Init;
+            break;
+        
+        case KS_Init:
+            if(startSingle){
+                state = KS_Wait;
+            }
+            else{
+                state = KS_Init;
+            }
             break;
 
         case KS_Wait:
@@ -387,6 +461,12 @@ int main(void) {
     LCD_Cursor(1);
     obstacles = QueueInit(8);
 
+    static task M_task;
+    M_task.state = M_Start;
+    M_task.period = 50;
+    M_task.elapsedTime = M_task.period;
+    M_task.TickFct = &M_Tick;
+
     static task DS_task;
     DS_task.state = DS_Start;
     DS_task.period = 300;
@@ -406,7 +486,7 @@ int main(void) {
     RO_task.TickFct = &RO_Tick;
 
     const unsigned char taskNum = 3;
-    task *tasks[] = {&RO_task, &DS_task, &KS_task};
+    task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task};
 
     TimerSet(50);
     TimerOn();
