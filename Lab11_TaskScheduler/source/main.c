@@ -364,7 +364,12 @@ int KS_Tick(int state){
 
     switch(state){
         case KS_Start:
+            LCD_WriteData('1');
+            break;
 
+        case KS_Init:
+            LCD_Cursor(1);
+            LCD_WriteData('2');
             break;
 
         case KS_Wait:
@@ -379,6 +384,7 @@ int KS_Tick(int state){
             }
 
             LCD_Cursor(location);
+            LCD_WriteData('3');
 
             for(l = 0; l < max; l++){
                 if(stones[l].displacement == location){
