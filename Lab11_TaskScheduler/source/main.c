@@ -129,12 +129,10 @@ int DS_Tick(int state){
                 s.end = 0;
 
                 if(!loc){
-                    s.displacement = -16;
-                    s.sLoc = -1;
+                    s.displacement = 32;
                 }
                 else{
                     s.displacement = 16;
-                    s.sLoc = 1;
                 }
 
                 stones[curr] = s;
@@ -149,15 +147,13 @@ int DS_Tick(int state){
             }
 
             for(i = 0; i < max; i++){
-                LCD_Cursor(stones[i].displacement + stones[i].sLoc);
+                LCD_Cursor(stones[i].displacement+1);
                 LCD_WriteData(' ');       
                 LCD_Cursor(stones[i].displacement);
                 LCD_WriteData('#');
                 LCD_Cursor(location);
                 if(stones[i].displacement > 0){
-                    stones[i].displacement = stones[i].displacement * stones[i].sLoc;
                     stones[i].displacement--;
-                    stones[i].displacement = stones[i].displacement * stones[i].sLoc;
                 }
                 else{
                     s.end = 1;
@@ -250,7 +246,7 @@ int KS_Tick(int state){
 
             }
             else if(button == 0x02){
-                location = -6;
+                location = -1;
                 
             }
 
