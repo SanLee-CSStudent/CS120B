@@ -136,7 +136,7 @@ int main(void) {
     const unsigned char taskNum = 2;
     task *tasks[] = { &DS_task, &KS_task };
 
-    TimerSet(10);
+    TimerSet(50);
     TimerOn();
 
     while (1) {
