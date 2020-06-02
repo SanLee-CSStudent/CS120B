@@ -40,10 +40,8 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(i > 8){
-                state = DS_Wait;
-                i = 0;
-            }
+            state = DS_Wait;
+
             break;
 
         default:
@@ -56,10 +54,10 @@ int DS_Tick(int state){
 
         case DS_Wait:
             i++;
-            if(displacement < 16){
-                LCD_Cursor(displacement+1);
-                LCD_WriteData(' ');
-            }
+
+            LCD_Cursor(displacement+1);
+            LCD_WriteData(' ');
+            
             LCD_Cursor(displacement);
             LCD_WriteData('#');
             LCD_Cursor(location);
@@ -138,7 +136,7 @@ int main(void) {
 
     static task DS_task;
     DS_task.state = DS_Start;
-    DS_task.period = 200;
+    DS_task.period = 400;
     DS_task.elapsedTime = DS_task.period;
     DS_task.TickFct = &DS_Tick;
 
@@ -168,7 +166,7 @@ int main(void) {
         TimerFlag = 0;
 
         for(k = 0; k < taskNum; k++){
-            tasks[k]->elapsedTime = tasks[k]->period;
+            tasks[k]->elapsedTime += 50;
         }
     }
     return 1;
