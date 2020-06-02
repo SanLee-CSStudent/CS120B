@@ -212,7 +212,7 @@ unsigned char input;
 enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress, GAMEOVER} KS_states;
 
 int KS_Tick(int state){
-    unsigned char displayGO = 0x01;
+    static unsigned char displayGO = 0x01;
     unsigned char l;
 
     input = GetKeypadKey();
@@ -304,7 +304,6 @@ int KS_Tick(int state){
             break;
 
         case GAMEOVER:
-            displayGO++;
             if(displayGO == 1){
                 LCD_Cursor(displayGO);
                 LCD_WriteData('!');
@@ -356,14 +355,13 @@ int KS_Tick(int state){
             else if(displayGO == 13){
                 LCD_Cursor(displayGO);
                 LCD_WriteData('!');
-                
             }
             else{
                 LCD_DisplayString(1, "!!GAME OVER!!");
                 displayGO = 1;
             }
 
-            displayGO++;
+            displayGO = displayGO + 1;
             break;
 
         default:
