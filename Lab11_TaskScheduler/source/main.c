@@ -84,7 +84,7 @@ int M_Tick(int state){
 
     switch(state){
         case M_Start:
-
+            startSingle = 0;
             break;
 
         case M_Wait:
@@ -524,6 +524,12 @@ int main(void) {
     TimerOn();
 
     while (1) {
+        if(reset){
+            LCD_ClearScreen();
+            LCD_Cursor(1);
+            LCD_DisplayString(4, "LCD Racer");
+        }
+
         button = (~PINA) & 0x0F;
 
         for(k = 0; k < taskNum; k++){
