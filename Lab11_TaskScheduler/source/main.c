@@ -73,6 +73,8 @@ int RO_Tick(int state){
 
             break;
     }
+
+    return state;
 }
 
 stone stones[8];
