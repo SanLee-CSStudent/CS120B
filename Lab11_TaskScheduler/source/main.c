@@ -17,6 +17,7 @@
 #endif
 
 #include <avr/interrupt.h>
+#include <stdlib.h>
 
 unsigned char button = 0x00;
 signed char location = 1;
@@ -39,7 +40,7 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(i > 4){
+            if(i > 8){
                 state = DS_Wait;
                 i = 0;
             }
@@ -55,10 +56,16 @@ int DS_Tick(int state){
 
         case DS_Wait:
             i++;
+            if(displacement < 16){
+                LCD_Cursor(displacement+1);
+                LCD_WriteData('');
+            }
             LCD_Cursor(displacement);
             LCD_WriteData('#');
             LCD_Cursor(location);
-            displacement--;
+            if(displacement > 0){
+                displacement--;
+            }
             break;
 
         default:
