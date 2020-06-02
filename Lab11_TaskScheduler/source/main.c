@@ -24,6 +24,8 @@ unsigned char button = 0x00;
 signed char location = 1;
 unsigned char pause = 0x00;
 
+static Queue obstacles;
+
 typedef struct task{
     int state;
     unsigned long period;
@@ -31,11 +33,59 @@ typedef struct task{
     int (*TickFct)(int);
 } task;
 
+typedef struct stone{
+    signed char displacement;
+    signed char sLoc;
+} stone;
+
+enum REPLENISH_OBSTACLE {RO_Start, RO_Wait} RO_states;
+
+int RO_Tick(int state){
+    unsigned char random;
+
+    switch(state){
+        case RO_Start:
+            state = RO_Wait;
+            break;
+
+        case RO_Wait:
+            state = RO_Wait;
+            break;
+
+        default:
+
+            break;
+    }
+
+    switch(state){
+        case RO_Start:
+
+            break;
+
+        case RO_Wait:
+            if(!QueueIsFull(obstacles)){
+                random = rand() % 2;
+                QueueEnqueue(obstacles, random);
+            }
+            break;
+
+        default:
+
+            break;
+    }
+}
+
+stone stones[8];
+unsigned size = 8;
+unsigned curr = 0;
+
 enum DISPLAY_STATES {DS_Start, DS_Wait, DS_Pause} DS_states;
 
 int DS_Tick(int state){
-    static unsigned char displacement = 16;
-    static unsigned char i = 0x00;
+    unsigned char loc = 0x00;
+    unsigned char i = 0;
+    stone s;
+    
     switch(state){
         case DS_Start:
             state = DS_Wait;
@@ -69,16 +119,39 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            i++;
+            
+            if(size > curr){
+                loc = QueueDequeue(obstacles);
+            
+                if(!loc){
+                    s.displacement = -16;
+                    s.sLoc = -1;
+                }
+                else{
+                    s.displacement = 16;
+                    s.sLoc = 1;
+                }
 
-            LCD_Cursor(displacement+1);
-            LCD_WriteData(' ');       
-            LCD_Cursor(displacement);
-            LCD_WriteData('#');
-            LCD_Cursor(location);
-            if(displacement > 0){
-                displacement--;
+                stones[curr] = s;
+                curr++;
             }
+            else{
+                curr = 0;
+            }
+
+            for(i = 0; i < curr + 1; i++){
+                LCD_Cursor(stones[i].displacement + stones[i].sLoc);
+                LCD_WriteData(' ');       
+                LCD_Cursor(stones[i].displacement);
+                LCD_WriteData('#');
+                LCD_Cursor(location);
+                if(stones[i].displacement > 0){
+                    stones[i].displacement = stones[i].displacement * stones[i].sLoc;
+                    stones[i].displacement--;
+                    stones[i].displacement = stones[i].displacement * stones[i].sLoc;
+                }
+            }
+            
             break;
 
         case DS_Pause:
@@ -190,9 +263,7 @@ int main(void) {
     LCD_ClearScreen();
     // LCD_DisplayString(1, "Congratulations!");
     LCD_Cursor(1);
-
-    static Queue obstables;
-    obstables = QueueInit(8);
+    obstacles = QueueInit(8);
 
     static task DS_task;
     DS_task.state = DS_Start;
@@ -206,8 +277,14 @@ int main(void) {
     KS_task.elapsedTime = KS_task.period;
     KS_task.TickFct = &KS_Tick;
 
-    const unsigned char taskNum = 2;
-    task *tasks[] = { &DS_task, &KS_task };
+    static task RO_task;
+    RO_task.state = RO_Start;
+    RO_task.period = 150;
+    RO_task.elapsedTime = RO_task.period;
+    RO_task.TickFct = &RO_Tick;
+
+    const unsigned char taskNum = 3;
+    task *tasks[] = {&RO_task, &DS_task, &KS_task};
 
     TimerSet(50);
     TimerOn();
