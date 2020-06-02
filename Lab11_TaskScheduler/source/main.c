@@ -36,6 +36,7 @@ typedef struct task{
 typedef struct stone{
     signed char displacement;
     signed char sLoc;
+    unsigned char end;
 } stone;
 
 enum REPLENISH_OBSTACLE {RO_Start, RO_Wait} RO_states;
@@ -79,6 +80,7 @@ int RO_Tick(int state){
 
 stone stones[8];
 unsigned size = 8;
+unsigned max = 0;
 unsigned curr = 0;
 
 enum DISPLAY_STATES {DS_Start, DS_Wait, DS_Pause} DS_states;
@@ -124,7 +126,8 @@ int DS_Tick(int state){
             
             if(size > curr){
                 loc = QueueDequeue(obstacles);
-            
+                s.end = 0;
+
                 if(!loc){
                     s.displacement = -16;
                     s.sLoc = -1;
@@ -137,11 +140,15 @@ int DS_Tick(int state){
                 stones[curr] = s;
                 curr++;
             }
+            
+            if(curr < size){
+                max = curr + 1;
+            }
             else{
-                curr = 0;
+                max = size;
             }
 
-            for(i = 0; i < curr + 1; i++){
+            for(i = 0; i < max; i++){
                 LCD_Cursor(stones[i].displacement + stones[i].sLoc);
                 LCD_WriteData(' ');       
                 LCD_Cursor(stones[i].displacement);
@@ -152,8 +159,18 @@ int DS_Tick(int state){
                     stones[i].displacement--;
                     stones[i].displacement = stones[i].displacement * stones[i].sLoc;
                 }
+                else{
+                    s.end = 1;
+                }
             }
             
+            for(i = 0; i < curr + 1; i++){
+                if(stones[i].end){
+                    curr = i;
+                    break;
+                }
+            }
+
             break;
 
         case DS_Pause:
