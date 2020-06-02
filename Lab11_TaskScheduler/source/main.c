@@ -18,6 +18,8 @@
 
 #include <avr/interrupt.h>
 
+unsigned char button = 0x00;
+
 typedef struct task{
     int state;
     unsigned long period;
@@ -62,7 +64,7 @@ int DS_Tick(int state){
 
 unsigned char input;
 
-enum KEYPAD_STATE{KS_Start, KS_Wait, KS_Press, KS_Release} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
 
 int KS_Tick(int state){
     static unsigned char i = 0x01;
@@ -75,26 +77,7 @@ int KS_Tick(int state){
 
         case KS_Wait:
 
-            if(input != '\0'){
-                state = KS_Press;
-            }
-            else{
-                state = KS_Wait;
-            }
-            break;
-        
-        case KS_Press:
-            input = GetKeypadKey();
-            state = KS_Release;
-            break;
-
-        case KS_Release:
-            if(input != '\0'){
-                state = KS_Release;
-            }
-            else{
-                state = KS_Wait;
-            }
+            state = KS_Wait;
             break;
 
         default:
@@ -108,37 +91,10 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            
-            break;
-
-        case KS_Press:
-            switch(input){
-                // case '\0': LCD_DisplayString(1, ""); break;
-                // LCD_Cursor(i);
-                case '0': LCD_WriteData(0 + '0'); break;
-                case '1': LCD_WriteData(1 + '0'); break;
-                case '2': LCD_WriteData(2 + '0'); break;
-                case '3': LCD_WriteData(3 + '0'); break;
-                case '4': LCD_WriteData(4 + '0'); break;
-                case '5': LCD_WriteData(5 + '0');  break;
-                case '6': LCD_WriteData(6 + '0');  break;
-                case '7': LCD_WriteData(7 + '0');  break;
-                case '8': LCD_WriteData(8 + '0');  break;
-                case '9': LCD_WriteData(9 + '0');  break;
-                case 'A': LCD_WriteData('A');  break;
-                case 'B': LCD_WriteData('B'); break;
-                case 'C': LCD_WriteData('C'); break;
-                case 'D': LCD_WriteData('D'); break;
-                case '*': LCD_WriteData('*'); break;
-                case '#': LCD_WriteData('#'); break;
-                default: break;
-                
+            if(button == 0x01){
+                LCD_Cursor(1);
             }
-            if(i < 16){
-                i++;
-            }
-            else{
-                i = 1;
+            else if(button == 0x02){
                 LCD_Cursor(-1);
             }
             break;
@@ -153,14 +109,16 @@ int KS_Tick(int state){
 
 int main(void) {
     /* Insert DDR and PORT initializations */
+    DDRA = 0x00; PORTA = 0xFF;
     DDRB = 0xFF; PORTB = 0x00;
     DDRC = 0xF0; PORTC = 0x0F;
     DDRD = 0xFF; PORTD = 0x00;
     /* Insert your solution below */
+    unsigned char k = 0x00;
 
     LCD_init();
     LCD_ClearScreen();
-    LCD_DisplayString(1, "Congratulations!");
+    // LCD_DisplayString(1, "Congratulations!");
     LCD_Cursor(1);
 
     static task DS_task;
@@ -175,19 +133,20 @@ int main(void) {
     KS_task.elapsedTime = KS_task.period;
     KS_task.TickFct = &KS_Tick;
 
-    TimerSet(200);
+    const unsigned char taskNum = 2;
+    task *tasks[] = { &DS_task, &KS_task };
+
+    TimerSet(10);
     TimerOn();
 
     while (1) {
-        
-        if(DS_task.elapsedTime == DS_task.period){
-            // DS_task.state = DS_task.TickFct(DS_task.state);
-            DS_task.elapsedTime = 0;
-        }
+        button = (~PINA) & 0x07;
 
-        if(KS_task.elapsedTime == KS_task.period){
-            KS_task.state = KS_task.TickFct(KS_task.state);
-            KS_task.elapsedTime = 0;
+        for(k = 0; k < taskNum; k++){
+            if(tasks[k]->elapsedTime == tasks[k]->period){
+                tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
+                tasks[k]->elapsedTime = 0;
+            }
         }
 
         while(!TimerFlag);
