@@ -356,7 +356,7 @@ int KS_Tick(int state){
             }
             else{
                 LCD_DisplayString(1, "!!GAME OVER!!");
-                displayGO = 0;
+                displayGO = 1;
             }
 
             displayGO++;
