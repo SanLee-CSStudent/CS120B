@@ -74,6 +74,7 @@ int M_Tick(int state){
             state = M_Single;
             
             if(reset){
+                startSingle = 0;
                 state = M_Start;
             }
             break;
@@ -131,6 +132,7 @@ int RO_Tick(int state){
             state = RO_Wait;
             
             if(reset){
+                startSingle = 0;
                 state = RO_Start;
             }
             break;
@@ -195,6 +197,7 @@ int DS_Tick(int state){
                 state = DS_Pause;
             }
             else if(reset){
+                startSingle = 0;
                 state = DS_Start;
             }
             else{
@@ -329,6 +332,7 @@ int KS_Tick(int state){
             }
             else if(button == 0x08){
                 reset = 1;
+                startSingle = 0;
                 state = KS_Start;
             }
             else{
