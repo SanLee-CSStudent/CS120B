@@ -58,7 +58,7 @@ int DS_Tick(int state){
             LCD_Cursor(displacement);
             LCD_WriteData('#');
             LCD_Cursor(location);
-            
+            displacement--;
             break;
 
         default:
