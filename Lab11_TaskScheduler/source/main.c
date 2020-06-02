@@ -41,7 +41,9 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            state = DS_Wait;
+            if(!pause){
+                state = DS_Wait;
+            }
 
             break;
 
@@ -117,6 +119,7 @@ int KS_Tick(int state){
                 state = KS_PauseOffPress;
             }
             else{
+                pause = 0x00;
                 state = KS_Wait;
             }
             break;
@@ -132,7 +135,6 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            pause = 0x00;
             if(button == 0x01){
                 location = 1;
 
@@ -192,23 +194,20 @@ int main(void) {
     while (1) {
         button = (~PINA) & 0x07;
 
-        if(!pause){
-            for(k = 0; k < taskNum; k++){
-                if(tasks[k]->elapsedTime == tasks[k]->period){
-                    tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
-                    tasks[k]->elapsedTime = 0;
-                }
+        for(k = 0; k < taskNum; k++){
+            if(tasks[k]->elapsedTime == tasks[k]->period){
+                tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
+                tasks[k]->elapsedTime = 0;
             }
         }
 
         while(!TimerFlag);
         TimerFlag = 0;
-        
-        if(!pause){
-            for(k = 0; k < taskNum; k++){
-                tasks[k]->elapsedTime += 50;
-            }
+ 
+        for(k = 0; k < taskNum; k++){
+            tasks[k]->elapsedTime += 50;
         }
+
     }
     return 1;
 }
