@@ -21,6 +21,7 @@
 
 unsigned char button = 0x00;
 signed char location = 1;
+unsigned char pause = 0x00;
 
 typedef struct task{
     int state;
@@ -56,8 +57,7 @@ int DS_Tick(int state){
             i++;
 
             LCD_Cursor(displacement+1);
-            LCD_WriteData(' ');
-            
+            LCD_WriteData(' ');       
             LCD_Cursor(displacement);
             LCD_WriteData('#');
             LCD_Cursor(location);
@@ -75,7 +75,7 @@ int DS_Tick(int state){
 
 unsigned char input;
 
-enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress} KS_states;
 
 int KS_Tick(int state){
     unsigned char key = 0x00;
@@ -86,7 +86,39 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-            state = KS_Wait;
+            if(button == 0x04){
+                state = KS_PausePress;
+            }
+            else{
+                state = KS_Wait;
+            }
+            break;
+
+        case KS_PausePress:
+            if(button == 0x04){
+                state = KS_PausePress;
+            }
+            else{
+                state = KS_PauseRelease;
+            }
+            break;
+
+        case KS_PauseRelease:
+            if(button == 0x04){
+                state = KS_PauseOffPress;
+            }
+            else{
+                state = KS_PauseRelease;
+            }
+            break;
+
+        case KS_PauseOffPress:
+            if(button == 0x04){
+                state = KS_PauseOffPress;
+            }
+            else{
+                state = KS_Wait;
+            }
             break;
 
         default:
@@ -100,6 +132,7 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
+            pause = 0x00;
             if(button == 0x01){
                 location = 1;
 
@@ -112,6 +145,10 @@ int KS_Tick(int state){
             LCD_Cursor(location);
             break;
         
+        case KS_PausePress:
+            pause = 0x01;
+            break;
+
         default:
 
             break;
@@ -136,7 +173,7 @@ int main(void) {
 
     static task DS_task;
     DS_task.state = DS_Start;
-    DS_task.period = 400;
+    DS_task.period = 300;
     DS_task.elapsedTime = DS_task.period;
     DS_task.TickFct = &DS_Tick;
 
@@ -155,18 +192,22 @@ int main(void) {
     while (1) {
         button = (~PINA) & 0x07;
 
-        for(k = 0; k < taskNum; k++){
-            if(tasks[k]->elapsedTime == tasks[k]->period){
-                tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
-                tasks[k]->elapsedTime = 0;
+        if(!pause){
+            for(k = 0; k < taskNum; k++){
+                if(tasks[k]->elapsedTime == tasks[k]->period){
+                    tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
+                    tasks[k]->elapsedTime = 0;
+                }
             }
         }
 
         while(!TimerFlag);
         TimerFlag = 0;
-
-        for(k = 0; k < taskNum; k++){
-            tasks[k]->elapsedTime += 50;
+        
+        if(!pause){
+            for(k = 0; k < taskNum; k++){
+                tasks[k]->elapsedTime += 50;
+            }
         }
     }
     return 1;
