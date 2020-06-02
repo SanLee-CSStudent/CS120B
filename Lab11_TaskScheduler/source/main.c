@@ -32,7 +32,7 @@ enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
 
 int DS_Tick(int state){
     static unsigned char displacement = 16;
-
+    static unsigned char i = 0x00;
     switch(state){
         case DS_Start:
             state = DS_Wait;
@@ -41,6 +41,7 @@ int DS_Tick(int state){
         case DS_Wait:
             if(i > 4){
                 state = DS_Wait;
+                i = 0;
             }
             break;
 
@@ -72,7 +73,6 @@ unsigned char input;
 enum KEYPAD_STATE{KS_Start, KS_Wait} KS_states;
 
 int KS_Tick(int state){
-    static unsigned char i = 0x01;
     unsigned char key = 0x00;
     input = GetKeypadKey();
     switch(state){
