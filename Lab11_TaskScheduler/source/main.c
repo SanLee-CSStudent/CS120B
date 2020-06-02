@@ -191,7 +191,8 @@ int main(void) {
     // LCD_DisplayString(1, "Congratulations!");
     LCD_Cursor(1);
 
-    static Queue obstables = QueueInit(8);
+    static Queue obstables;
+    obstables = QueueInit(8)
 
     static task DS_task;
     DS_task.state = DS_Start;
