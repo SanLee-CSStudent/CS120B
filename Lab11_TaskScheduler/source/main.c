@@ -25,6 +25,7 @@ signed char location = 1;
 unsigned char pause = 0x00;
 unsigned char startSingle = 0x00;
 unsigned char gameover = 0x00;
+unsigned char reset = 0x00;
 
 static Queue obstacles;
 
@@ -70,7 +71,12 @@ int M_Tick(int state){
             break;
 
         case M_Single:
-            state = M_Single;
+            if(button == 0x08){
+                state = M_Start;
+            }
+            else{
+                state = M_Single;
+            }
             break;
 
         default:
@@ -123,7 +129,12 @@ int RO_Tick(int state){
             break;
 
         case RO_Wait:
-            state = RO_Wait;
+            if(button == 0x08){
+                state = RO_Start;
+            }
+            else{
+                state = RO_Wait;
+            }
             break;
 
         default:
@@ -185,8 +196,10 @@ int DS_Tick(int state){
             if(pause || gameover){
                 state = DS_Pause;
             }
+            else if(button == 0x08){
+                state = DS_Start;
+            }
             else{
-                
                 state = DS_Wait;
             }
 
@@ -314,6 +327,9 @@ int KS_Tick(int state){
         case KS_Wait:
             if(button == 0x04){
                 state = KS_PausePress;
+            }
+            else if(button == 0x08){
+                state = KS_Start;
             }
             else{
                 state = KS_Wait;
@@ -508,7 +524,7 @@ int main(void) {
     TimerOn();
 
     while (1) {
-        button = (~PINA) & 0x07;
+        button = (~PINA) & 0x0F;
 
         for(k = 0; k < taskNum; k++){
             if(tasks[k]->elapsedTime == tasks[k]->period){
