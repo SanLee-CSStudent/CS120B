@@ -63,7 +63,7 @@ int M_Tick(int state){
             if(button == 0x01){
                 state = M_SingleClear;
             }
-            else if(button == 0x00){
+            else {
                 state = M_Single;
             }
             
@@ -88,6 +88,7 @@ int M_Tick(int state){
 
         case M_SingleClear:
             LCD_ClearScreen();
+            LCD_Cursor(1);
             break;
 
         case M_Single:
