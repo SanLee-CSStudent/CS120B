@@ -73,10 +73,11 @@ int M_Tick(int state){
             break;
 
         case M_Wait:
-
+            LCD_DisplayString(3, "LCD Racer");
             break;
 
         case M_Single:
+
             startSingle = 1;
             break;
 
