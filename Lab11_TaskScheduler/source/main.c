@@ -19,6 +19,7 @@
 #include <avr/interrupt.h>
 
 unsigned char button = 0x00;
+signed char location = 1;
 
 typedef struct task{
     int state;
@@ -30,7 +31,7 @@ typedef struct task{
 enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
 
 int DS_Tick(int state){
-    
+    static unsigned char displacement = 16;
 
     switch(state){
         case DS_Start:
@@ -38,7 +39,9 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            state = DS_Wait;
+            if(i > 4){
+                state = DS_Wait;
+            }
             break;
 
         default:
@@ -50,8 +53,10 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            
-            
+            i++;
+            LCD_Cursor(displacement);
+            LCD_WriteData('#');
+            LCD_Cursor(location);
             
             break;
 
@@ -76,7 +81,6 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
-
             state = KS_Wait;
             break;
 
@@ -92,11 +96,15 @@ int KS_Tick(int state){
 
         case KS_Wait:
             if(button == 0x01){
-                LCD_Cursor(1);
+                location = 1;
+
             }
             else if(button == 0x02){
-                LCD_Cursor(-1);
+                location = -1;
+                
             }
+
+            LCD_Cursor(location);
             break;
         
         default:
@@ -129,7 +137,7 @@ int main(void) {
 
     static task KS_task;
     KS_task.state = KS_Start;
-    KS_task.period = 200;
+    KS_task.period = 50;
     KS_task.elapsedTime = KS_task.period;
     KS_task.TickFct = &KS_Tick;
 
@@ -152,8 +160,9 @@ int main(void) {
         while(!TimerFlag);
         TimerFlag = 0;
 
-        DS_task.elapsedTime += 200;
-        KS_task.elapsedTime += 200;
+        for(k = 0; k < taskNum; k++){
+            tasks[k]->elapsedTime = tasks[k]->period;
+        }
     }
     return 1;
 }
