@@ -299,7 +299,7 @@ int KS_Tick(int state){
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
-            state = KS_Wait;
+            state = KS_Init;
             break;
         
         case KS_Init:
@@ -373,11 +373,9 @@ int KS_Tick(int state){
             pause = 0x00;
             if(button == 0x01){
                 location = 1;
-
             }
             else if(button == 0x02){
                 location = 17;
-                
             }
 
             LCD_Cursor(location);
@@ -503,7 +501,7 @@ int main(void) {
     RO_task.elapsedTime = RO_task.period;
     RO_task.TickFct = &RO_Tick;
 
-    const unsigned char taskNum = 3;
+    const unsigned char taskNum = 4;
     task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task};
 
     TimerSet(50);
