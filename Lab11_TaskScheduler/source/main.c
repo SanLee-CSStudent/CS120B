@@ -30,7 +30,7 @@ typedef struct task{
     int (*TickFct)(int);
 } task;
 
-enum DISPLAY_STATES {DS_Start, DS_Wait} DS_states;
+enum DISPLAY_STATES {DS_Start, DS_Wait, DS_Pause} DS_states;
 
 int DS_Tick(int state){
     static unsigned char displacement = 16;
@@ -41,10 +41,22 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(!pause){
+            if(pause){
+                state = DS_Pause;
+            }
+            else{
                 state = DS_Wait;
             }
 
+            break;
+
+        case DS_Pause:
+            if(pause){
+                state = DS_Pause;
+            }
+            else{
+                state = DS_Wait;
+            }
             break;
 
         default:
@@ -66,6 +78,10 @@ int DS_Tick(int state){
             if(displacement > 0){
                 displacement--;
             }
+            break;
+
+        case DS_Pause:
+
             break;
 
         default:
@@ -135,6 +151,7 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
+            pause = 0x00;
             if(button == 0x01){
                 location = 1;
 
