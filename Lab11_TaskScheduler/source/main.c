@@ -23,6 +23,7 @@
 unsigned char button = 0x00;
 signed char location = 1;
 unsigned char pause = 0x00;
+unsigned char gameover = 0x00;
 
 static Queue obstacles;
 
@@ -206,10 +207,10 @@ int DS_Tick(int state){
 
 unsigned char input;
 
-enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress} KS_states;
+enum KEYPAD_STATE{KS_Start, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress, GAMEOVER} KS_states;
 
 int KS_Tick(int state){
-    unsigned char key = 0x00;
+    unsigned char displayGO = 0x01;
     unsigned char l;
 
     input = GetKeypadKey();
@@ -219,6 +220,10 @@ int KS_Tick(int state){
             break;
 
         case KS_Wait:
+            if(gameover){
+                state = GAMEOVER;
+            }
+
             if(button == 0x04){
                 state = KS_PausePress;
             }
@@ -255,6 +260,10 @@ int KS_Tick(int state){
             }
             break;
 
+        case GAMEOVER:
+            state = GAMEOVER;
+            break;
+
         default:
 
             break;
@@ -280,7 +289,8 @@ int KS_Tick(int state){
 
             for(l = 0; l < max; l++){
                 if(stones[l].displacement == location){
-                    LCD_DisplayString(1, "!!GAME OVER!!");
+                    gameover = 1;
+                    pause = 1;
                     break;
                 }
             }
@@ -288,6 +298,68 @@ int KS_Tick(int state){
         
         case KS_PausePress:
             pause = 0x01;
+            break;
+
+        case GAMEOVER:
+            if(displayGO == 1){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('!');
+            }
+            else if(displayGO == 2){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('!');
+            }
+            else if(displayGO == 3){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('G');
+            }
+            else if(displayGO == 4){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('A');
+            }
+            else if(displayGO == 5){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('M');
+            }
+            else if(displayGO == 6){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('E');
+            }
+            else if(displayGO == 7){
+                LCD_Cursor(displayGO);
+                LCD_WriteData(' ');
+            }
+            else if(displayGO == 8){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('O');
+            }
+            else if(displayGO == 9){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('V');
+            }
+            else if(displayGO == 10){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('E');
+            }
+            else if(displayGO == 11){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('R');
+            }
+            else if(displayGO == 12){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('!');
+            }
+            else if(displayGO == 13){
+                LCD_Cursor(displayGO);
+                LCD_WriteData('!');
+                
+            }
+            else{
+                LCD_DisplayString(1, "!!GAME OVER!!");
+                displayGO = 0;
+            }
+
+            displayGO++;
             break;
 
         default:
