@@ -82,13 +82,17 @@ stone stones[8];
 unsigned size = 8;
 unsigned max = 0;
 unsigned curr = 0;
+unsigned char delay = 0;
+unsigned char maxDelay = -1;
 
 enum DISPLAY_STATES {DS_Start, DS_Wait, DS_Pause} DS_states;
 
 int DS_Tick(int state){
     unsigned char loc = 0x00;
     unsigned char i = 0;
+    
     stone s;
+    maxDelay = (rand() % 8) + 4;
     
     switch(state){
         case DS_Start:
@@ -100,6 +104,7 @@ int DS_Tick(int state){
                 state = DS_Pause;
             }
             else{
+                
                 state = DS_Wait;
             }
 
@@ -123,29 +128,30 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            
-            if(size > curr){
-                loc = QueueDequeue(obstacles);
-                s.end = 0;
+            if(delay > maxDelay){
+                if(size > curr){
+                    loc = QueueDequeue(obstacles);
+                    s.end = 0;
 
-                if(!loc){
-                    s.displacement = 32;
+                    if(!loc){
+                        s.displacement = 32;
+                    }
+                    else{
+                        s.displacement = 16;
+                    }
+
+                    stones[curr] = s;
+                    curr++;
+                }
+                
+                if(curr < size && max != size){
+                    max = curr + 1;
                 }
                 else{
-                    s.displacement = 16;
+                    max = size;
                 }
-
-                stones[curr] = s;
-                curr++;
             }
             
-            if(curr < size && max != size){
-                max = curr + 1;
-            }
-            else{
-                max = size;
-            }
-
             for(i = 0; i < max; i++){
                 LCD_Cursor(stones[i].displacement+1);
                 LCD_WriteData(' ');       
@@ -167,6 +173,7 @@ int DS_Tick(int state){
                 }
             }
 
+            delay++;
             break;
 
         case DS_Pause:
