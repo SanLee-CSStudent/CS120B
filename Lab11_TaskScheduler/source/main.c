@@ -293,7 +293,7 @@ int KS_Tick(int state){
             for(l = 0; l < max; l++){
                 if(stones[l].displacement == location){
                     gameover = 1;
-            
+                    LCD_ClearScreen();
                     break;
                 }
             }
