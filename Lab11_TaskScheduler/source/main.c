@@ -41,7 +41,7 @@ typedef struct stone{
     unsigned char end;
 } stone;
 
-enum MENU {M_Start, M_Wait, M_Single} M_states;
+enum MENU {M_Start, M_Wait, M_SingleClear, M_Single} M_states;
 
 int M_Tick(int state){
 
@@ -52,11 +52,15 @@ int M_Tick(int state){
 
         case M_Wait:
             if(button == 1){
-                state = M_Single;
+                state = M_SingleClear;
             }
             else{
                 state = M_Wait;
             }
+            break;
+
+        case M_SingleClear:
+            state = M_Single;
             break;
 
         case M_Single:
@@ -73,7 +77,11 @@ int M_Tick(int state){
             break;
 
         case M_Wait:
-            LCD_DisplayString(3, "LCD Racer");
+            
+            break;
+
+        case M_SingleClear:
+            LCD_ClearScreen();
             break;
 
         case M_Single:
@@ -458,8 +466,8 @@ int main(void) {
 
     LCD_init();
     LCD_ClearScreen();
-    // LCD_DisplayString(1, "Congratulations!");
     LCD_Cursor(1);
+    LCD_DisplayString(4, "LCD Racer");
     obstacles = QueueInit(8);
 
     static task M_task;
