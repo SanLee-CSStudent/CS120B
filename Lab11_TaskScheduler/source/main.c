@@ -192,7 +192,7 @@ int main(void) {
     LCD_Cursor(1);
 
     static Queue obstables;
-    obstables = QueueInit(8)
+    obstables = QueueInit(8);
 
     static task DS_task;
     DS_task.state = DS_Start;
