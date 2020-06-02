@@ -128,7 +128,7 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(delay > 12){
+            if(delay > maxDelay){
                 if(size > curr){
                     loc = QueueDequeue(obstacles);
                     s.end = 0;
@@ -151,6 +151,7 @@ int DS_Tick(int state){
                     max = size;
                 }
                 delay = 0;
+                maxDelay = (rand() % 8) + 4;
             }
             
             for(i = 0; i < max; i++){
@@ -164,15 +165,16 @@ int DS_Tick(int state){
                 }
                 else{
                     s.end = 1;
+                    curr = i;
                 }
             }
             
-            for(i = 0; i < max; i++){
+            /*for(i = 0; i < max; i++){
                 if(stones[i].end){
                     curr = i;
                     break;
                 }
-            }
+            }*/
 
             delay++;
             break;
