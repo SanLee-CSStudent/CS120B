@@ -71,11 +71,10 @@ int M_Tick(int state){
             break;
 
         case M_Single:
-            if(button == 0x08){
+            state = M_Single;
+            
+            if(reset){
                 state = M_Start;
-            }
-            else{
-                state = M_Single;
             }
             break;
 
@@ -128,12 +127,11 @@ int RO_Tick(int state){
             }
             break;
 
-        case RO_Wait:
-            if(button == 0x08){
+        case RO_Wait:    
+            state = RO_Wait;
+            
+            if(reset){
                 state = RO_Start;
-            }
-            else{
-                state = RO_Wait;
             }
             break;
 
@@ -196,7 +194,7 @@ int DS_Tick(int state){
             if(pause || gameover){
                 state = DS_Pause;
             }
-            else if(button == 0x08){
+            else if(reset){
                 state = DS_Start;
             }
             else{
@@ -312,6 +310,7 @@ int KS_Tick(int state){
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
+            reset = 0;
             state = KS_Init;
             break;
         
@@ -329,6 +328,7 @@ int KS_Tick(int state){
                 state = KS_PausePress;
             }
             else if(button == 0x08){
+                reset = 1;
                 state = KS_Start;
             }
             else{
