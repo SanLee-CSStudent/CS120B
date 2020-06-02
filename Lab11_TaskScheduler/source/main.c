@@ -141,7 +141,7 @@ int DS_Tick(int state){
                 curr++;
             }
             
-            if(curr < size){
+            if(curr < size && max != size){
                 max = curr + 1;
             }
             else{
@@ -164,7 +164,7 @@ int DS_Tick(int state){
                 }
             }
             
-            for(i = 0; i < curr + 1; i++){
+            for(i = 0; i < max; i++){
                 if(stones[i].end){
                     curr = i;
                     break;
