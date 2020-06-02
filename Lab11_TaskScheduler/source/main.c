@@ -58,7 +58,7 @@ int DS_Tick(int state){
             i++;
             if(displacement < 16){
                 LCD_Cursor(displacement+1);
-                LCD_WriteData('');
+                LCD_WriteData(' ');
             }
             LCD_Cursor(displacement);
             LCD_WriteData('#');
