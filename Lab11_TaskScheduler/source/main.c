@@ -545,6 +545,12 @@ int KS_Tick(int state){
             else if(button == 0x02){
                 location = 17;
             }
+            else if(button == 0x20){
+                location++;
+            }
+            else if(button == 0x40){
+                location--;
+            }
 
             LCD_Cursor(location);
             
