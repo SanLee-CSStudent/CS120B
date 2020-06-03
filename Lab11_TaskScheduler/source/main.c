@@ -77,7 +77,8 @@ int M_Tick(int state){
         case M_Single:
             state = M_Single;
             
-            if(reset){
+            if(button == 0x08){
+                reset = 1;
                 startSingle = 0;
                 state = M_Start;
             }
