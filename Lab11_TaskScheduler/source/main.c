@@ -419,6 +419,8 @@ int DS_Tick(int state){
                     else{
                         max = size;
                     }
+
+                    delay = 0;
                 }
                 delay++;
 
