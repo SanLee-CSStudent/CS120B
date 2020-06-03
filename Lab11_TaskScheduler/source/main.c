@@ -70,6 +70,7 @@ int M_Tick(int state){
             }
             else {
                 state = M_Single;
+                gameover = 0;
             }
             
             break;
@@ -180,7 +181,15 @@ int DS_Tick(int state){
     unsigned char i = 0;
     
     stone s;
-    maxDelay = (rand() % 8) + 4;
+    if(score < 10){
+        maxDelay = (rand() % 8) + 4;
+    }
+    else if(score < 100){
+        maxDelay = (rand() % 4) + 3;
+    }
+    else{
+        maxDelay = (rand() % 2) + 2;
+    }
     
     switch(state){
         case DS_Start:
@@ -397,7 +406,6 @@ int KS_Tick(int state){
             if(button == 0x08){
                 reset = 1;
                 startSingle = 0;
-                gameover = 0;
                 state = KS_Start;
             }
             else{
