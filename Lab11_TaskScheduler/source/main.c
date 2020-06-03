@@ -664,9 +664,9 @@ int BS_Tick(int state){
             }
             
             if(bulletDisplacement == 17 || bulletDisplacement > 32){
-                LCD_Cursor(bulletDisplacement - 1);
+                LCD_Cursor(bulletDisplacement);
                 LCD_WriteData(' ');
-                
+                bulletDisplacement = location;
                 bulletFly = 0;
             }
             LCD_Cursor(location);
