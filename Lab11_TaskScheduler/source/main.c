@@ -180,7 +180,7 @@ int DS_Tick(int state){
     unsigned char i = 0;
     
     stone s;
-    if(score < 10){
+    if(score < 30){
         maxDelay = (rand() % 8) + 4;
     }
     else if(score < 100){
@@ -683,9 +683,18 @@ int main(void) {
         }
 
         button = (~PINA) & 0x0F;
+        if(score > 25){
+            SS_task.period = 250;
+        }
+        else if(score > 100){
+            SS_task.period = 200;
+        }
+        else if(score > 500){
+            SS_task.period = 150;
+        }
 
         for(k = 0; k < taskNum; k++){
-            if(tasks[k]->elapsedTime == tasks[k]->period){
+            if(tasks[k]->elapsedTime >= tasks[k]->period){
                 tasks[k]->state = tasks[k]->TickFct(tasks[k]->state);
                 tasks[k]->elapsedTime = 0;
             }
