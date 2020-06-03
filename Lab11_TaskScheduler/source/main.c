@@ -318,6 +318,8 @@ enum KEYPAD_STATE{KS_Start, KS_Init, KS_Wait, KS_PausePress, KS_PauseRelease, KS
 
 int KS_Tick(int state){
     static unsigned char displayGO = 0x01;
+    unsigned char ones;
+    unsigned char digit;
     unsigned char l;
 
     input = GetKeypadKey();
@@ -477,7 +479,25 @@ int KS_Tick(int state){
             }
             else {
                 LCD_DisplayString(1, "DISTANCE: ");
-                LCD_DisplayString(11, "" + score);
+                if(score < 10){
+                    LCD_CUrsor(11);
+                    LCD_WriteData('0');
+                    LCD_CUrsor(12);
+                    LCD_WriteData('0');
+                    LCD_CUrsor(13);
+                    LCD_WriteData(score + '0');
+                }
+                else if(score < 100){
+                    LCD_CUrsor(11);
+                    LCD_WriteData('0');
+                    LCD_CUrsor(12);
+                    LCD_WriteData(score + '0');
+                }
+                else{
+                    LCD_CUrsor(11);
+                    LCD_WriteData(score + '0');
+                }
+                
                 LCD_DisplayString(14, "m");
             }
 
