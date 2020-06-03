@@ -70,7 +70,6 @@ int M_Tick(int state){
             }
             else {
                 state = M_Single;
-                gameover = 0;
             }
             
             break;
@@ -344,6 +343,7 @@ int KS_Tick(int state){
     switch(state){
         case KS_Start:
             state = KS_Init;
+            displayGO = 1;
             break;
         
         case KS_Init:
@@ -420,6 +420,7 @@ int KS_Tick(int state){
 
     switch(state){
         case KS_Start:
+            gameover = 0;
             break;
 
         case KS_Init:
