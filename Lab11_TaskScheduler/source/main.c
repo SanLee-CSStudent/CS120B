@@ -222,8 +222,12 @@ int DS_Tick(int state){
 
     switch(state){
         case DS_Start:
+            s.displacement = 0;
+            s.end = 0;
+            s.sLoc = 0;
             for(i=0; i<size; i++){
-                stones[i] = 0;
+
+                stones[i] = s;
                 curr = 0;
             }
             break;
