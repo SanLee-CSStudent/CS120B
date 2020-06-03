@@ -797,7 +797,7 @@ int main(void) {
     BS_task.TickFct = &BS_Tick;
 
     const unsigned char taskNum = 6;
-    task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task, &SS_task, &BS_task};
+    task *tasks[] = {&M_task, &RO_task, &DS_task, &SS_task, &BS_task, &KS_task};
 
     TimerSet(50);
     TimerOn();
