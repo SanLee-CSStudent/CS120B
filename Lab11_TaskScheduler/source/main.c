@@ -403,6 +403,13 @@ int DS_Tick(int state){
                         break;
                 }
 
+                if(curr < size && max != size){
+                    max = curr + 1;
+                }
+                else{
+                    max = size;
+                }
+
                 scrollObstacle();
             }
             else{
