@@ -321,6 +321,7 @@ int KS_Tick(int state){
     unsigned char ones;
     unsigned char digit;
     unsigned char l;
+    unsigned char temp;
 
     input = GetKeypadKey();
     switch(state){
@@ -479,23 +480,39 @@ int KS_Tick(int state){
             }
             else {
                 LCD_DisplayString(1, "DISTANCE: ");
-                if(score < 10){
+                temp = score;
+                if(temp < 10){
                     LCD_Cursor(11);
                     LCD_WriteData('0');
                     LCD_Cursor(12);
                     LCD_WriteData('0');
                     LCD_Cursor(13);
-                    LCD_WriteData(score + '0');
+                    LCD_WriteData(temp + '0');
                 }
-                else if(score < 100){
+                else if(temp < 100){
                     LCD_Cursor(11);
                     LCD_WriteData('0');
+                    temp = temp % 10;
+                    digit = temp / 10;
                     LCD_Cursor(12);
-                    LCD_WriteData(score + '0');
+                    LCD_WriteData(digit + '0');
+                    LCD_Cursor(13);
+                    LCD_WriteData(temp + '0');
+                }
+                else if(temp < 1000){
+                    temp = temp % 100;
+                    digit = temp / 100;
+                    LCD_Cursor(11);
+                    LCD_WriteData(digit + '0');
+                    temp = temp % 10;
+                    digit = temp / 10;
+                    LCD_Cursor(12);
+                    LCD_WriteData(digit + '0');
+                    LCD_Cursor(13);
+                    LCD_WriteData(temp + '0');
                 }
                 else{
-                    LCD_Cursor(11);
-                    LCD_WriteData(score + '0');
+                    LCD_DisplayString(1, "DISTANCE OVER 1000m!");
                 }
                 
                 LCD_DisplayString(14, "m");
