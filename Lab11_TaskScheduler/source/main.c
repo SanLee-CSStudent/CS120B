@@ -790,13 +790,16 @@ int main(void) {
         }
 
         button = (~PINA) & 0x1F;
-        if(score > 25){
+        if(score < 25){
+            DS_task.period = 300;
+        }
+        else if(score < 100){
             DS_task.period = 250;
         }
-        else if(score > 100){
+        else if(score < 500){
             DS_task.period = 200;
         }
-        else if(score > 500){
+        else{
             DS_task.period = 150;
         }
 
