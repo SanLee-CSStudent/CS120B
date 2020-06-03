@@ -617,7 +617,7 @@ int BS_Tick(int state){
             }
             break;
 
-        default;
+        default:
 
             break;
     }
