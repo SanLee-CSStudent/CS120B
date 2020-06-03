@@ -474,8 +474,12 @@ int KS_Tick(int state){
                 LCD_Cursor(displayGO);
                 LCD_WriteData('!');
             }
+            else if(displayGO <= 24){
+                LCD_DisplayString(1, "DISTANCE: " + score + "m");
+                
+            }
             else{
-                LCD_DisplayString(1, "!!GAME OVER!!");
+                LCD_ClearScreen();
                 displayGO = 1;
             }
 
@@ -487,6 +491,66 @@ int KS_Tick(int state){
             break;
     }
 
+    return state;
+}
+
+unsigned char score = 0;
+
+enum SCORE_STATE {SS_Start, SS_Init, SS_Wait, SS_Pause} SS_states;
+
+int SS_Tick(int state){
+    switch(state){
+        case SS_Start:
+            state = SS_Init;
+            break;
+
+        case SS_Init:
+            if(startSingle){
+                state = SS_Wait;
+            }
+            else{
+                state = SS_Init;
+            }
+            break;
+
+        case SS_Wait:
+            if(reset){
+                startSingle = 0;
+                score = 0;
+                state = SS_Start;
+            }
+            else if(pause){
+                state = SS_Pause;
+            }
+            else{
+                state = SS_Wait;
+            }
+            break;
+
+        case SS_Pause:
+            if(pause){
+                state = SS_Pause;
+            }
+            else{
+                state = SS_Wait;
+            }
+            break;
+        default:
+            break;
+    }
+
+    switch(state){
+        case SS_Init:
+
+            break;
+
+        case SS_Wait:
+            score++;
+            break;
+
+        default:
+            break;
+    }
     return state;
 }
 
@@ -529,8 +593,14 @@ int main(void) {
     RO_task.elapsedTime = RO_task.period;
     RO_task.TickFct = &RO_Tick;
 
-    const unsigned char taskNum = 4;
-    task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task};
+    static task SS_task;
+    SS_task.state = SS_Start;
+    SS_task.period = 300;
+    SS_task.elapsedTime = SS_task.period;
+    SS_task.TickFct = &SS_Tick;
+
+    const unsigned char taskNum = 5;
+    task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task, &SS_task};
 
     TimerSet(50);
     TimerOn();
