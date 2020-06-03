@@ -563,7 +563,7 @@ int KS_Tick(int state){
 enum BULLET_STATE {BS_Start, BS_Init, BS_Wait, BS_Pause, BS_Fly} BS_states;
 
 int BS_Tick(int state){
-    unsigned char bulletFly = 0;
+    static unsigned char bulletFly = 0;
     unsigned char m = 0;
     static unsigned char bulletDisplacement = 0;
 
@@ -647,12 +647,15 @@ int BS_Tick(int state){
             bulletFly = 1;
             LCD_Cursor(bulletDisplacement+1);
             LCD_WriteData('>');
-            LCD_Cursor(bulletDisplacement);
-            LCD_WriteData(' ');
+            // LCD_Cursor(bulletDisplacement);
+            // LCD_WriteData(' ');
             bulletDisplacement++;
             for(m=0; m<max; m++){
                 if(stones[m].displacement == bulletDisplacement){
+                    LCD_Cursor(bulletDisplacement);
+                    LCD_WriteData(' ');
                     stones[m].displacement = 0;
+            
                     bulletFly = 0;
                     break;
                 }
