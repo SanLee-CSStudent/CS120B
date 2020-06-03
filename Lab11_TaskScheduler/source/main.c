@@ -26,6 +26,7 @@ unsigned char pause = 0x00;
 unsigned char startSingle = 0x00;
 unsigned char gameover = 0x00;
 unsigned char reset = 0x00;
+unsigned char score = 0;
 
 static Queue obstacles;
 
@@ -493,8 +494,6 @@ int KS_Tick(int state){
 
     return state;
 }
-
-unsigned char score = 0;
 
 enum SCORE_STATE {SS_Start, SS_Init, SS_Wait, SS_Pause} SS_states;
 
