@@ -654,19 +654,22 @@ int BS_Tick(int state){
                 if(stones[m].displacement == bulletDisplacement){
                     LCD_Cursor(bulletDisplacement);
                     LCD_WriteData(' ');
+                    LCD_Cursor(bulletDisplacement+1);
+                    LCD_WriteData(' ');
                     stones[m].displacement = 0;
             
                     bulletFly = 0;
                     break;
                 }
             }
-            LCD_Cursor(location);
+            
             if(bulletDisplacement == 17 || bulletDisplacement > 32){
                 LCD_Cursor(bulletDisplacement - 1);
                 LCD_WriteData(' ');
-                LCD_Cursor(location);
+                
                 bulletFly = 0;
             }
+            LCD_Cursor(location);
             break;
 
         default:
