@@ -480,21 +480,21 @@ int KS_Tick(int state){
             else {
                 LCD_DisplayString(1, "DISTANCE: ");
                 if(score < 10){
-                    LCD_CUrsor(11);
+                    LCD_Cursor(11);
                     LCD_WriteData('0');
-                    LCD_CUrsor(12);
+                    LCD_Cursor(12);
                     LCD_WriteData('0');
-                    LCD_CUrsor(13);
+                    LCD_Cursor(13);
                     LCD_WriteData(score + '0');
                 }
                 else if(score < 100){
-                    LCD_CUrsor(11);
+                    LCD_Cursor(11);
                     LCD_WriteData('0');
-                    LCD_CUrsor(12);
+                    LCD_Cursor(12);
                     LCD_WriteData(score + '0');
                 }
                 else{
-                    LCD_CUrsor(11);
+                    LCD_Cursor(11);
                     LCD_WriteData(score + '0');
                 }
                 
