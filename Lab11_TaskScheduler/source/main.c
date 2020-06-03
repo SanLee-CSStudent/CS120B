@@ -804,17 +804,25 @@ int main(void) {
             LCD_ClearScreen();
             LCD_Cursor(1);
             LCD_DisplayString(4, "LCD Racer");
+            
+            M_task.state = M_Start;
+            DS_task.state = DS_Start;
+            DS_task.period = 300;
+            KS_task.state = KS_Start;
+            RO_task.state = RO_Start;
+            SS_task.state = SS_Start;
+            BS_task.state = BS_Start;
         }
 
         button = (~PINA) & 0x1F;
         if(score > 25){
-            SS_task.period = 250;
+            DS_task.period = 250;
         }
         else if(score > 100){
-            SS_task.period = 200;
+            DS_task.period = 200;
         }
         else if(score > 500){
-            SS_task.period = 150;
+            DS_task.period = 150;
         }
 
         for(k = 0; k < taskNum; k++){
