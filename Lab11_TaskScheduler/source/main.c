@@ -510,22 +510,20 @@ int KS_Tick(int state){
                 else if(temp < 100){
                     LCD_Cursor(11);
                     LCD_WriteData('0');
-                    LCD_Cursor(12);
-                    LCD_WriteData(score + '0');
-                    /*temp = temp % 10;
                     digit = temp / 10;
+                    temp = temp % 10;
                     LCD_Cursor(12);
                     LCD_WriteData(digit + '0');
                     LCD_Cursor(13);
                     LCD_WriteData(temp + '0');*/
                 }
                 else if(temp < 1000){
-                    temp = temp % 100;
                     digit = temp / 100;
+                    temp = temp % 100;
                     LCD_Cursor(11);
                     LCD_WriteData(digit + '0');
-                    temp = temp % 10;
                     digit = temp / 10;
+                    temp = temp % 10;
                     LCD_Cursor(12);
                     LCD_WriteData(digit + '0');
                     LCD_Cursor(13);
