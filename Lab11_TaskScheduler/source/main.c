@@ -773,10 +773,10 @@ int main(void) {
     SS_task.TickFct = &SS_Tick;
 
     static task BS_task;
-    SS_task.state = BS_Start;
-    SS_task.period = 50;
-    SS_task.elapsedTime = SS_task.period;
-    SS_task.TickFct = &BS_Tick;
+    BS_task.state = BS_Start;
+    BS_task.period = 50;
+    BS_task.elapsedTime = BS_task.period;
+    BS_task.TickFct = &BS_Tick;
 
     const unsigned char taskNum = 6;
     task *tasks[] = {&M_task, &RO_task, &DS_task, &KS_task, &SS_task, &BS_task};
