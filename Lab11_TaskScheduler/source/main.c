@@ -585,13 +585,14 @@ int BS_Tick(int state){
             if(button == 0x10){
                 state = BS_Fly;
             }
+            else{
+                state = BS_Wait;
+            }
 
             if(pause){
                 state = BS_Pause;
             }
-            else{
-                state = BS_Wait;
-            }
+            
 
             if(reset){
                 startSingle = 0;
@@ -643,8 +644,10 @@ int BS_Tick(int state){
             break;
 
         case BS_Fly:
-            LCD_Cursor(bulletDisplacement);
+            LCD_Cursor(bulletDisplacement+1);
             LCD_WriteData('>');
+            LCD_Cursor(bulletDisplacement);
+            LCD_WriteData(' ');
             bulletDisplacement++;
             for(m=0; m<max; m++){
                 if(stones[m].displacement == bulletDisplacement){
