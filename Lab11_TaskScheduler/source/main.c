@@ -209,12 +209,13 @@ int DS_Tick(int state){
             if(pause || gameover){
                 state = DS_Pause;
             }
-            else if(reset){
-                startSingle = 0;
-                state = DS_Start;
-            }
             else{
                 state = DS_Wait;
+            }
+
+            if(reset){
+                startSingle = 0;
+                state = DS_Start;
             }
 
             break;
@@ -308,13 +309,6 @@ int DS_Tick(int state){
                 }
                 
             }
-            
-            /*for(i = 0; i < max; i++){
-                if(stones[i].end){
-                    curr = i;
-                    break;
-                }
-            }*/
 
             delay++;
             break;
@@ -423,6 +417,7 @@ int KS_Tick(int state){
     switch(state){
         case KS_Start:
             gameover = 0;
+            LCD_Cursor(1);
             break;
 
         case KS_Init:
