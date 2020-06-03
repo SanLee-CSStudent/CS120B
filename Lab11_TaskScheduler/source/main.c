@@ -924,7 +924,7 @@ int main(void) {
             BS_task.state = BS_Start;
         }
 
-        button = (~PINA) & 0x1F;
+        button = (~PINA) & 0x7F;
         if(score < 25){
             DS_task.period = 300;
         }
