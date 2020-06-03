@@ -650,9 +650,7 @@ int BS_Tick(int state){
                     bulletFly = 0;
                     break;
                 }
-                else if(!stones[m].destoryable){
-                    LCD_Cursor(bulletDisplacement);
-                    LCD_WriteData('*');
+                else if(stones[m].displacement == bulletDisplacement && !stones[m].destoryable){
 
                     bulletFly = 0;
                     break;
