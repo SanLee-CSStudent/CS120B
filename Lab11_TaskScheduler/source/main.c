@@ -353,62 +353,74 @@ int DS_Tick(int state){
                 scrollObstacle();
             }
             else if(startMulti){
-                switch(input){
-                    case '1':
-                        if(curr < size){
-                            s.end = 0;
-                            s.displacement = 16;
-                            s.sLoc = 0;
-                            s.destoryable = 1;
-                            stones[curr] = s;
-                            curr++;
-                        }
-                        break;
-                    
-                    case '2':
-                        if(curr < size){
-                            s.end = 0;
-                            s.displacement = 16;
-                            s.sLoc = 0;
-                            s.destoryable = 0;
-                            stones[curr] = s;
-                            curr++;
-                        }
-                        break;
-
-                    case '4':
-                        if(curr < size){
-                            s.end = 0;
-                            s.displacement = 32;
-                            s.sLoc = 1;
-                            s.destoryable = 1;
-                            stones[curr] = s;
-                            curr++;
-                        }
-                        break;
-
-                    case '5':
-                        if(curr < size){
-                            s.end = 0;
-                            s.displacement = 32;
-                            s.sLoc = 1;
-                            s.destoryable = 0;
-                            stones[curr] = s;
-                            curr++;
-                        }
-                        break;
-
-                    default:
-
-                        break;
+                if(score < 30){
+                    maxDelay = 4;
                 }
-
-                if(curr < size && max != size){
-                    max = curr + 1;
+                else if(score < 100){
+                    maxDelay = 3;
                 }
                 else{
-                    max = size;
+                    maxDelay = 2;
                 }
+                if(delay > maxDelay){
+                    switch(input){
+                        case '1':
+                            if(curr < size){
+                                s.end = 0;
+                                s.displacement = 16;
+                                s.sLoc = 0;
+                                s.destoryable = 1;
+                                stones[curr] = s;
+                                curr++;
+                            }
+                            break;
+                        
+                        case '2':
+                            if(curr < size){
+                                s.end = 0;
+                                s.displacement = 16;
+                                s.sLoc = 0;
+                                s.destoryable = 0;
+                                stones[curr] = s;
+                                curr++;
+                            }
+                            break;
+
+                        case '4':
+                            if(curr < size){
+                                s.end = 0;
+                                s.displacement = 32;
+                                s.sLoc = 1;
+                                s.destoryable = 1;
+                                stones[curr] = s;
+                                curr++;
+                            }
+                            break;
+
+                        case '5':
+                            if(curr < size){
+                                s.end = 0;
+                                s.displacement = 32;
+                                s.sLoc = 1;
+                                s.destoryable = 0;
+                                stones[curr] = s;
+                                curr++;
+                            }
+                            break;
+
+                        default:
+
+                            break;
+                    }
+
+                    if(curr < size && max != size){
+                        max = curr + 1;
+                    }
+                    else{
+                        max = size;
+                    }
+                }
+                delay++;
 
                 scrollObstacle();
             }
