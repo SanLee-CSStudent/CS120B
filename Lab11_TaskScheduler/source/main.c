@@ -280,7 +280,8 @@ int DS_Tick(int state){
                         stones[i].displacement--;
                     }
                     else{
-                        stones[i].displacement = 0;
+                        LCD_Cursor(17);
+                        LCD_WriteData(' ');
                         s.end = 1;
                         curr = i;
                     }
@@ -396,6 +397,7 @@ int KS_Tick(int state){
             if(button == 0x08){
                 reset = 1;
                 startSingle = 0;
+                gameover = 0;
                 state = KS_Start;
             }
             else{
