@@ -222,6 +222,10 @@ int DS_Tick(int state){
 
     switch(state){
         case DS_Start:
+            for(i=0; i<size; i++){
+                stones[i]=NULL;
+                curr = 0;
+            }
             break;
 
         case DS_Wait:
