@@ -476,8 +476,9 @@ int KS_Tick(int state){
                 LCD_WriteData('!');
             }
             else if(displayGO <= 24){
-                LCD_DisplayString(1, "DISTANCE: " + score + "m");
-                
+                LCD_DisplayString(1, "DISTANCE: ");
+                LCD_DisplayString(11, "" + score);
+                LCD_DisplayString(14, "m");
             }
             else{
                 LCD_ClearScreen();
