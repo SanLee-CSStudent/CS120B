@@ -51,11 +51,11 @@ int M_Tick(int state){
 
     switch(state){
         case M_Start:
+            reset = 0;
             state = M_Wait;
             break;
 
         case M_Wait:
-            reset = 0; 
             state = M_Wait;
 
             if(button == 0x01){
