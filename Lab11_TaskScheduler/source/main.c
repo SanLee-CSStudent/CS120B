@@ -657,6 +657,7 @@ int BS_Tick(int state){
                     LCD_Cursor(bulletDisplacement+1);
                     LCD_WriteData(' ');
                     stones[m].displacement = 0;
+                    bulletDisplacement = location;
             
                     bulletFly = 0;
                     break;
