@@ -223,7 +223,7 @@ int DS_Tick(int state){
     switch(state){
         case DS_Start:
             for(i=0; i<size; i++){
-                stones[i]=NULL;
+                stones[i] = 0;
                 curr = 0;
             }
             break;
