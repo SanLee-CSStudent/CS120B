@@ -217,6 +217,11 @@ int DS_Tick(int state){
             else{
                 state = DS_Wait;
             }
+
+            if(reset){
+                startSingle = 0;
+                state = DS_Start;
+            }
             break;
 
         default:
@@ -388,7 +393,14 @@ int KS_Tick(int state){
             break;
 
         case GAMEOVER:
-            state = GAMEOVER;
+            if(button == 0x08){
+                reset = 1;
+                startSingle = 0;
+                state = KS_Start;
+            }
+            else{
+                state = GAMEOVER;
+            }
             break;
 
         default:
@@ -573,6 +585,12 @@ int SS_Tick(int state){
             }
             else{
                 state = SS_Wait;
+            }
+
+            if(reset){
+                startSingle = 0;
+                score = 0;
+                state = SS_Start;
             }
             break;
         default:
