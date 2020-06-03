@@ -80,7 +80,7 @@ void scrollObstacle(){
                 LCD_Cursor(17);
                 LCD_WriteData(' ');
                 stones[i].displacement = 0;
-                s.end = 1;
+                stones[i].end = 1;
                 curr = i;
             }
         }
@@ -90,7 +90,7 @@ void scrollObstacle(){
             }
             else{
                 stones[i].displacement = 0;
-                s.end = 1;
+                stones[i].end = 1;
                 curr = i;
             }
         }
