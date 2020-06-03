@@ -27,7 +27,7 @@ unsigned char startSingle = 0x00;
 unsigned char gameover = 0x00;
 unsigned char reset = 0x00;
 unsigned char score = 0;
-
+unsigned char bulletDisplacement = 0;
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
 static Queue obstacles;
@@ -437,7 +437,7 @@ int KS_Tick(int state){
             }
 
             LCD_Cursor(location);
-
+            
             for(l = 0; l < max; l++){
                 if(stones[l].displacement == location){
                     gameover = 1;
@@ -565,7 +565,6 @@ enum BULLET_STATE {BS_Start, BS_Init, BS_Wait, BS_Pause, BS_Fly} BS_states;
 int BS_Tick(int state){
     static unsigned char bulletFly = 0;
     unsigned char m = 0;
-    static unsigned char bulletDisplacement = 0;
 
     switch(state){
         case BS_Start:
@@ -593,7 +592,6 @@ int BS_Tick(int state){
                 state = BS_Pause;
             }
             
-
             if(reset){
                 startSingle = 0;
                 state = BS_Start;
@@ -633,9 +631,9 @@ int BS_Tick(int state){
             break;
 
         case BS_Wait:
+            bulletDisplacement = location;
             if(button == 0x10){
                 bulletFly = 1;
-                bulletDisplacement = location;
             }
             break;
 
@@ -657,7 +655,6 @@ int BS_Tick(int state){
                     LCD_Cursor(bulletDisplacement+1);
                     LCD_WriteData(' ');
                     stones[m].displacement = 0;
-                    bulletDisplacement = location;
             
                     bulletFly = 0;
                     break;
@@ -667,7 +664,6 @@ int BS_Tick(int state){
             if(bulletDisplacement == 17 || bulletDisplacement > 32){
                 LCD_Cursor(bulletDisplacement);
                 LCD_WriteData(' ');
-                bulletDisplacement = location;
                 bulletFly = 0;
             }
             LCD_Cursor(location);
