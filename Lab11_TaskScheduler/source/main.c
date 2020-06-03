@@ -31,7 +31,6 @@ unsigned char score = 0;
 unsigned char input;
 unsigned char bulletDisplacement = 0;
 
-stone stones[8];
 unsigned size = 8;
 unsigned max = 0;
 unsigned curr = 0;
@@ -56,6 +55,8 @@ typedef struct stone{
     unsigned char end;
     unsigned char destoryable;
 } stone;
+
+stone stones[8];
 
 void scrollObstacle(){
     unsigned char i = 0;
@@ -424,7 +425,6 @@ enum KEYPAD_STATE{KS_Start, KS_Init, KS_Wait, KS_PausePress, KS_PauseRelease, KS
 
 int KS_Tick(int state){
     static unsigned char displayGO = 0x01;
-    unsigned char ones;
     unsigned char digit;
     unsigned char l;
     unsigned char temp;
