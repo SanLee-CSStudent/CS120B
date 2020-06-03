@@ -515,7 +515,7 @@ int KS_Tick(int state){
                     LCD_Cursor(12);
                     LCD_WriteData(digit + '0');
                     LCD_Cursor(13);
-                    LCD_WriteData(temp + '0');*/
+                    LCD_WriteData(temp + '0');
                 }
                 else if(temp < 1000){
                     digit = temp / 100;
