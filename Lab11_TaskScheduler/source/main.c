@@ -52,6 +52,7 @@ int M_Tick(int state){
             break;
 
         case M_Wait:
+            reset = 0; 
             if(button == 0x01){
                 state = M_SingleClear;
             }
@@ -313,7 +314,6 @@ int KS_Tick(int state){
     input = GetKeypadKey();
     switch(state){
         case KS_Start:
-            reset = 0;
             state = KS_Init;
             break;
         
