@@ -24,10 +24,21 @@ unsigned char button = 0x00;
 signed char location = 1;
 unsigned char pause = 0x00;
 unsigned char startSingle = 0x00;
+unsigned char startMulti = 0x00;
 unsigned char gameover = 0x00;
 unsigned char reset = 0x00;
 unsigned char score = 0;
+unsigned char input;
 unsigned char bulletDisplacement = 0;
+
+stone stones[8];
+unsigned size = 8;
+unsigned max = 0;
+unsigned curr = 0;
+unsigned char delay = 0;
+unsigned char maxDelay = -1;
+
+
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
 static Queue obstacles;
@@ -46,7 +57,46 @@ typedef struct stone{
     unsigned char destoryable;
 } stone;
 
-enum MENU {M_Start, M_Wait, M_SingleClear, M_Single} M_states;
+void scrollObstacle(){
+    unsigned char i = 0;
+
+    for(i = 0; i < max; i++){
+        LCD_Cursor(stones[i].displacement+1);
+        LCD_WriteData(' ');       
+        LCD_Cursor(stones[i].displacement);
+        if(stones[i].destoryable){
+            LCD_WriteData('#');
+        }
+        else{
+            LCD_WriteData('*');
+        }
+        LCD_Cursor(location);
+        if(stones[i].sLoc){
+            if(stones[i].displacement > 17){
+                stones[i].displacement--;
+            }
+            else{
+                LCD_Cursor(17);
+                LCD_WriteData(' ');
+                stones[i].displacement = 0;
+                s.end = 1;
+                curr = i;
+            }
+        }
+        else{
+            if(stones[i].displacement > 0){
+                stones[i].displacement--;
+            }
+            else{
+                stones[i].displacement = 0;
+                s.end = 1;
+                curr = i;
+            }
+        }
+    }
+}
+
+enum MENU {M_Start, M_Wait, M_SingleClear, M_MultiClear, M_Single, M_Multi} M_states;
 
 int M_Tick(int state){
 
@@ -54,6 +104,7 @@ int M_Tick(int state){
         case M_Start:
             reset = 0;
             startSingle = 0;
+            startMulti = 0;
             state = M_Wait;
             break;
 
@@ -62,6 +113,9 @@ int M_Tick(int state){
 
             if(button == 0x01){
                 state = M_SingleClear;
+            }
+            else if(button == 0x02){
+                state = M_MultiClear;
             }
 
             break;
@@ -76,12 +130,31 @@ int M_Tick(int state){
             
             break;
 
+        case M_MultiClear:
+            if(button == 0x02){
+                state = M_MultiClear;
+            }
+            else {
+                state = M_Multi;
+            }
+            break;
+
         case M_Single:
             state = M_Single;
             
             if(button == 0x08){
                 reset = 1;
                 startSingle = 0;
+                state = M_Start;
+            }
+            break;
+        
+        case M_Multi:
+            state = M_Multi;
+            
+            if(button == 0x08){
+                reset = 1;
+                startMulti = 0;
                 state = M_Start;
             }
             break;
@@ -104,9 +177,17 @@ int M_Tick(int state){
             LCD_Cursor(1);
             break;
 
-        case M_Single:
+        case M_MultiClear:
+            LCD_ClearScreen();
+            LCD_Cursor(1);
+            break;
 
+        case M_Single:
             startSingle = 1;
+            break;
+
+        case M_Multi:
+            startMulti = 1;
             break;
 
         default:
@@ -127,7 +208,7 @@ int RO_Tick(int state){
             break;
 
         case RO_Init:
-            if(startSingle){
+            if(startSingle || startMulti){
                 state = RO_Wait;
             }
             else{
@@ -165,19 +246,12 @@ int RO_Tick(int state){
     return state;
 }
 
-stone stones[8];
-unsigned size = 8;
-unsigned max = 0;
-unsigned curr = 0;
-unsigned char delay = 0;
-unsigned char maxDelay = -1;
-
 enum DISPLAY_STATES {DS_Start, DS_Init, DS_Wait, DS_Pause} DS_states;
 
 int DS_Tick(int state){
     unsigned char loc = 0x00;
     unsigned char i = 0;
-    
+    input = GetKeypadKey();
     stone s;
     if(score < 30){
         maxDelay = (rand() % 8) + 4;
@@ -205,7 +279,7 @@ int DS_Tick(int state){
             break;
 
         case DS_Init:
-            if(startSingle){
+            if(startSingle || startMulti){
                 state = DS_Wait;
             }
             else{
@@ -243,72 +317,96 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(delay > maxDelay){
-                if(size > curr){
-                    loc = QueueDequeue(obstacles);
-                    s.end = 0;
+            if(startSingle){
+                if(delay > maxDelay){
+                    if(size > curr){
+                        loc = QueueDequeue(obstacles);
+                        s.end = 0;
 
-                    if(!loc){
-                        s.displacement = 32;
-                        s.sLoc = 1;
+                        if(!loc){
+                            s.displacement = 32;
+                            s.sLoc = 1;
+                        }
+                        else{
+                            s.displacement = 16;
+                            s.sLoc = 0;
+                        }
+
+                        s.destoryable = rand() % 2;
+                        stones[curr] = s;
+                        curr++;
+                    }
+                    
+                    if(curr < size && max != size){
+                        max = curr + 1;
                     }
                     else{
-                        s.displacement = 16;
-                        s.sLoc = 0;
+                        max = size;
                     }
-
-                    s.destoryable = rand() % 2;
-                    stones[curr] = s;
-                    curr++;
+                    delay = 0;
+                    maxDelay = (rand() % 8) + 4;
                 }
-                
-                if(curr < size && max != size){
-                    max = curr + 1;
-                }
-                else{
-                    max = size;
-                }
-                delay = 0;
-                maxDelay = (rand() % 8) + 4;
-            }
             
-            for(i = 0; i < max; i++){
-                LCD_Cursor(stones[i].displacement+1);
-                LCD_WriteData(' ');       
-                LCD_Cursor(stones[i].displacement);
-                if(stones[i].destoryable){
-                    LCD_WriteData('#');
-                }
-                else{
-                    LCD_WriteData('*');
-                }
-                LCD_Cursor(location);
-                if(stones[i].sLoc){
-                    if(stones[i].displacement > 17){
-                        stones[i].displacement--;
-                    }
-                    else{
-                        LCD_Cursor(17);
-                        LCD_WriteData(' ');
-                        stones[i].displacement = 0;
-                        s.end = 1;
-                        curr = i;
-                    }
-                }
-                else{
-                    if(stones[i].displacement > 0){
-                        stones[i].displacement--;
-                    }
-                    else{
-                        stones[i].displacement = 0;
-                        s.end = 1;
-                        curr = i;
-                    }
-                }
-                
-            }
+                delay++;
 
-            delay++;
+                scrollObstacle();
+            }
+            else if(startMulti){
+                switch(input){
+                    case '1':
+                        if(curr < size){
+                            s.end = 0;
+                            s.displacement = 16;
+                            s.sLoc = 0;
+                            s.destoryable = 1;
+                            stones[curr] = s;
+                            curr++;
+                        }
+                        break;
+                    
+                    case '2':
+                        if(curr < size){
+                            s.end = 0;
+                            s.displacement = 16;
+                            s.sLoc = 0;
+                            s.destoryable = 0;
+                            stones[curr] = s;
+                            curr++;
+                        }
+                        break;
+
+                    case '4':
+                        if(curr < size){
+                            s.end = 0;
+                            s.displacement = 32;
+                            s.sLoc = 1;
+                            s.destoryable = 1;
+                            stones[curr] = s;
+                            curr++;
+                        }
+                        break;
+
+                    case '5':
+                        if(curr < size){
+                            s.end = 0;
+                            s.displacement = 32;
+                            s.sLoc = 1;
+                            s.destoryable = 0;
+                            stones[curr] = s;
+                            curr++;
+                        }
+                        break;
+
+                    default:
+
+                        break;
+                }
+
+                scrollObstacle();
+            }
+            else{
+                reset = 1;
+            }
             break;
 
         case DS_Pause:
@@ -322,8 +420,6 @@ int DS_Tick(int state){
     return state;
 }
 
-unsigned char input;
-
 enum KEYPAD_STATE{KS_Start, KS_Init, KS_Wait, KS_PausePress, KS_PauseRelease, KS_PauseOffPress, GAMEOVER} KS_states;
 
 int KS_Tick(int state){
@@ -333,7 +429,6 @@ int KS_Tick(int state){
     unsigned char l;
     unsigned char temp;
 
-    input = GetKeypadKey();
     switch(state){
         case KS_Start:
             state = KS_Init;
@@ -341,7 +436,7 @@ int KS_Tick(int state){
             break;
         
         case KS_Init:
-            if(startSingle){
+            if(startSingle || startMulti){
                 state = KS_Wait;
             }
             else{
@@ -566,7 +661,7 @@ int BS_Tick(int state){
             break;
 
         case BS_Init:
-            if(startSingle){
+            if(startSingle || startMulti){
                 state = BS_Wait;
             }
             else{
@@ -682,7 +777,7 @@ int SS_Tick(int state){
             break;
 
         case SS_Init:
-            if(startSingle){
+            if(startSingle || startMulti){
                 state = SS_Wait;
             }
             else{
