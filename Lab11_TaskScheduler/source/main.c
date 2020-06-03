@@ -43,6 +43,7 @@ typedef struct stone{
     signed char displacement;
     signed char sLoc;
     unsigned char end;
+    unsigned char destoryable;
 } stone;
 
 enum MENU {M_Start, M_Wait, M_SingleClear, M_Single} M_states;
@@ -193,6 +194,7 @@ int DS_Tick(int state){
             s.displacement = 0;
             s.end = 0;
             s.sLoc = 0;
+            s.destoryable = rand() % 2;
             for(i=0; i<size; i++){
 
                 stones[i] = s;
@@ -255,6 +257,7 @@ int DS_Tick(int state){
                         s.sLoc = 0;
                     }
 
+                    s.destoryable = rand() % 2;
                     stones[curr] = s;
                     curr++;
                 }
@@ -273,7 +276,12 @@ int DS_Tick(int state){
                 LCD_Cursor(stones[i].displacement+1);
                 LCD_WriteData(' ');       
                 LCD_Cursor(stones[i].displacement);
-                LCD_WriteData('#');
+                if(stones[i].destoryable){
+                    LCD_WriteData('#');
+                }
+                else{
+                    LCD_WriteData('*');
+                }
                 LCD_Cursor(location);
                 if(stones[i].sLoc){
                     if(stones[i].displacement > 17){
@@ -632,13 +640,20 @@ int BS_Tick(int state){
             LCD_WriteData(' ');
             bulletDisplacement++;
             for(m=0; m<max; m++){
-                if(stones[m].displacement == bulletDisplacement){
+                if(stones[m].displacement == bulletDisplacement && stones[m].destoryable){
                     LCD_Cursor(bulletDisplacement);
                     LCD_WriteData(' ');
                     LCD_Cursor(bulletDisplacement+1);
                     LCD_WriteData(' ');
-                    stones[m].displacement = 0;
-            
+                    stones[m].displacement = 0;             
+                    score += 10;
+                    bulletFly = 0;
+                    break;
+                }
+                else if(!stones[m].destoryable){
+                    LCD_Cursor(bulletDisplacement);
+                    LCD_WriteData('*');
+
                     bulletFly = 0;
                     break;
                 }
@@ -796,7 +811,7 @@ int main(void) {
         else if(score < 100){
             DS_task.period = 250;
         }
-        else if(score < 500){
+        else if(score < 250){
             DS_task.period = 200;
         }
         else{
