@@ -52,6 +52,7 @@ int M_Tick(int state){
     switch(state){
         case M_Start:
             reset = 0;
+            startSingle = 0;
             state = M_Wait;
             break;
 
@@ -90,7 +91,7 @@ int M_Tick(int state){
 
     switch(state){
         case M_Start:
-            startSingle = 0;
+
             break;
 
         case M_Wait:
@@ -136,10 +137,6 @@ int RO_Tick(int state){
         case RO_Wait:    
             state = RO_Wait;
             
-            if(reset){
-                startSingle = 0;
-                state = RO_Start;
-            }
             break;
 
         default:
@@ -193,6 +190,15 @@ int DS_Tick(int state){
     
     switch(state){
         case DS_Start:
+            s.displacement = 0;
+            s.end = 0;
+            s.sLoc = 0;
+            for(i=0; i<size; i++){
+
+                stones[i] = s;
+                curr = 0;
+            }
+
             state = DS_Init;
             break;
 
@@ -213,11 +219,6 @@ int DS_Tick(int state){
                 state = DS_Wait;
             }
 
-            if(reset){
-                startSingle = 0;
-                state = DS_Start;
-            }
-
             break;
 
         case DS_Pause:
@@ -228,10 +229,6 @@ int DS_Tick(int state){
                 state = DS_Wait;
             }
 
-            if(reset){
-                startSingle = 0;
-                state = DS_Start;
-            }
             break;
 
         default:
@@ -240,14 +237,7 @@ int DS_Tick(int state){
 
     switch(state){
         case DS_Start:
-            s.displacement = 0;
-            s.end = 0;
-            s.sLoc = 0;
-            for(i=0; i<size; i++){
-
-                stones[i] = s;
-                curr = 0;
-            }
+        
             break;
 
         case DS_Wait:
@@ -587,11 +577,7 @@ int BS_Tick(int state){
             if(pause){
                 state = BS_Pause;
             }
-            
-            if(reset){
-                startSingle = 0;
-                state = BS_Start;
-            }
+
             break;
 
         case BS_Pause:
@@ -611,10 +597,6 @@ int BS_Tick(int state){
                 state = BS_Wait;
             }
 
-            if(reset){
-                startSingle = 0;
-                state = BS_Start;
-            }
             break;
 
         default:
@@ -696,12 +678,8 @@ int SS_Tick(int state){
             break;
 
         case SS_Wait:
-            if(reset){
-                startSingle = 0;
-                score = 0;
-                state = SS_Start;
-            }
-            else if(pause || gameover){
+
+            if(pause || gameover){
                 state = SS_Pause;
             }
             else{
@@ -717,11 +695,6 @@ int SS_Tick(int state){
                 state = SS_Wait;
             }
 
-            if(reset){
-                startSingle = 0;
-                score = 0;
-                state = SS_Start;
-            }
             break;
         default:
             break;
@@ -805,6 +778,8 @@ int main(void) {
             LCD_Cursor(1);
             LCD_DisplayString(4, "LCD Racer");
             
+            score = 0;
+
             M_task.state = M_Start;
             DS_task.state = DS_Start;
             DS_task.period = 300;
