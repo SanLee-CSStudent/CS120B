@@ -28,6 +28,8 @@ unsigned char gameover = 0x00;
 unsigned char reset = 0x00;
 unsigned char score = 0;
 
+char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
+
 static Queue obstacles;
 
 typedef struct task{
@@ -479,7 +481,11 @@ int KS_Tick(int state){
                 LCD_WriteData('!');
             }
             else {
-                LCD_DisplayString(1, "DISTANCE: ");
+                for(l = 0; l < 10; l++){
+                    LCD_Cursor(l+1);
+                    LCD_WriteData(string[l]);
+                }
+
                 temp = score;
                 if(temp < 10){
                     LCD_Cursor(11);
