@@ -644,6 +644,7 @@ int BS_Tick(int state){
             break;
 
         case BS_Fly:
+            bulletFly = 1;
             LCD_Cursor(bulletDisplacement+1);
             LCD_WriteData('>');
             LCD_Cursor(bulletDisplacement);
@@ -656,6 +657,8 @@ int BS_Tick(int state){
                     break;
                 }
             }
+            LCD_Cursor(location);
+
             break;
 
         default:
