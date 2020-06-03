@@ -615,6 +615,11 @@ int BS_Tick(int state){
             else{
                 state = BS_Wait;
             }
+
+            if(reset){
+                startSingle = 0;
+                state = BS_Start;
+            }
             break;
 
         default:
