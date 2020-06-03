@@ -290,6 +290,7 @@ int DS_Tick(int state){
                     else{
                         LCD_Cursor(17);
                         LCD_WriteData(' ');
+                        stones[i].displacement = 0;
                         s.end = 1;
                         curr = i;
                     }
