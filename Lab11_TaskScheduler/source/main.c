@@ -560,6 +560,109 @@ int KS_Tick(int state){
     return state;
 }
 
+enum BULLET_STATE {BS_Start, BS_Init, BS_Wait, BS_Pause, BS_Fly} BS_states;
+
+int BS_Tick(int state){
+    unsigned char bulletFly = 0;
+    unsigned char m = 0;
+    static unsigned char bulletDisplacement = 0;
+
+    switch(state){
+        case BS_Start:
+            state = BS_Init;
+            break;
+
+        case BS_Init:
+            if(startSingle){
+                state = BS_Wait;
+            }
+            else{
+                state = BS_Init;
+            }
+            break;
+
+        case BS_Wait:
+            if(button == 0x10){
+                state = BS_Fly;
+            }
+
+            if(pause){
+                state = BS_Pause;
+            }
+            else{
+                state = BS_Wait;
+            }
+
+            if(reset){
+                startSingle = 0;
+                state = BS_Start;
+            }
+            break;
+
+        case BS_Pause:
+            if(pause){
+                state = BS_Pause;
+            }
+            else{
+                state = BS_Wait;
+            }
+            break;
+
+        case BS_Fly:
+            if(bulletFly){
+                state = BS_Fly;
+            }
+            else{
+                state = BS_Wait;
+            }
+            break;
+
+        default;
+
+            break;
+    }
+
+    switch(state){
+        case BS_Start:
+
+            break;
+
+        case BS_Init:
+
+            break;
+
+        case BS_Wait:
+            if(button == 0x10){
+                bulletFly = 1;
+                bulletDisplacement = location;
+            }
+            break;
+
+        case BS_Pause:
+
+            break;
+
+        case BS_Fly:
+            LCD_Cursor(bulletDisplacement);
+            LCD_WriteData('>');
+            bulletDisplacement++;
+            for(m=0; m<max; m++){
+                if(stones[m].displacement == bulletDisplacement){
+                    stones[m].displacement = 0;
+                    bulletFly = 0;
+                    break;
+                }
+            }
+            break;
+
+        default;
+
+            break;
+    }
+
+    return state;
+}
+
 enum SCORE_STATE {SS_Start, SS_Init, SS_Wait, SS_Pause} SS_states;
 
 int SS_Tick(int state){
@@ -682,7 +785,7 @@ int main(void) {
             LCD_DisplayString(4, "LCD Racer");
         }
 
-        button = (~PINA) & 0x0F;
+        button = (~PINA) & 0x1F;
         if(score > 25){
             SS_task.period = 250;
         }
