@@ -647,8 +647,8 @@ int BS_Tick(int state){
             bulletFly = 1;
             LCD_Cursor(bulletDisplacement+1);
             LCD_WriteData('>');
-            // LCD_Cursor(bulletDisplacement);
-            // LCD_WriteData(' ');
+            LCD_Cursor(bulletDisplacement);
+            LCD_WriteData(' ');
             bulletDisplacement++;
             for(m=0; m<max; m++){
                 if(stones[m].displacement == bulletDisplacement){
@@ -661,7 +661,12 @@ int BS_Tick(int state){
                 }
             }
             LCD_Cursor(location);
-
+            if(bulletDisplacement == 17 || bulletDisplacement > 32){
+                LCD_Cursor(bulletDisplacement - 1);
+                LCD_WriteData(' ');
+                LCD_Cursor(location);
+                bulletFly = 0;
+            }
             break;
 
         default:
