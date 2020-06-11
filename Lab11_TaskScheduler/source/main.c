@@ -425,9 +425,7 @@ int DS_Tick(int state){
                 }
                 
             }
-            else{
-                reset = 1;
-            }
+
             delay++;
             scrollObstacle();
             break;
@@ -920,7 +918,7 @@ int main(void) {
         if(reset){
             LCD_ClearScreen();
             LCD_Cursor(1);
-            LCD_DisplayString(4, "!LCD Racer!");
+            LCD_DisplayString(4, "LCD Racer");
             
             score = 0;
 
