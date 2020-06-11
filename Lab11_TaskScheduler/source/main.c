@@ -347,8 +347,6 @@ int DS_Tick(int state){
                 delay = 0;
                 maxDelay = (rand() % 8) + 4;
             }
-        
-            delay++;
             
             if(startMulti){
                 if(score < 30){
@@ -421,12 +419,12 @@ int DS_Tick(int state){
 
                     delay = 0;
                 }
-                delay++;
+                
             }
             else{
                 reset = 1;
             }
-
+            delay++;
             scrollObstacle();
             break;
 
@@ -928,6 +926,8 @@ int main(void) {
             RO_task.state = RO_Start;
             SS_task.state = SS_Start;
             BS_task.state = BS_Start;
+
+            reset = 0;
         }
 
         button = (~PINA) & 0x7F;
