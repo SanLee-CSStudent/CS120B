@@ -370,13 +370,15 @@ int DS_Tick(int state){
                                 else{
                                     s.sLoc = 1;
                                 }
-                                s.destoryable = 1;
+                                s.destoryable = 0;
                                 stones[curr] = s;
                                 curr++;
                             }
                             break;
                         
                         case '2':
+                            LCD_Cursor(enemyLoc);
+                            LCD_WriteData(' ');
                             enemyLoc = 16;
                             
                             break;
@@ -398,6 +400,8 @@ int DS_Tick(int state){
                             break;
 
                         case '5':
+                            LCD_Cursor(enemyLoc);
+                            LCD_WriteData(' ');
                             enemyLoc = 32;
 
                             break;
@@ -862,6 +866,7 @@ int main(void) {
     DDRD = 0xFF; PORTD = 0x00;
     /* Insert your solution below */
     unsigned char k = 0x00;
+    reset = 0;
 
     LCD_init();
     LCD_ClearScreen();
@@ -915,7 +920,7 @@ int main(void) {
         if(reset){
             LCD_ClearScreen();
             LCD_Cursor(1);
-            LCD_DisplayString(4, "LCD Racer");
+            LCD_DisplayString(4, "!LCD Racer!");
             
             score = 0;
 
