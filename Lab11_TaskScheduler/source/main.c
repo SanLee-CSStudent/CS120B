@@ -37,6 +37,7 @@ unsigned curr = 0;
 unsigned char delay = 0;
 unsigned char maxDelay = -1;
 
+unsigned char enemyLoc = 16;
 
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
@@ -318,41 +319,38 @@ int DS_Tick(int state){
             break;
 
         case DS_Wait:
-            if(startSingle){
-                if(delay > maxDelay){
-                    if(size > curr){
-                        loc = QueueDequeue(obstacles);
-                        s.end = 0;
+            if(delay > maxDelay){
+                if(size > curr){
+                    loc = QueueDequeue(obstacles);
+                    s.end = 0;
 
-                        if(!loc){
-                            s.displacement = 32;
-                            s.sLoc = 1;
-                        }
-                        else{
-                            s.displacement = 16;
-                            s.sLoc = 0;
-                        }
-
-                        s.destoryable = rand() % 2;
-                        stones[curr] = s;
-                        curr++;
-                    }
-                    
-                    if(curr < size && max != size){
-                        max = curr + 1;
+                    if(!loc){
+                        s.displacement = 31;
+                        s.sLoc = 1;
                     }
                     else{
-                        max = size;
+                        s.displacement = 15;
+                        s.sLoc = 0;
                     }
-                    delay = 0;
-                    maxDelay = (rand() % 8) + 4;
-                }
-            
-                delay++;
 
-                scrollObstacle();
+                    s.destoryable = rand() % 2;
+                    stones[curr] = s;
+                    curr++;
+                }
+                
+                if(curr < size && max != size){
+                    max = curr + 1;
+                }
+                else{
+                    max = size;
+                }
+                delay = 0;
+                maxDelay = (rand() % 8) + 4;
             }
-            else if(startMulti){
+        
+            delay++;
+            
+            if(startMulti){
                 if(score < 30){
                     maxDelay = 4;
                 }
@@ -367,8 +365,13 @@ int DS_Tick(int state){
                         case '1':
                             if(curr < size){
                                 s.end = 0;
-                                s.displacement = 16;
-                                s.sLoc = 0;
+                                s.displacement = enemyLoc;
+                                if(enemyLoc == 16){
+                                    s.sLoc = 0;
+                                }
+                                else{
+                                    s.sLoc = 1;
+                                }
                                 s.destoryable = 1;
                                 stones[curr] = s;
                                 curr++;
@@ -376,21 +379,20 @@ int DS_Tick(int state){
                             break;
                         
                         case '2':
-                            if(curr < size){
-                                s.end = 0;
-                                s.displacement = 16;
-                                s.sLoc = 0;
-                                s.destoryable = 0;
-                                stones[curr] = s;
-                                curr++;
-                            }
+                            enemyLoc = 16;
+                            
                             break;
 
                         case '4':
                             if(curr < size){
                                 s.end = 0;
-                                s.displacement = 32;
-                                s.sLoc = 1;
+                                s.displacement = enemyLoc;
+                                if(enemyLoc == 16){
+                                    s.sLoc = 0;
+                                }
+                                else{
+                                    s.sLoc = 1;
+                                }
                                 s.destoryable = 1;
                                 stones[curr] = s;
                                 curr++;
@@ -398,20 +400,17 @@ int DS_Tick(int state){
                             break;
 
                         case '5':
-                            if(curr < size){
-                                s.end = 0;
-                                s.displacement = 32;
-                                s.sLoc = 1;
-                                s.destoryable = 0;
-                                stones[curr] = s;
-                                curr++;
-                            }
+                            enemyLoc = 32;
+
                             break;
 
                         default:
 
                             break;
                     }
+
+                    LCD_Cursor(enemyLoc);
+                    LCD_WriteData('@');
 
                     if(curr < size && max != size){
                         max = curr + 1;
@@ -423,12 +422,12 @@ int DS_Tick(int state){
                     delay = 0;
                 }
                 delay++;
-
-                scrollObstacle();
             }
             else{
                 reset = 1;
             }
+
+            scrollObstacle();
             break;
 
         case DS_Pause:
@@ -546,10 +545,17 @@ int KS_Tick(int state){
                 location = 17;
             }
             else if(button == 0x20){
-                location++;
+                if(button != 0x20){
+                    location++;
+                }
             }
             else if(button == 0x40){
-                location--;
+                if(button != 0x20){ 
+                    if(location != 1 || location != 17){
+                        location--;
+                    }
+              
+                }
             }
 
             LCD_Cursor(location);
