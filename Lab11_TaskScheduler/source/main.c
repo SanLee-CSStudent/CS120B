@@ -40,7 +40,6 @@ unsigned char maxDelay = 0;
 unsigned char shootMaxDelay = 0;
 
 unsigned char enemyLoc = 16;
-unsigned char prevLoc = 16;
 
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
@@ -380,7 +379,8 @@ int DS_Tick(int state){
                             break;
                         
                         case '2':
-                            prevLoc = enemyLoc;
+                            LCD_Cursor(enemyLoc);
+                            LCD_WriteData(' ');
                             enemyLoc = 16;
                             
                             break;
@@ -402,7 +402,8 @@ int DS_Tick(int state){
                             break;
 
                         case '5':
-                            prevLoc = enemyLoc;
+                            LCD_Cursor(enemyLoc);
+                            LCD_WriteData(' ');
                             enemyLoc = 32;
 
                             break;
@@ -411,8 +412,6 @@ int DS_Tick(int state){
 
                             break;
                     }
-                    LCD_Cursor(prevLoc);
-                    LCD_WriteData(' ');
                     LCD_Cursor(enemyLoc);
                     LCD_WriteData('@');
 
@@ -924,6 +923,8 @@ int main(void) {
             LCD_DisplayString(4, "LCD Racer");
             
             score = 0;
+            enemyLoc = 16;
+            location = 1;
 
             M_task.state = M_Start;
             DS_task.state = DS_Start;
