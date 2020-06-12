@@ -365,7 +365,7 @@ int DS_Tick(int state){
                         case '1':
                             if(curr < size){
                                 s.end = 0;
-                                s.displacement = enemyLoc;
+                                s.displacement = enemyLoc - 1;
                                 if(enemyLoc == 16){
                                     s.sLoc = 0;
                                 }
@@ -388,7 +388,7 @@ int DS_Tick(int state){
                         case '4':
                             if(curr < size){
                                 s.end = 0;
-                                s.displacement = enemyLoc;
+                                s.displacement = enemyLoc - 1;
                                 if(enemyLoc == 16){
                                     s.sLoc = 0;
                                 }
