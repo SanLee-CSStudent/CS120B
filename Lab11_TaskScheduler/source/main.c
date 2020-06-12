@@ -65,8 +65,10 @@ void scrollObstacle(){
     unsigned char i = 0;
 
     for(i = 0; i < max; i++){
-        LCD_Cursor(stones[i].displacement+1);
-        LCD_WriteData(' ');       
+        if(stones[i].displacement+1 != 16 || stones[i].displacement+1 != 32){
+            LCD_Cursor(stones[i].displacement+1);
+            LCD_WriteData(' ');
+        }       
         LCD_Cursor(stones[i].displacement);
         if(stones[i].destoryable){
             LCD_WriteData('#');
