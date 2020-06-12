@@ -765,7 +765,9 @@ int BS_Tick(int state){
 
         case BS_Fly:
             bulletFly = 1;
-            LCD_Cursor(bulletDisplacement+1);
+            if((bulletDisplacement + 1) != 32 || (bulletDisplacement + 1) != 16){
+                LCD_Cursor(bulletDisplacement+1);
+            }
             LCD_WriteData('>');
             LCD_Cursor(bulletDisplacement);
             LCD_WriteData(' ');
@@ -788,7 +790,7 @@ int BS_Tick(int state){
                 }
             }
             
-            if(bulletDisplacement == 17 || bulletDisplacement > 32){
+            if(bulletDisplacement == 15 || bulletDisplacement == 31){
                 LCD_Cursor(bulletDisplacement);
                 LCD_WriteData(' ');
                 bulletFly = 0;
