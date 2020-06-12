@@ -38,7 +38,7 @@ unsigned char delay = 0;
 unsigned char maxDelay = -1;
 
 unsigned char enemyLoc = 16;
-unsigned char prevLoc = enemyLoc;
+unsigned char prevLoc = 16;
 
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
