@@ -372,8 +372,8 @@ int DS_Tick(int state){
                                     s.sLoc = 1;
                                 }
                                 s.destoryable = 0;
-                                stones[0] = s;
-                                curr = 0;
+                                stones[curr] = s;
+                                curr++;
                             }
                             break;
                         
@@ -394,8 +394,8 @@ int DS_Tick(int state){
                                     s.sLoc = 1;
                                 }
                                 s.destoryable = 1;
-                                stones[0] = s;
-                                curr = 0;
+                                stones[curr] = s;
+                                curr++;
                             }
                             break;
 
