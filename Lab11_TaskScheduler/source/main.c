@@ -38,6 +38,7 @@ unsigned char delay = 0;
 unsigned char maxDelay = -1;
 
 unsigned char enemyLoc = 16;
+unsigned char prevLoc = enemyLoc;
 
 char string[] = {'D', 'I', 'S', 'T', 'A', 'N', 'C', 'E', ':', ' '};
 
@@ -371,14 +372,13 @@ int DS_Tick(int state){
                                     s.sLoc = 1;
                                 }
                                 s.destoryable = 0;
-                                stones[curr] = s;
-                                curr++;
+                                stones[0] = s;
+                                curr = 0;
                             }
                             break;
                         
                         case '2':
-                            LCD_Cursor(enemyLoc);
-                            LCD_WriteData(' ');
+                            prevLoc = enemyLoc;
                             enemyLoc = 16;
                             
                             break;
@@ -394,14 +394,13 @@ int DS_Tick(int state){
                                     s.sLoc = 1;
                                 }
                                 s.destoryable = 1;
-                                stones[curr] = s;
-                                curr++;
+                                stones[0] = s;
+                                curr = 0;
                             }
                             break;
 
                         case '5':
-                            LCD_Cursor(enemyLoc);
-                            LCD_WriteData(' ');
+                            prevLoc = enemyLoc;
                             enemyLoc = 32;
 
                             break;
@@ -410,7 +409,8 @@ int DS_Tick(int state){
 
                             break;
                     }
-
+                    LCD_Cursor(prevLoc);
+                    LCD_WriteData(' ');
                     LCD_Cursor(enemyLoc);
                     LCD_WriteData('@');
 
