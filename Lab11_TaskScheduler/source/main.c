@@ -257,7 +257,6 @@ enum DISPLAY_STATES {DS_Start, DS_Init, DS_Wait, DS_Pause} DS_states;
 int DS_Tick(int state){
     unsigned char loc = 0x00;
     unsigned char i = 0;
-    input = GetKeypadKey();
     stone s;
     if(score < 30){
         maxDelay = (rand() % 8) + 4;
@@ -380,7 +379,7 @@ int DS_Tick(int state){
                             }
                             break;
                         
-                        case '2':
+                        case '3':
                             LCD_Cursor(enemyLoc);
                             LCD_WriteData(' ');
                             enemyLoc = 16;
@@ -403,7 +402,7 @@ int DS_Tick(int state){
                             }
                             break;
 
-                        case '5':
+                        case '6':
                             LCD_Cursor(enemyLoc);
                             LCD_WriteData(' ');
                             enemyLoc = 32;
@@ -940,6 +939,7 @@ int main(void) {
         }
 
         button = (~PINA) & 0x7F;
+        input = GetKeypadKey();
         if(score < 25){
             DS_task.period = 300;
         }
