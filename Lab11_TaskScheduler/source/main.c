@@ -548,13 +548,12 @@ int KS_Tick(int state){
                 location = 17;
             }
             else if(button == 0x20){
-                if(button != 0x20){
-                    location++;
-                }
+                location++;
+                
             }
             else if(button == 0x40){
                 if(button != 0x20){ 
-                    if(location != 1 || location != 17){
+                    if(location != 1 && location != 17){
                         location--;
                     }
               
