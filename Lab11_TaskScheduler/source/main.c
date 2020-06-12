@@ -35,7 +35,9 @@ unsigned size = 8;
 unsigned max = 0;
 unsigned curr = 0;
 unsigned char delay = 0;
-unsigned char maxDelay = -1;
+unsigned char shootDelay = 0;
+unsigned char maxDelay = 0;
+unsigned char shootMaxDelay = 0;
 
 unsigned char enemyLoc = 16;
 unsigned char prevLoc = 16;
@@ -351,15 +353,15 @@ int DS_Tick(int state){
             
             if(startMulti){
                 if(score < 30){
-                    maxDelay = 4;
+                    shootMaxDelay = 4;
                 }
                 else if(score < 100){
-                    maxDelay = 3;
+                    shootMaxDelay = 3;
                 }
                 else{
-                    maxDelay = 2;
+                    shootMaxDelay = 2;
                 }
-                if(delay > maxDelay){
+                if(shootDelay > shootMaxDelay){
                     switch(input){
                         case '1':
                             if(curr < size){
@@ -421,12 +423,13 @@ int DS_Tick(int state){
                         max = size;
                     }
 
-                    delay = 0;
+                    shootDelay = 0;
                 }
                 
             }
 
             delay++;
+            shootDelay++;
             scrollObstacle();
             break;
 
